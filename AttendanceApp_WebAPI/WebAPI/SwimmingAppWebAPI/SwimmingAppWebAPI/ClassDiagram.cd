@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SwimmingApp.DAL.Repositories.AttendanceService.AttendanceService" BaseTypeListCollapsed="true">
+    <Position X="7" Y="5.5" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Right" Position="0.254" />
+  </Class>
+  <Class Name="SwimmingApp.DAL.Repositories.MemberService.MemberService" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="5.5" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Right" Position="0.233" />
+  </Class>
+  <Class Name="SwimmingApp.DAL.Repositories.TrainingService.TrainingService" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="5.5" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Right" Position="0.316" />
+  </Class>
+  <Class Name="SwimmingApp.DAL.Repositories.UserLoginService.UserLoginService" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="5.5" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Right" Position="0.275" />
+  </Class>
+  <Class Name="SwimmingApp.DAL.Repositories.UserRegisterService.UserRegisterService" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="5.5" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Right" Position="0.275" />
+  </Class>
+  <Class Name="SwimmingApp.DAL.Repositories.UserService.UserService" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="5.5" Width="1.75" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Right" Position="0.206" />
+  </Class>
+  <Class Name="SwimmingApp.BL.Managers.AttendanceManager.AttendanceManager">
+    <Position X="7" Y="3.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.BL.Managers.UserLoginManager.UserLoginManager">
+    <Position X="17.25" Y="3.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.BL.Managers.UserManager.UserManager">
+    <Position X="10.75" Y="3.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.BL.Managers.UserRegisterManager.UserRegisterManager">
+    <Position X="13.75" Y="3.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.Data.Attendance">
+    <Position X="9.75" Y="10.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.Data.Member">
+    <Position X="5" Y="10.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.Data.Training">
+    <Position X="2.75" Y="10.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.Data.User">
+    <Position X="14.5" Y="10.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.Data.UserLogin">
+    <Position X="0.5" Y="10.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.Data.UserRegister">
+    <Position X="12" Y="10.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.Data.UserRole">
+    <Position X="7.25" Y="10.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DataModel.AttendanceModel">
+    <Position X="9.75" Y="13" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DataModel.MemberModel">
+    <Position X="5" Y="12.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DataModel.TrainingModel">
+    <Position X="2.75" Y="12.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DataModel.UserLoginModel">
+    <Position X="0.5" Y="12.75" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DataModel.UserModel">
+    <Position X="14.5" Y="13.75" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DataModel.UserRegisterModel">
+    <Position X="12" Y="13.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DataModel.UserRoleModel">
+    <Position X="7.25" Y="12.5" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DTO.AttendanceDTO">
+    <Position X="9.75" Y="15.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DTO.MemberDTO">
+    <Position X="5" Y="14.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DTO.TrainingDTO">
+    <Position X="2.75" Y="14.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DTO.UserDTO">
+    <Position X="14.5" Y="15.75" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DTO.UserLoginDTO">
+    <Position X="0.5" Y="14.5" Width="2" />
+    <InheritanceLine Type="SwimmingApp.Abstract.DataModel.UserLoginModel" FixedToPoint="true">
+      <Path>
+        <Point X="1.5" Y="13.983" />
+        <Point X="1.5" Y="14.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DTO.UserRegisterDTO">
+    <Position X="12" Y="15.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.Abstract.DTO.UserRoleDTO">
+    <Position X="7.25" Y="14.5" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingApp.BL.Managers.MemberManager.MemberManager">
+    <Position X="3.75" Y="3.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SwimmingAppWebAPI.Controllers.AttendanceController">
+    <Position X="7" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABQEAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Controllers\AttendanceController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_attendanceManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SwimmingAppWebAPI.Controllers.AuthController">
+    <Position X="15.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAQECAAAAA=</HashCode>
+      <FileName>Controllers\AuthController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_userRegisterManager" />
+      <Field Name="_userLoginManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SwimmingAppWebAPI.Controllers.MemberController">
+    <Position X="3.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAACAAAAIAAAAAGAAAAAAAAA=</HashCode>
+      <FileName>Controllers\MemberController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_memberManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SwimmingAppWebAPI.Controllers.TrainingController">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAQAAAAAAAAQBAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Controllers\TrainingController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_trainingManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SwimmingAppWebAPI.Controllers.UserController">
+    <Position X="10.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABACAAAAAAAAAAAAgAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\UserController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_userManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SwimmingApp.BL.Managers.TrainingManager.TrainingManager">
+    <Position X="0.5" Y="3.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="SwimmingApp.DAL.Repositories.TrainingService.ITrainingService">
+    <Position X="1" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
