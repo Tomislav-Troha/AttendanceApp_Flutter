@@ -2,22 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
-import 'package:swimming_app_client/Widget-Helpers/app_message.dart';
 
 import '../../Managers/token_manager.dart';
+import '../../Widgets/app_message.dart';
 
 class EditProfile extends StatefulWidget {
+  const EditProfile({super.key, required this.userCache, this.callback});
 
-  Map<String, UserResponseModel> userCache;
+  final Map<String, UserResponseModel> userCache;
   final VoidCallback? callback;
-
-  EditProfile({super.key, required this.userCache, this.callback});
 
   createState() => _EditProfile();
 }
 
 class _EditProfile extends State<EditProfile> {
-
   final _formKey = GlobalKey<FormState>();
   final UserRequestModel userRequestModel = UserRequestModel();
   final TextEditingController _firstNameController = TextEditingController();
@@ -28,9 +26,9 @@ class _EditProfile extends State<EditProfile> {
   late Map<String, dynamic> token;
 
   void initialize() async {
-
     token = TokenManager().getTokenUserRole();
-    ServerResponse users = await userProvider.getUserByID(int.parse(token["UserID"]));
+    ServerResponse users =
+        await userProvider.getUserByID(int.parse(token["UserID"]));
 
     setState(() {
       _firstNameController.text = users.result.name!;
@@ -41,7 +39,6 @@ class _EditProfile extends State<EditProfile> {
 
   @override
   void initState() {
-
     initialize();
 
     super.initState();
@@ -106,25 +103,26 @@ class _EditProfile extends State<EditProfile> {
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-
                         userRequestModel.name = _firstNameController.text;
                         userRequestModel.surname = _lastNameController.text;
                         userRequestModel.addres = _addressController.text;
 
                         widget.userCache.remove(token["UserID"]);
 
-                        ServerResponse response = await userProvider.updateUser(userRequestModel, int.parse(token["UserID"]));
-                        if(response.isSuccessful){
+                        ServerResponse response = await userProvider.updateUser(
+                            userRequestModel, int.parse(token["UserID"]));
+                        if (response.isSuccessful) {
                           FocusManager.instance.primaryFocus?.unfocus();
                           Future.delayed(const Duration(milliseconds: 500), () {
-                            AppMessage.showSuccessMessage(message: "Profile is successfully edited");
-                            if(!mounted) return;
+                            AppMessage.showSuccessMessage(
+                                message: "Profile is successfully edited");
+                            if (!mounted) return;
                             // Navigator.pop(context);
                             widget.callback!();
                           });
-                        }
-                        else {
-                          AppMessage.showErrorMessage(message: response.error.toString(), duration: 5);
+                        } else {
+                          AppMessage.showErrorMessage(
+                              message: response.error.toString(), duration: 5);
                         }
                       }
                     },

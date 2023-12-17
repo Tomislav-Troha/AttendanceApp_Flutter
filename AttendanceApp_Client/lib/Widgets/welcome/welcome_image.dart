@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:swimming_app_client/Constants.dart';
 
 class WelcomeImage extends StatelessWidget {
   const WelcomeImage({
@@ -12,11 +11,17 @@ class WelcomeImage extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 80),
-        SvgPicture.asset("assets/images/logo.svg", width: 250, height: 250),
+        Hero(
+          tag: 'logo_img',
+          child: SvgPicture.asset(
+            "assets/images/logo.svg",
+            width: 250,
+            height: 250,
+          ),
+        ),
         const SizedBox(height: 20),
         const SizedBox(height: 40),
       ],
     );
-
   }
 }

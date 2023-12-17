@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Screens/Components/background.dart';
-import 'package:swimming_app_client/Screens/Login/Components/login_form.dart';
-import 'package:swimming_app_client/Screens/Login/Components/login_screen_top_image.dart';
+import 'package:swimming_app_client/Widgets/login/login_form.dart';
 import 'package:swimming_app_client/responsive.dart';
+
+import '../../Widgets/login/login_screen_top_image.dart';
+import 'mobile_login_screen/mobile_login_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Background(
+    return const Background(
       child: SingleChildScrollView(
         child: Responsive(
-          mobile: const MobileLoginScreen(),
+          mobile: MobileLoginScreen(),
           desktop: Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: LoginScreenTopImage(),
               ),
               Expanded(
@@ -33,32 +35,6 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class MobileLoginScreen extends StatelessWidget {
-  const MobileLoginScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const LoginScreenTopImage(),
-        Row(
-          children: [
-            Spacer(),
-            Expanded(
-              flex: 8,
-              child: LoginForm(),
-            ),
-            Spacer(),
-          ],
-        ),
-      ],
     );
   }
 }

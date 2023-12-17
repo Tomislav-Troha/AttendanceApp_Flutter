@@ -1,28 +1,20 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
-
-import 'package:get/get.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
 import 'package:swimming_app_client/Server/server_service.dart';
-import '../Constants.dart';
-import '../Managers/token_manager.dart';
-import 'package:http/http.dart' as http;
 
+import '../Constants.dart';
 import '../Models/user_model.dart';
 
 const urlApi = url;
 String? token;
 
-class MemberAdminProvider extends ChangeNotifier{
-
+class MemberAdminProvider {
   Future<ServerResponse> deleteUserMember(int id) async {
     var url = 'user/deleteUser/$id';
 
     var server = await ServerService().executeDeleteRequest(url);
-    var serverResponse =  ServerResponse(server);
+    var serverResponse = ServerResponse(server);
 
-    if(serverResponse.isSuccessful){
+    if (serverResponse.isSuccessful) {
       serverResponse.result = "User deleted successfully";
     } else {
       serverResponse.error = "Error while deleting user ${server.reasonPhrase}";
@@ -34,18 +26,21 @@ class MemberAdminProvider extends ChangeNotifier{
     var url = 'user/getUserByMember';
 
     var server = await ServerService().executeGetRequest(url);
-    var serverResponse =  ServerResponse(server);
+    var serverResponse = ServerResponse(server);
 
-    if(serverResponse.isSuccessful){
-      if(serverResponse.result is List<dynamic>){
-        List<UserResponseModel> responseModels = (serverResponse.result as List<dynamic>)
-            .map((item) => UserResponseModel.fromJson(item as Map<String, dynamic>))
-            .toList();
+    if (serverResponse.isSuccessful) {
+      if (serverResponse.result is List<dynamic>) {
+        List<UserResponseModel> responseModels =
+            (serverResponse.result as List<dynamic>)
+                .map((item) =>
+                    UserResponseModel.fromJson(item as Map<String, dynamic>))
+                .toList();
 
         serverResponse.result = responseModels;
       }
     } else {
-      serverResponse.error = "Error while getting user by member ${serverResponse.error}";
+      serverResponse.error =
+          "Error while getting user by member ${serverResponse.error}";
     }
     return serverResponse;
   }

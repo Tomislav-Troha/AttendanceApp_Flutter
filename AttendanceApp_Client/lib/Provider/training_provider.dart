@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import '../Constants.dart';
 import '../Models/training_model.dart';
 import '../Server/server_response.dart';
@@ -7,25 +6,26 @@ import '../Server/server_service.dart';
 const urlApi = url;
 String? token;
 
-class TrainingProvider extends ChangeNotifier{
-
-
+class TrainingProvider {
   Future<ServerResponse> getTraining(int? id) async {
     var url = 'training/getTraining';
 
     var server = await ServerService().executeGetRequest(url);
     var serverResponse = ServerResponse(server);
 
-    if(serverResponse.isSuccessful){
-      if(serverResponse.result is List<dynamic>){
-        List<TrainingResponseModel> responseModels = (serverResponse.result as List<dynamic>)
-            .map((item) => TrainingResponseModel.fromJson(item as Map<String, dynamic>))
+    if (serverResponse.isSuccessful) {
+      if (serverResponse.result is List<dynamic>) {
+        List<TrainingResponseModel> responseModels = (serverResponse.result
+                as List<dynamic>)
+            .map((item) =>
+                TrainingResponseModel.fromJson(item as Map<String, dynamic>))
             .toList();
 
         serverResponse.result = responseModels;
       }
     } else {
-      serverResponse.error = "Error while getting user by member ${server.reasonPhrase}";
+      serverResponse.error =
+          "Error while getting user by member ${server.reasonPhrase}";
     }
     return serverResponse;
   }
@@ -36,10 +36,11 @@ class TrainingProvider extends ChangeNotifier{
     var server = await ServerService().executePutRequest(url, model);
     var serverResponse = ServerResponse(server);
 
-    if(serverResponse.isSuccessful){
+    if (serverResponse.isSuccessful) {
       serverResponse.result = "Training updated successfully";
     } else {
-      serverResponse.error = "Error while updating training ${server.reasonPhrase}";
+      serverResponse.error =
+          "Error while updating training ${server.reasonPhrase}";
     }
     return serverResponse;
   }
@@ -48,17 +49,14 @@ class TrainingProvider extends ChangeNotifier{
     var url = 'training/deleteTraining/$id';
 
     var server = await ServerService().executeDeleteRequest(url);
-    var serverResponse =  ServerResponse(server);
+    var serverResponse = ServerResponse(server);
 
-    if(serverResponse.isSuccessful){
+    if (serverResponse.isSuccessful) {
       serverResponse.result = "Training deleted successfully";
     } else {
-      serverResponse.error = "Error while deleting training ${server.reasonPhrase}";
+      serverResponse.error =
+          "Error while deleting training ${server.reasonPhrase}";
     }
     return serverResponse;
   }
-
-
-
-
 }

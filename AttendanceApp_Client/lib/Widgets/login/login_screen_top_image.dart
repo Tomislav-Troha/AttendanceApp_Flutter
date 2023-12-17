@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:swimming_app_client/Constants.dart';
 
 class LoginScreenTopImage extends StatelessWidget {
   const LoginScreenTopImage({
@@ -20,7 +19,14 @@ class LoginScreenTopImage extends StatelessWidget {
             const Spacer(),
             Expanded(
               flex: 8,
-              child: SvgPicture.asset("assets/images/logo.svg", width: 200, height: 200),
+              child: Hero(
+                tag: 'logo_img',
+                child: SvgPicture.asset(
+                  "assets/images/logo.svg",
+                  width: 200,
+                  height: 200,
+                ),
+              ),
             ),
             const Spacer(),
           ],

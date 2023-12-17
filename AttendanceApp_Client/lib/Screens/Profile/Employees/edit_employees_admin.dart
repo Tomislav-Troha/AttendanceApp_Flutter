@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
-import 'package:swimming_app_client/Screens/Profile/Employees/employees_admin.dart';
 import 'package:swimming_app_client/Screens/Profile/Members/member_controller.dart';
 import 'package:swimming_app_client/Screens/Profile/Members/members_admin.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
-import 'package:swimming_app_client/Widget-Helpers/app_message.dart';
 
 import '../../../Models/user_model.dart';
+import '../../../Widgets/app_message.dart';
 
 class EditEmployeeAdmin extends StatefulWidget {
-  late int userID;
-  EditEmployeeAdmin({super.key, required this.userID});
-
-  _EditEmployeeAdmin createState() => _EditEmployeeAdmin();
+  const EditEmployeeAdmin({super.key, required this.userID});
+  final int userID;
+  @override
+  State<StatefulWidget> createState() => _EditEmployeeAdmin();
 }
 
 class _EditEmployeeAdmin extends State<EditEmployeeAdmin> {
@@ -22,22 +21,19 @@ class _EditEmployeeAdmin extends State<EditEmployeeAdmin> {
 
   void initialize() async {
     ServerResponse getUser = await userProvider.getUserByID(widget.userID);
-    if(getUser.isSuccessful){
+    if (getUser.isSuccessful) {
       user = getUser.result;
 
       memberAdminController.name.text = user.name!;
       memberAdminController.surname.text = user.surname!;
       memberAdminController.adress.text = user.addres!;
-    }
-    else {
+    } else {
       AppMessage.showErrorMessage(message: "Error while loading user data");
     }
-
   }
 
   @override
   void initState() {
-
     initialize();
 
     super.initState();
@@ -75,13 +71,16 @@ class _EditEmployeeAdmin extends State<EditEmployeeAdmin> {
                               color: Colors.grey[600],
                             ),
                             focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 2),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey[400]!, width: 1),
                             ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey[400]!, width: 1),
                             ),
                           ),
                           style: const TextStyle(fontSize: 18),
@@ -100,13 +99,16 @@ class _EditEmployeeAdmin extends State<EditEmployeeAdmin> {
                               color: Colors.grey[600],
                             ),
                             focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 2),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey[400]!, width: 1),
                             ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey[400]!, width: 1),
                             ),
                           ),
                           style: const TextStyle(fontSize: 18),
@@ -125,13 +127,16 @@ class _EditEmployeeAdmin extends State<EditEmployeeAdmin> {
                               color: Colors.grey[600],
                             ),
                             focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 2),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey[400]!, width: 1),
                             ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey[400]!, width: 1),
                             ),
                           ),
                           style: const TextStyle(fontSize: 18),
@@ -151,16 +156,18 @@ class _EditEmployeeAdmin extends State<EditEmployeeAdmin> {
 
                           await userProvider
                               .updateUser(memberAdminController.requestModel,
-                              widget.userID)
+                                  widget.userID)
                               .then((value) => {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) {
-                                  return MemberAdmin();
-                                })),
-                            AppMessage.showSuccessMessage(message: "Član ažuriran!")
-                          })
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(builder: (context) {
+                                      return MemberAdmin();
+                                    })),
+                                    AppMessage.showSuccessMessage(
+                                        message: "Član ažuriran!")
+                                  })
                               .catchError((error) {
-                            AppMessage.showErrorMessage(message: error.toString());
+                            AppMessage.showErrorMessage(
+                                message: error.toString());
                           });
                         },
                       )

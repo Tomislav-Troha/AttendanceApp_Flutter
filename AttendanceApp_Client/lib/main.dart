@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:swimming_app_client/Constants.dart';
-import 'package:swimming_app_client/Provider/attendance_provider.dart';
-import 'package:swimming_app_client/Provider/employee_admin_provider.dart';
-import 'package:swimming_app_client/Provider/member_admin_provider.dart';
-import 'package:swimming_app_client/Provider/training_date_provider.dart';
-import 'package:swimming_app_client/Provider/training_provider.dart';
-import 'package:swimming_app_client/Provider/user_provider.dart';
+import 'package:swimming_app_client/Screens/Welcome/welcome_screen.dart';
+import 'package:swimming_app_client/Widgets/app_message.dart';
+
 import 'Managers/token_manager.dart';
-import 'Screens/Welcome/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
   TokenManager.sharedData();
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -22,35 +16,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-      ChangeNotifierProvider<UserProvider>(
-        create: (_) => UserProvider(),
-      ),
-      ChangeNotifierProvider<TrainingDateProvider>(
-        create: (_) => TrainingDateProvider(),
-      ),
-      ChangeNotifierProvider<TrainingProvider>(
-        create: (_) => TrainingProvider(),
-      ),
-      ChangeNotifierProvider<AttendanceProvider>(
-        create: (_) => AttendanceProvider(),
-      ),
-      ChangeNotifierProvider<EmployeeAdminProvider>(
-        create: (_) => EmployeeAdminProvider(),
-      ),
-      ChangeNotifierProvider<MemberAdminProvider>(
-        create: (_) => MemberAdminProvider(),
-      ),
-      ChangeNotifierProvider<MemberAdminProvider>(
-        create: (_) => MemberAdminProvider(),
-      ),
-      ],
-    child: MaterialApp(
-      home: SplashScreen(),
+    return MaterialApp(
+      navigatorKey: AppMessage.navigatorKey,
+      home: const WelcomeScreen(),
       debugShowCheckedModeBanner: false,
       title: 'Attendance app',
       theme: ThemeData(
+          useMaterial3: true,
           fontFamily: 'Poppins',
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white,
@@ -75,8 +47,6 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-
-    ),
     );
   }
 }

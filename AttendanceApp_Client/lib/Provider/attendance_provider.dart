@@ -1,97 +1,102 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
-import 'package:swimming_app_client/Managers/token_manager.dart';
 import 'package:swimming_app_client/Models/attendance_model.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
 import 'package:swimming_app_client/Server/server_service.dart';
+
 import '../Constants.dart';
-import 'package:http/http.dart' as http;
 
 const urlApi = url;
 String? token;
 
-class AttendanceProvider extends ChangeNotifier{
-
+class AttendanceProvider {
   Future<ServerResponse> getAttendance() async {
     var url = 'attendance/getAttendance';
 
     var response = await ServerService().executeGetRequest(url);
     var serverResponse = ServerResponse(response);
 
-    if(serverResponse.isSuccessful){
-      if(serverResponse.result is List<dynamic>){
-        List<AttendanceResponseModel> responseModels = (serverResponse.result as List<dynamic>)
-            .map((item) => AttendanceResponseModel.fromJson(item as Map<String, dynamic>))
+    if (serverResponse.isSuccessful) {
+      if (serverResponse.result is List<dynamic>) {
+        List<AttendanceResponseModel> responseModels = (serverResponse.result
+                as List<dynamic>)
+            .map((item) =>
+                AttendanceResponseModel.fromJson(item as Map<String, dynamic>))
             .toList();
 
         serverResponse.result = responseModels;
       }
     } else {
-      serverResponse.error = "Error while getting attendance ${response.reasonPhrase}";
+      serverResponse.error =
+          "Error while getting attendance ${response.reasonPhrase}";
     }
     return serverResponse;
   }
 
   Future<ServerResponse> getAttendanceAll(int? userID) async {
-    var url = userID == null ? 'attendance/getAttendanceAll' : 'attendance/getAttendanceAll/$userID';
+    var url = userID == null
+        ? 'attendance/getAttendanceAll'
+        : 'attendance/getAttendanceAll/$userID';
 
-   var response = await ServerService().executeGetRequest(url);
-   var serverResponse = ServerResponse(response);
+    var response = await ServerService().executeGetRequest(url);
+    var serverResponse = ServerResponse(response);
 
-    if(serverResponse.isSuccessful){
-      if(serverResponse.result is List<dynamic>){
-        List<AttendanceResponseModel> responseModels = (serverResponse.result as List<dynamic>)
-            .map((item) => AttendanceResponseModel.fromJson(item as Map<String, dynamic>))
+    if (serverResponse.isSuccessful) {
+      if (serverResponse.result is List<dynamic>) {
+        List<AttendanceResponseModel> responseModels = (serverResponse.result
+                as List<dynamic>)
+            .map((item) =>
+                AttendanceResponseModel.fromJson(item as Map<String, dynamic>))
             .toList();
 
         serverResponse.result = responseModels;
       }
     } else {
-      serverResponse.error = "Error while getting attendance ${response.reasonPhrase}";
+      serverResponse.error =
+          "Error while getting attendance ${response.reasonPhrase}";
     }
 
     return serverResponse;
   }
 
-  Future<ServerResponse> addAttendance (AttendanceRequestModel model) async {
+  Future<ServerResponse> addAttendance(AttendanceRequestModel model) async {
     var url = 'attendance/addAttendance';
 
     var server = await ServerService().executePostRequest(url, model);
     var serverResponse = ServerResponse(server);
 
-    if(serverResponse.isSuccessful){
-      serverResponse.result = AttendanceResponseModel.fromJson(serverResponse.result);
+    if (serverResponse.isSuccessful) {
+      serverResponse.result =
+          AttendanceResponseModel.fromJson(serverResponse.result);
     } else {
-      serverResponse.error = "Error while inserting attendance ${server.reasonPhrase}";
+      serverResponse.error =
+          "Error while inserting attendance ${server.reasonPhrase}";
     }
     return serverResponse;
   }
 
-  Future<ServerResponse> addAttendanceNotSubmitted (AttendanceRequestModel model) async {
+  Future<ServerResponse> addAttendanceNotSubmitted(
+      AttendanceRequestModel model) async {
     var url = 'attendance/addAttendanceNotSubmitted';
 
     var server = await ServerService().executePostRequest(url, model);
     var serverResponse = ServerResponse(server);
 
-    if(serverResponse.isSuccessful){
-      if(serverResponse.result is List<dynamic>){
-        List<AttendanceResponseModel> responseModels = (serverResponse.result as List<dynamic>)
-            .map((item) => AttendanceResponseModel.fromJson(item as Map<String, dynamic>))
+    if (serverResponse.isSuccessful) {
+      if (serverResponse.result is List<dynamic>) {
+        List<AttendanceResponseModel> responseModels = (serverResponse.result
+                as List<dynamic>)
+            .map((item) =>
+                AttendanceResponseModel.fromJson(item as Map<String, dynamic>))
             .toList();
 
         serverResponse.result = responseModels;
-      }
-      else {
-        serverResponse.result = AttendanceResponseModel.fromJson(serverResponse.result);
+      } else {
+        serverResponse.result =
+            AttendanceResponseModel.fromJson(serverResponse.result);
       }
     } else {
-      serverResponse.error = "Error while getting attendance ${server.reasonPhrase}";
+      serverResponse.error =
+          "Error while getting attendance ${server.reasonPhrase}";
     }
     return serverResponse;
-
   }
-
-
-
 }

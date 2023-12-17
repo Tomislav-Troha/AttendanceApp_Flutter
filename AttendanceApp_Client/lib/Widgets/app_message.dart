@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppMessage {
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   static void showSuccessMessage({
     required String message,
@@ -9,6 +10,7 @@ class AppMessage {
   }) {
     final context = navigatorKey.currentContext;
     if (context != null) {
+      ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message, textAlign: TextAlign.center),
@@ -25,6 +27,7 @@ class AppMessage {
   }) {
     final context = navigatorKey.currentContext;
     if (context != null) {
+      ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message!, textAlign: TextAlign.center),
