@@ -4,19 +4,19 @@ import 'package:swimming_app_client/Models/attendance_model.dart';
 import 'package:swimming_app_client/Models/trainingDate_model.dart';
 import 'package:swimming_app_client/Provider/attendance_provider.dart';
 import 'package:swimming_app_client/Provider/training_date_provider.dart';
-import 'package:swimming_app_client/Screens/Attendance/submit_attendance.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
 
 import '../../../Models/training_model.dart';
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/attendance_status.dart';
 import '../../../Widgets/screen_navigator.dart';
+import '../../attendance/submit_attendance.dart';
 
 class AttendanceMember extends StatefulWidget {
   const AttendanceMember({super.key});
 
   @override
-  _AttendanceMember createState() => _AttendanceMember();
+  State<AttendanceMember> createState() => _AttendanceMember();
 }
 
 class _AttendanceMember extends State<AttendanceMember> {
@@ -166,7 +166,7 @@ class _AttendanceMember extends State<AttendanceMember> {
                       onTap: () {
                         ScreenNavigator.navigateToScreen(
                             context,
-                            SumbitAttendance(
+                            SubmitAttendance(
                               trainingDateResponse: list,
                               attendanceResponse: attendList,
                               index: index,

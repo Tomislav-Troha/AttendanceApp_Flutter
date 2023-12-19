@@ -9,7 +9,7 @@ import 'package:swimming_app_client/Stats/my_stats.dart';
 
 import '../../Widgets/custom_dialog.dart';
 import '../../responsive.dart';
-import '../Components/background.dart';
+import '../../widgets/components/background.dart';
 import '../TrainingDate/add_trainingDate.dart';
 
 class HomeScreen extends StatefulWidget {

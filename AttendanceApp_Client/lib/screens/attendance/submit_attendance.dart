@@ -5,7 +5,6 @@ import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:swimming_app_client/Models/attendance_model.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/attendance_provider.dart';
-import 'package:swimming_app_client/Screens/Attendance/submit_attendance_controller.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
 import 'package:swimming_app_client/constants.dart';
 
@@ -15,22 +14,24 @@ import '../../Provider/training_date_provider.dart';
 import '../../Widgets/app_message.dart';
 import '../../Widgets/attendance_status.dart';
 import '../../Widgets/training_time_utils.dart';
+import '../../controllers/attendance/submit_attendance_controller.dart';
 
-class SumbitAttendance extends StatefulWidget {
-  List<TrainingDateResponseModel> trainingDateResponse;
-  List<AttendanceResponseModel>? attendanceResponse;
-  int index;
-  SumbitAttendance(
+class SubmitAttendance extends StatefulWidget {
+  const SubmitAttendance(
       {super.key,
       required this.trainingDateResponse,
       this.attendanceResponse,
       required this.index});
 
+  final List<TrainingDateResponseModel> trainingDateResponse;
+  final List<AttendanceResponseModel>? attendanceResponse;
+  final int index;
+
   @override
-  _SubmitAttendance createState() => _SubmitAttendance();
+  State<SubmitAttendance> createState() => _SubmitAttendance();
 }
 
-class _SubmitAttendance extends State<SumbitAttendance> {
+class _SubmitAttendance extends State<SubmitAttendance> {
   late TrainingDateProvider trainingDateProvider = TrainingDateProvider();
   List<TrainingDateResponseModel>? trainingDates;
   List<AttendanceResponseModel>? attendances;
@@ -146,12 +147,10 @@ class _SubmitAttendance extends State<SumbitAttendance> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime _formattedDates =
+    DateTime formattedDates =
         widget.trainingDateResponse[widget.index].dates!.toLocal();
-    String formattedDates = _formattedDates.toIso8601String().substring(0, 10);
-
-    DateTime _dateNow = DateTime.now();
-    String dateNow = _dateNow.toString().split(' ')[0];
+    String formattedDatesString =
+        formattedDates.toIso8601String().substring(0, 10);
 
     DateTime timeFrom =
         widget.trainingDateResponse[widget.index].timeFrom!.toLocal();
@@ -191,7 +190,7 @@ class _SubmitAttendance extends State<SumbitAttendance> {
                         Padding(
                             padding: const EdgeInsets.all(defaultPadding),
                             child: Text(
-                              formattedDates,
+                              formattedDatesString,
                               textScaleFactor: 1.4,
                             ))
                       ],
@@ -293,19 +292,17 @@ class _SubmitAttendance extends State<SumbitAttendance> {
                                               .catchError((error) {
                                             AppMessage.showErrorMessage(
                                                 message: error.toString());
-                                          }).whenComplete(() => {
-                                                    Timer(
-                                                        const Duration(
-                                                            seconds: 1), () {
-                                                      setState(() {
-                                                        _isAttendanceCompleted =
-                                                            true;
-                                                      });
-                                                    })
-                                                  });
+                                          }).whenComplete(() => Timer(
+                                                      const Duration(
+                                                          seconds: 1), () {
+                                                    setState(() {
+                                                      _isAttendanceCompleted =
+                                                          true;
+                                                    });
+                                                  }));
                                         } else {
                                           AppMessage.showErrorMessage(
-                                              message: "Nije u vremenu");
+                                              message: "Not in time");
                                         }
                                       },
                                     ),
@@ -329,10 +326,10 @@ class _SubmitAttendance extends State<SumbitAttendance> {
                                           height: 50,
                                           fontSize: 20,
                                         )
-                                      : Column(
+                                      : const Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: const <Widget>[
+                                          children: <Widget>[
                                             Icon(
                                               Icons.check,
                                               size: 100,

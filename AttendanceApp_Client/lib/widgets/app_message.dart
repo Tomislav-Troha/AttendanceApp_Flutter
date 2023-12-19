@@ -16,11 +16,12 @@ class AppMessage {
           content: Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 15,
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall!
+                .copyWith(color: Theme.of(context).colorScheme.onPrimary),
           ),
-          backgroundColor: Theme.of(context).primaryColorDark,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           duration: Duration(seconds: duration!),
         ),
       );
@@ -36,7 +37,13 @@ class AppMessage {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message!, textAlign: TextAlign.center),
+          content: Text(
+            message!,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: Theme.of(context).colorScheme.onError,
+                ),
+          ),
           backgroundColor: Theme.of(context).colorScheme.error,
           duration: Duration(seconds: duration!),
         ),

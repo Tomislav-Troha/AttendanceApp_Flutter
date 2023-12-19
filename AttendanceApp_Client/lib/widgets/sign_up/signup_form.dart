@@ -74,7 +74,7 @@ class _SignUpFormState extends State<SignUpForm> {
           (Set<MaterialState> states) {
             final Color color = states.contains(MaterialState.error)
                 ? Theme.of(context).colorScheme.error
-                : Colors.black;
+                : Theme.of(context).colorScheme.onPrimaryContainer;
             return TextStyle(color: color, letterSpacing: 1.3);
           },
         ),
@@ -86,6 +86,9 @@ class _SignUpFormState extends State<SignUpForm> {
       );
     }
 
+    TextStyle textStyle =
+        TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer);
+
     return Form(
       key: _formKey,
       child: Column(
@@ -94,6 +97,7 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.symmetric(
                 vertical: defaultPadding, horizontal: defaultPadding),
             child: TextFormField(
+              style: textStyle,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               autocorrect: false,
@@ -114,6 +118,7 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.symmetric(
                 vertical: defaultPadding, horizontal: defaultPadding),
             child: TextFormField(
+              style: textStyle,
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.next,
               textCapitalization: TextCapitalization.words,
@@ -136,6 +141,7 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.symmetric(
                 vertical: defaultPadding, horizontal: defaultPadding),
             child: TextFormField(
+              style: textStyle,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               textCapitalization: TextCapitalization.words,
@@ -158,6 +164,7 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.symmetric(
                 vertical: defaultPadding, horizontal: defaultPadding),
             child: TextFormField(
+              style: textStyle,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               textCapitalization: TextCapitalization.words,
@@ -179,6 +186,7 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.symmetric(
                 vertical: defaultPadding, horizontal: defaultPadding),
             child: TextFormField(
+              style: textStyle,
               textInputAction: TextInputAction.done,
               enableSuggestions: false,
               autocorrect: false,
@@ -200,6 +208,9 @@ class _SignUpFormState extends State<SignUpForm> {
           Hero(
             tag: "signup_btn",
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              ),
               onPressed: _register,
               child: Text(
                 "Register!".toUpperCase(),

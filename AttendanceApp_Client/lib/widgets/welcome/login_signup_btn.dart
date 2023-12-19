@@ -16,6 +16,9 @@ class LoginAndSignupBtn extends StatelessWidget {
         Hero(
           tag: "login_btn",
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
             onPressed: () {
               ScreenNavigator.navigateToScreen(context, const LoginScreen());
             },
@@ -32,14 +35,12 @@ class LoginAndSignupBtn extends StatelessWidget {
               ScreenNavigator.navigateToScreen(context, const SignUpScreen());
             },
             style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColorLight,
+                backgroundColor: Theme.of(context)
+                    .colorScheme
+                    .onPrimaryContainer,
                 elevation: 0),
             child: Text(
               "Register".toUpperCase(),
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(color: Theme.of(context).colorScheme.onBackground),
             ),
           ),
         ),

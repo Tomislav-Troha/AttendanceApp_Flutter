@@ -80,6 +80,8 @@ class _LoginForm extends State<LoginForm> {
       child: Column(
         children: [
           TextFormField(
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer),
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             controller: _loginController.emailController,
@@ -94,7 +96,7 @@ class _LoginForm extends State<LoginForm> {
                 (Set<MaterialState> states) {
                   final Color color = states.contains(MaterialState.error)
                       ? Theme.of(context).colorScheme.error
-                      : Colors.black;
+                      : Theme.of(context).colorScheme.onPrimaryContainer;
                   return TextStyle(color: color, letterSpacing: 1.3);
                 },
               ),
@@ -108,6 +110,8 @@ class _LoginForm extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: defaultPadding),
             child: TextFormField(
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer),
               controller: _loginController.passwordController,
               obscureText: true,
               validator: (value) {
@@ -122,7 +126,7 @@ class _LoginForm extends State<LoginForm> {
                   (Set<MaterialState> states) {
                     final Color color = states.contains(MaterialState.error)
                         ? Theme.of(context).colorScheme.error
-                        : Colors.black;
+                        : Theme.of(context).colorScheme.onPrimaryContainer;
                     return TextStyle(color: color, letterSpacing: 1.3);
                   },
                 ),
@@ -138,6 +142,9 @@ class _LoginForm extends State<LoginForm> {
           Hero(
             tag: "login_btn",
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              ),
               onPressed: !_isLoading ? _login : null,
               child: _isLoading
                   ? const CircularProgressIndicator(
@@ -151,9 +158,7 @@ class _LoginForm extends State<LoginForm> {
               child: const Text(
                 "Forgot password?",
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               onPressed: () {
@@ -164,7 +169,12 @@ class _LoginForm extends State<LoginForm> {
               }),
           const SizedBox(height: defaultPadding),
           TextButton(
-            child: const Text("New user?"),
+            child: const Text(
+              "New user?",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             onPressed: () {
               ScreenNavigator.navigateToScreen(
                 context,

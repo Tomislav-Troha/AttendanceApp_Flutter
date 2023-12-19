@@ -1,7 +1,10 @@
-import 'extensions/hex_color.dart';
+import 'package:flutter/material.dart';
 
-final kPrimaryColor = HexColor("e4eef7");
-final kPrimaryLightColor = HexColor("cfe2f3");
+final kPrimaryColorLight = Colors.blue.shade100;
+final kPrimaryLightColorLight = Colors.blue.shade50;
+
+final kPrimaryColorDark = Colors.blue.shade800;
+final kPrimaryLightColorDark = Colors.blue.shade900;
 
 const double defaultPadding = 16.0;
 
