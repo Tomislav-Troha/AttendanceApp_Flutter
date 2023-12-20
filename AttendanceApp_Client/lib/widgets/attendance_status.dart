@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Models/attendance_model.dart';
-import '../Enums/attendance_desc.dart';
+
+import '../Enums/attendance_description.dart';
 
 class AttendanceStatusWidget extends StatelessWidget {
   final int index;
@@ -33,13 +34,13 @@ class AttendanceStatusWidget extends StatelessWidget {
   }
 
   Color _getStatusColor(String attendanceText) {
-    if (attendanceText == AttendanceDesc.Accepted) {
+    if (attendanceText == AttendanceDescription.Accepted) {
       return Colors.green;
-    } else if (attendanceText == AttendanceDesc.NotAccepted) {
+    } else if (attendanceText == AttendanceDescription.NotAccepted) {
       return Colors.red;
-    } else if (attendanceText == AttendanceDesc.Late) {
+    } else if (attendanceText == AttendanceDescription.Late) {
       return Colors.orange;
-    } else if (attendanceText == AttendanceDesc.Sick) {
+    } else if (attendanceText == AttendanceDescription.Sick) {
       return Colors.purple;
     } else {
       return Colors.grey;
@@ -66,7 +67,10 @@ class AttendanceStatusWidget extends StatelessWidget {
       child: Text(
         attendanceText,
         textAlign: TextAlign.center,
-        style: TextStyle(color: statusColor, fontSize: fontSize, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: statusColor,
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold),
       ),
     );
   }

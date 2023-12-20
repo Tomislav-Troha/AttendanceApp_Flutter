@@ -67,4 +67,7 @@ ThemeData themeDark = ThemeData(
     border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
   ),
+  appBarTheme: AppBarTheme(
+    backgroundColor: darkBackgroundColor,
+  ),
 );

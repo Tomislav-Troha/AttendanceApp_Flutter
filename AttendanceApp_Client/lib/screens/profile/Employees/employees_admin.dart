@@ -4,10 +4,10 @@ import 'package:swimming_app_client/Provider/employee_admin_provider.dart';
 import 'package:swimming_app_client/Screens/Profile/Members/edit_member_admin.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
 
-import '../../../Enums/EnumUserRoles.dart';
 import '../../../Managers/token_manager.dart';
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/custom_dialog.dart';
+import '../../../enums/user_roles.dart';
 
 class EmployeeAdmin extends StatefulWidget {
   @override
@@ -87,9 +87,9 @@ class _EmployeeAdmin extends State<EmployeeAdmin> {
                                     child: const Text("Edit"),
                                     onPressed: () {
                                       if (token["UserRoleId"] ==
-                                              EnumUserRole.Admin ||
+                                              UserRoles.Admin ||
                                           token["UserRoleId"] ==
-                                              EnumUserRole.Moderator) {
+                                              UserRoles.Moderator) {
                                         Navigator.pop(context);
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
@@ -118,9 +118,9 @@ class _EmployeeAdmin extends State<EmployeeAdmin> {
                                     ),
                                     onPressed: () async {
                                       if (token["UserRoleId"] ==
-                                              EnumUserRole.Admin ||
+                                              UserRoles.Admin ||
                                           token["UserRoleId"] ==
-                                              EnumUserRole.Moderator) {
+                                              UserRoles.Moderator) {
                                         deleteUserEmployee(list[index].userId!);
                                         setState(() {
                                           list.removeAt(index);

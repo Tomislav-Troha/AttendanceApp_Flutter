@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
-import 'package:swimming_app_client/Screens/PageStorageHome/main_screen.dart';
 import 'package:swimming_app_client/Screens/Signup/signup_screen.dart';
 import 'package:swimming_app_client/constants.dart';
 
 import '../../Managers/token_manager.dart';
 import '../../controllers/login/login_controller.dart';
 import '../app_message.dart';
+import '../main_page_storage/main_screens.dart';
 import '../screen_navigator.dart';
 
 class LoginForm extends StatefulWidget {
@@ -30,10 +30,9 @@ class _LoginForm extends State<LoginForm> {
       setState(() {
         _isLoading = true;
       });
-      _loginController.requestModel.email =
-          _loginController.emailController.text;
-      _loginController.requestModel.password =
-          _loginController.passwordController.text;
+
+      _formKey.currentState!.save();
+
       TokenManager.clearPrefs();
 
       var dateProviderLogin =
@@ -46,10 +45,10 @@ class _LoginForm extends State<LoginForm> {
 
         if (!mounted) return;
         ScreenNavigator.navigateToScreen(
-            context, HomeScreen(decodedToken: decodedToken),
+            context, MainScreens(decodedToken: decodedToken),
             pushReplacement: true);
 
-        AppMessage.showSuccessMessage(message: "Login succeeded", duration: 1);
+        // AppMessage.showSuccessMessage(message: "Login succeeded", duration: 1);
         setState(() {
           _isLoading = false;
         });
@@ -106,6 +105,9 @@ class _LoginForm extends State<LoginForm> {
                 child: Icon(Icons.person),
               ),
             ),
+            onSaved: (email) {
+              _loginController.requestModel.email = email;
+            },
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: defaultPadding),
@@ -136,6 +138,9 @@ class _LoginForm extends State<LoginForm> {
                   child: Icon(Icons.lock),
                 ),
               ),
+              onSaved: (password) {
+                _loginController.requestModel.password = password;
+              },
             ),
           ),
           const SizedBox(height: defaultPadding),

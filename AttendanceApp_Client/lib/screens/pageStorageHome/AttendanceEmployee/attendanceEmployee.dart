@@ -8,8 +8,8 @@ import 'package:swimming_app_client/Provider/member_admin_provider.dart';
 import 'package:swimming_app_client/Provider/training_date_provider.dart';
 import 'package:swimming_app_client/Screens/PageStorageHome/AttendanceEmployee/attendanceEmployeeController.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
+import 'package:swimming_app_client/enums/attendance_description.dart';
 
-import '../../../Enums/attendance_desc.dart';
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/attendance_status.dart';
 import '../../../Widgets/custom_dialog.dart';
@@ -20,10 +20,10 @@ class AttendanceEmployee extends StatefulWidget {
   const AttendanceEmployee({super.key});
 
   @override
-  _AttendanceEmployee createState() => _AttendanceEmployee();
+  State<AttendanceEmployee> createState() => _AttendanceEmployeeState();
 }
 
-class _AttendanceEmployee extends State<AttendanceEmployee> {
+class _AttendanceEmployeeState extends State<AttendanceEmployee> {
   late List<TrainingDateResponseModel> trainingsForEmployees;
   late List<AttendanceResponseModel> attendances;
   late List<UserResponseModel> allMembers;
@@ -117,8 +117,12 @@ class _AttendanceEmployee extends State<AttendanceEmployee> {
       width: double.infinity,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("All attendances"),
+          title: const Text("Attendances"),
           automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+              color: Theme.of(context).colorScheme.onSecondary,
+              fontWeight: FontWeight.w400),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.filter_list),
@@ -333,8 +337,8 @@ class _AttendanceEmployee extends State<AttendanceEmployee> {
                                                   ? valueStatus
                                                   : null,
                                               items: <String>[
-                                                AttendanceDesc.Late,
-                                                AttendanceDesc.Sick
+                                                AttendanceDescription.Late,
+                                                AttendanceDescription.Sick
                                               ].map<DropdownMenuItem<String>>(
                                                   (String value) {
                                                 return DropdownMenuItem<String>(

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
-class MyAttendancesMembers extends StatefulWidget{
+class MyAttendancesMembers extends StatefulWidget {
+  const MyAttendancesMembers({super.key});
 
-  _MyAttendancesMembers createState() => _MyAttendancesMembers();
+  @override
+  State<MyAttendancesMembers> createState() => _MyAttendancesMembers();
 }
 
-class _MyAttendancesMembers extends State<MyAttendancesMembers>{
+class _MyAttendancesMembers extends State<MyAttendancesMembers> {
   @override
   Widget build(BuildContext context) {
-   return SizedBox(
-     child: Scaffold(
-       appBar: AppBar(
-         title: const Text("My attendances"),
-       ),
-     ),
-   );
+    return SizedBox(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("My attendances"),
+        ),
+      ),
+    );
   }
 }

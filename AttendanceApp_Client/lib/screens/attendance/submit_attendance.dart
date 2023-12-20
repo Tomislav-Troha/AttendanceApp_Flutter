@@ -7,14 +7,14 @@ import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/attendance_provider.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
 import 'package:swimming_app_client/constants.dart';
+import 'package:swimming_app_client/enums/attendance_description.dart';
 
-import '../../Enums/attendance_desc.dart';
 import '../../Models/trainingDate_model.dart';
 import '../../Provider/training_date_provider.dart';
 import '../../Widgets/app_message.dart';
 import '../../Widgets/attendance_status.dart';
 import '../../Widgets/training_time_utils.dart';
-import '../../controllers/attendance/submit_attendance_controller.dart';
+import '../../controllers/sumbit_attendance/submit_attendance_controller.dart';
 
 class SubmitAttendance extends StatefulWidget {
   const SubmitAttendance(
@@ -61,8 +61,8 @@ class _SubmitAttendance extends State<SubmitAttendance> {
       for (var element in attendances!) {
         if (element.trainingDateModel!.iD_TrainingDate ==
             widget.trainingDateResponse[widget.index].iD_TrainingDate) {
-          if (element.attDesc == AttendanceDesc.Accepted ||
-              element.attDesc == AttendanceDesc.AcceptedWithLate) {
+          if (element.attDesc == AttendanceDescription.Accepted ||
+              element.attDesc == AttendanceDescription.AcceptedWithLate) {
             _isAttendanceCompleted = true;
           }
         }
@@ -114,7 +114,7 @@ class _SubmitAttendance extends State<SubmitAttendance> {
   }
 
   void addAttendanceNotChecked() {
-    controller.requestModel.attDesc = AttendanceDesc.NotAccepted;
+    controller.requestModel.attDesc = AttendanceDescription.NotAccepted;
     controller.requestModel.type =
         "Kašnjenje: $lateHours sati i $lateMinutes minuta";
 
@@ -235,12 +235,13 @@ class _SubmitAttendance extends State<SubmitAttendance> {
                                         if (_isInTime) {
                                           if (_userIsLateForAttendance) {
                                             controller.requestModel.attDesc =
-                                                AttendanceDesc.AcceptedWithLate;
+                                                AttendanceDescription
+                                                    .AcceptedWithLate;
                                             controller.requestModel.type =
                                                 "Kašnjenje: $lateHours sati i $lateMinutes minuta";
                                           } else {
                                             controller.requestModel.attDesc =
-                                                AttendanceDesc.Accepted;
+                                                AttendanceDescription.Accepted;
                                             controller.requestModel.type =
                                                 "Na vrijeme";
                                           }

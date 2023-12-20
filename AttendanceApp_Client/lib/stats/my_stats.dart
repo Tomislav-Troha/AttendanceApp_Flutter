@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Enums/EnumUserRoles.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/member_admin_provider.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
+import 'package:swimming_app_client/enums/user_roles.dart';
 
-import '../Enums/attendance_desc.dart';
+import '../Enums/attendance_description.dart';
 import '../Managers/token_manager.dart';
 import '../Models/attendance_model.dart';
 import '../Provider/attendance_provider.dart';
@@ -50,7 +50,7 @@ class _MyStats extends State<MyStats> {
 
       if (!isAdmin) {
         for (var attendance in attendances) {
-          if (attendance.attDesc == AttendanceDesc.Accepted) {
+          if (attendance.attDesc == AttendanceDescription.Accepted) {
             acceptedCount++;
           } else {
             notAcceptedCount++;
@@ -83,9 +83,9 @@ class _MyStats extends State<MyStats> {
   initState() {
     token = TokenManager().getTokenUserRole();
 
-    if (token!["UserRoleId"] == EnumUserRole.Admin ||
-        token!["UserRoleId"] == EnumUserRole.Moderator ||
-        token!["UserRoleId"] == EnumUserRole.Employee) {
+    if (token!["UserRoleId"] == UserRoles.Admin ||
+        token!["UserRoleId"] == UserRoles.Moderator ||
+        token!["UserRoleId"] == UserRoles.Employee) {
       isAdmin = true;
     }
 
@@ -252,7 +252,7 @@ class _AttendanceExpansionTileState extends State<AttendanceExpansionTile> {
   Widget build(BuildContext context) {
     for (var attendance in widget.allAttendances) {
       if (attendance.userModel!.userId == widget.user.userId) {
-        if (attendance.attDesc == AttendanceDesc.Accepted) {
+        if (attendance.attDesc == AttendanceDescription.Accepted) {
           acceptedCount++;
         } else {
           notAcceptedCount++;

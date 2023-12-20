@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       darkTheme: themeDark,
       theme: themeLight,
       themeMode: ThemeMode.system,
-      title: 'Attendance app',
+      title: 'Mark',
     );
   }
 }

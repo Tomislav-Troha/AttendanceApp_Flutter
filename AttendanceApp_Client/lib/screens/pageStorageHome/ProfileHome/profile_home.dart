@@ -13,8 +13,8 @@ import 'package:swimming_app_client/Screens/PageStorageHome/ProfileHome/profile_
 import 'package:swimming_app_client/Screens/Profile/AdminProfile/profile_admin.dart';
 import 'package:swimming_app_client/Screens/Profile/edit_profile.dart';
 import 'package:swimming_app_client/Server/server_response.dart';
+import 'package:swimming_app_client/enums/user_roles.dart';
 
-import '../../../Enums/EnumUserRoles.dart';
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/custom_dialog.dart';
 import '../../../Widgets/custom_expansion_tile.dart';
@@ -133,7 +133,7 @@ class _ProfileState extends State<Profile> {
 
     initializeUserModel();
 
-    if (token["UserRoleId"] == EnumUserRole.Member) {
+    if (token["UserRoleId"] == UserRoles.Member) {
       _isVisibleAdmin = false;
     } else {
       _isVisibleAdmin = true;
@@ -225,8 +225,7 @@ class _ProfileState extends State<Profile> {
                                           ),
                                           if (userModel
                                                   ?.userRoleModel?.roleID !=
-                                              int.parse(
-                                                  EnumUserRole.Member)) ...[
+                                              int.parse(UserRoles.Member)) ...[
                                             ListTile(
                                               title: Text(
                                                 "Salary Package",

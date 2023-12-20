@@ -25,7 +25,7 @@ class LoginScreenTopImage extends StatelessWidget {
               child: Hero(
                 tag: 'logo_img',
                 child: Image.asset(
-                  "assets/images/attendance_logo.png",
+                  "assets/images/mark.png",
                   width: 200,
                   height: 200,
                 ),

@@ -16,10 +16,6 @@ class AppMessage {
           content: Text(
             message,
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .titleSmall!
-                .copyWith(color: Theme.of(context).colorScheme.onPrimary),
           ),
           backgroundColor: Theme.of(context).colorScheme.primary,
           duration: Duration(seconds: duration!),

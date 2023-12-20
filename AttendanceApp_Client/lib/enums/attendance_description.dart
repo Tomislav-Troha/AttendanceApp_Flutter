@@ -1,4 +1,4 @@
-abstract class AttendanceDesc {
+abstract class AttendanceDescription {
   static String Accepted = "Attendance accepted";
   static String AcceptedWithLate = "Attendance accepted with late";
   static String NotAccepted = "Attendance is not accepted";

@@ -9,17 +9,13 @@ class WelcomeImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 80),
         Hero(
           tag: 'logo_img',
           child: Image.asset(
-            "assets/images/attendance_logo.png",
-            width: 200,
-            height: 200,
+            "assets/images/mark.png",
+            height: 340,
           ),
         ),
-        const SizedBox(height: 20),
-        const SizedBox(height: 40),
       ],
     );
   }
