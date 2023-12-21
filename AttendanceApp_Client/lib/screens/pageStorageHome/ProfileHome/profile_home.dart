@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:swimming_app_client/Managers/token_manager.dart';
 import 'package:swimming_app_client/Models/contract_model.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/contract_provider.dart';
@@ -12,14 +11,15 @@ import 'package:swimming_app_client/Provider/user_provider.dart';
 import 'package:swimming_app_client/Screens/PageStorageHome/ProfileHome/profile_controller.dart';
 import 'package:swimming_app_client/Screens/Profile/AdminProfile/profile_admin.dart';
 import 'package:swimming_app_client/Screens/Profile/edit_profile.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 import 'package:swimming_app_client/enums/user_roles.dart';
+import 'package:swimming_app_client/managers/token_manager.dart';
 
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/custom_dialog.dart';
 import '../../../Widgets/custom_expansion_tile.dart';
 import '../../../Widgets/sensitive_info_toggle.dart';
 import '../../../constants.dart';
+import '../../../server_helper/server_response.dart';
 import '../../Login/login_screen.dart';
 
 class Profile extends StatefulWidget {
@@ -46,7 +46,7 @@ class _ProfileState extends State<Profile> {
   XFile? image;
   final ImagePicker picker = ImagePicker();
 
-  late Map<String, dynamic> token;
+  Map<String, dynamic> token = {};
 
   static Map<String, UserResponseModel> userCache = {};
 
@@ -67,7 +67,6 @@ class _ProfileState extends State<Profile> {
   }
 
   void initializeUserModel() async {
-    token = TokenManager().getTokenUserRole();
     var cachedUser = userCache[token["UserID"]];
 
     if (cachedUser == null) {
@@ -127,17 +126,21 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    initializeUserModel();
+  void _getToken() async {
+    token = await TokenManager.getTokenUserRole();
 
     if (token["UserRoleId"] == UserRoles.Member) {
       _isVisibleAdmin = false;
     } else {
       _isVisibleAdmin = true;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+    initializeUserModel();
   }
 
   @override

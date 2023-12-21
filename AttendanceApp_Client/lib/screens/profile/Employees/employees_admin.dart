@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/employee_admin_provider.dart';
 import 'package:swimming_app_client/Screens/Profile/Members/edit_member_admin.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 
-import '../../../Managers/token_manager.dart';
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/custom_dialog.dart';
 import '../../../enums/user_roles.dart';
+import '../../../managers/token_manager.dart';
+import '../../../server_helper/server_response.dart';
 
 class EmployeeAdmin extends StatefulWidget {
   @override
@@ -15,6 +15,8 @@ class EmployeeAdmin extends StatefulWidget {
 }
 
 class _EmployeeAdmin extends State<EmployeeAdmin> {
+  Map<String, dynamic> token = {};
+
   late List<UserResponseModel> users;
   late EmployeeAdminProvider employeeAdminProvider = EmployeeAdminProvider();
 
@@ -37,14 +39,18 @@ class _EmployeeAdmin extends State<EmployeeAdmin> {
     }
   }
 
+  void _getToken() async {
+    token = await TokenManager.getTokenUserRole();
+  }
+
   @override
   void initState() {
     super.initState();
 
     getAllUsersForEmployee();
-  }
 
-  Map<String, dynamic> token = TokenManager().getTokenUserRole();
+    _getToken();
+  }
 
   @override
   Widget build(BuildContext context) {

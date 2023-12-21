@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class SensitiveInfoToggle extends StatefulWidget {
@@ -20,18 +21,20 @@ class _SensitiveInfoToggleState extends State<SensitiveInfoToggle> {
         Expanded(
           child: _isHidden
               ? ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                  child: const Text(
-                    '(hidden)', style: TextStyle(fontWeight: FontWeight.bold),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: const Text(
+                      '(hidden)',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-              )
+                )
               : Text(
-            widget.sensitiveInfo,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          ),
+                  widget.sensitiveInfo,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                ),
         ),
         IconButton(
           icon: Icon(_isHidden ? Icons.visibility : Icons.visibility_off),

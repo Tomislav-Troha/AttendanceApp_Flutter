@@ -4,13 +4,13 @@ import 'package:swimming_app_client/Models/attendance_model.dart';
 import 'package:swimming_app_client/Models/trainingDate_model.dart';
 import 'package:swimming_app_client/Provider/attendance_provider.dart';
 import 'package:swimming_app_client/Provider/training_date_provider.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 
 import '../../../Models/training_model.dart';
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/attendance_status.dart';
 import '../../../Widgets/screen_navigator.dart';
-import '../../attendance/submit_attendance.dart';
+import '../../server_helper/server_response.dart';
+import '../attendance/submit_attendance.dart';
 
 class AttendanceMember extends StatefulWidget {
   const AttendanceMember({super.key});

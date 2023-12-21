@@ -3,7 +3,23 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  TextEditingController? controller;
+  const CustomTextFormField(
+      {Key? key,
+      this.controller,
+      required this.textInputAction,
+      required this.keyboardType,
+      required this.labelText,
+      required this.prefixIcon,
+      this.onTap,
+      this.validate,
+      this.readOnly = false,
+      this.iconButton,
+      this.obscureText = false,
+      this.onSaved,
+      this.textColor})
+      : super(key: key);
+
+  final TextEditingController? controller;
   final TextInputAction textInputAction;
   final TextInputType keyboardType;
   final String labelText;
@@ -13,20 +29,8 @@ class CustomTextFormField extends StatelessWidget {
   final bool readOnly;
   final IconButton? iconButton;
   final bool obscureText;
-
-  CustomTextFormField({
-    Key? key,
-    this.controller,
-    required this.textInputAction,
-    required this.keyboardType,
-    required this.labelText,
-    required this.prefixIcon,
-    this.onTap,
-    this.validate,
-    this.readOnly = false,
-    this.iconButton,
-    this.obscureText = false,
-  }) : super(key: key);
+  final void Function(String? value)? onSaved;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,7 @@ class CustomTextFormField extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
             vertical: defaultPadding, horizontal: defaultPadding),
         child: TextFormField(
+          style: TextStyle(color: textColor),
           controller: controller,
           textInputAction: textInputAction,
           obscureText: obscureText,
@@ -60,6 +65,7 @@ class CustomTextFormField extends StatelessWidget {
             ),
           ),
           readOnly: readOnly,
+          onSaved: onSaved,
         ));
   }
 }

@@ -3,8 +3,8 @@ import 'package:swimming_app_client/Models/contract_type_model.dart';
 import 'package:swimming_app_client/Models/job_role_model.dart';
 import 'package:swimming_app_client/Models/salary_package_type_model.dart';
 
-import '../Server/server_response.dart';
-import '../Server/server_service.dart';
+import '../server_helper/server_response.dart';
+import '../server_helper/server_service.dart';
 
 class ContractProvider {
   Future<ServerResponse> getContractsByUserId(int userId) async {

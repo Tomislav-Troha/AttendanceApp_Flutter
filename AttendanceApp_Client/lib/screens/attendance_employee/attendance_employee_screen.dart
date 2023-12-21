@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:swimming_app_client/Models/attendance_model.dart';
-import 'package:swimming_app_client/Models/trainingDate_model.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
-import 'package:swimming_app_client/Provider/attendance_provider.dart';
-import 'package:swimming_app_client/Provider/member_admin_provider.dart';
-import 'package:swimming_app_client/Provider/training_date_provider.dart';
-import 'package:swimming_app_client/Screens/PageStorageHome/AttendanceEmployee/attendanceEmployeeController.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
-import 'package:swimming_app_client/enums/attendance_description.dart';
+import 'package:swimming_app_client/models/trainingDate_model.dart';
+import 'package:swimming_app_client/models/user_model.dart';
+import 'package:swimming_app_client/provider/attendance_provider.dart';
+import 'package:swimming_app_client/provider/member_admin_provider.dart';
+import 'package:swimming_app_client/provider/training_date_provider.dart';
 
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/attendance_status.dart';
 import '../../../Widgets/custom_dialog.dart';
 import '../../../Widgets/custom_text_form_field.dart';
 import '../../../Widgets/show_multi_items.dart';
+import '../../controllers/attendance_employee/attendance_employee_controller.dart';
+import '../../models/attendance_model.dart';
+import '../../server_helper/server_response.dart';
 
 class AttendanceEmployee extends StatefulWidget {
   const AttendanceEmployee({super.key});
@@ -24,12 +23,12 @@ class AttendanceEmployee extends StatefulWidget {
 }
 
 class _AttendanceEmployeeState extends State<AttendanceEmployee> {
-  late List<TrainingDateResponseModel> trainingsForEmployees;
-  late List<AttendanceResponseModel> attendances;
-  late List<UserResponseModel> allMembers;
-  late TrainingDateProvider trainingDateProvider = TrainingDateProvider();
-  late AttendanceProvider attendanceProvider = AttendanceProvider();
-  late MemberAdminProvider memberAdminProvider = MemberAdminProvider();
+  List<TrainingDateResponseModel> trainingsDatesForEmployees = [];
+  List<AttendanceResponseModel> attendances = [];
+  List<UserResponseModel> allMembers = [];
+  TrainingDateProvider trainingDateProvider = TrainingDateProvider();
+  AttendanceProvider attendanceProvider = AttendanceProvider();
+  MemberAdminProvider memberAdminProvider = MemberAdminProvider();
 
   DateTime? _currentDate;
 
@@ -41,21 +40,22 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
   String valueStatus = "";
   int? userID;
 
-  List<AttendanceResponseModel>? attendList = [];
-  List<UserResponseModel>? memberList = [];
-  List<UserResponseModel>? _valueMember = [];
+  List<AttendanceResponseModel> attendList = [];
+  List<UserResponseModel> memberList = [];
+  List<UserResponseModel> _valueMember = [];
 
-  AttendanceEmplyoeeController controller = AttendanceEmplyoeeController();
+  final AttendanceEmplyoeeController _controller =
+      AttendanceEmplyoeeController();
+
   List<String> searchTerm = [];
 
   void initializeAttendanceAndMembers() async {
-    //initialize attendances
     ServerResponse allAttendances =
         await attendanceProvider.getAttendanceAll(userID);
     if (allAttendances.isSuccessful) {
       attendances = allAttendances.result.cast<AttendanceResponseModel>();
       for (var att in attendances) {
-        attendList?.add(att);
+        attendList.add(att);
       }
     } else {
       AppMessage.showErrorMessage(message: allAttendances.error);
@@ -65,7 +65,7 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     if (members.isSuccessful) {
       allMembers = members.result.cast<UserResponseModel>();
       for (var att in allMembers) {
-        memberList?.add(att);
+        memberList.add(att);
       }
     } else {
       AppMessage.showErrorMessage(message: members.error);
@@ -76,7 +76,7 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     ServerResponse allTrainingsForEmployees =
         await trainingDateProvider.getTrainingDateForEmployee(_currentDate);
     if (allTrainingsForEmployees.isSuccessful) {
-      trainingsForEmployees =
+      trainingsDatesForEmployees =
           allTrainingsForEmployees.result.cast<TrainingDateResponseModel>();
     } else {
       AppMessage.showErrorMessage(message: allTrainingsForEmployees.error);
@@ -119,10 +119,6 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
         appBar: AppBar(
           title: const Text("Attendances"),
           automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: Theme.of(context).colorScheme.onSecondary,
-              fontWeight: FontWeight.w400),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.filter_list),
@@ -167,12 +163,12 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 10),
                                   child: CustomTextFormField(
-                                      controller: controller.date,
+                                      controller: _controller.date,
                                       iconButton: IconButton(
                                         icon: const Icon(Icons.clear),
                                         onPressed: () {
                                           setState(() {
-                                            controller.date.clear();
+                                            _controller.date.clear();
                                             // trainingsForEmployees = trainingDateProvider
                                             //     .getTrainingDateForEmployee(null);
                                           });
@@ -181,7 +177,7 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                                       textInputAction: TextInputAction.done,
                                       keyboardType: TextInputType.text,
                                       onTap: () => {
-                                            controller
+                                            _controller
                                                 .selectDate(context)
                                                 .then((value) => {
                                                       setState(() {
@@ -198,12 +194,12 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                               SizedBox(
                                 width: 300,
                                 child: CustomTextFormField(
-                                    controller: controller.members,
+                                    controller: _controller.members,
                                     iconButton: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
                                         setState(() {
-                                          controller.members.clear();
+                                          _controller.members.clear();
                                           // trainingsForEmployees = trainingDateProvider
                                           //     .getTrainingDateForEmployee(null);
                                           _valueMember = [];
@@ -324,97 +320,97 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                                         message:
                                             "${filteredList[index].trainingModel!.trainingType}",
                                         children: [
-                                          if (attendanceDoesNotExist(index,
-                                              attendList, filteredList)) ...{
-                                            DropdownButton<String>(
-                                              onChanged: (String? newValue) {
-                                                setState(() {
-                                                  valueStatus = newValue!;
-                                                });
-                                              },
-                                              hint: const Text("Razlog"),
-                                              value: valueStatus.isNotEmpty
-                                                  ? valueStatus
-                                                  : null,
-                                              items: <String>[
-                                                AttendanceDescription.Late,
-                                                AttendanceDescription.Sick
-                                              ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                            ),
-                                            TextButton(
-                                              child: const Text("Ok"),
-                                              onPressed: () {
-                                                AttendanceRequestModel
-                                                    attendanceRequestModel =
-                                                    AttendanceRequestModel();
-                                                attendanceRequestModel.attDesc =
-                                                    valueStatus;
-                                                attendanceRequestModel.type =
-                                                    "Ne bitno";
-                                                attendanceRequestModel
-                                                        .trainingModel
-                                                        ?.iD_training =
-                                                    filteredList[index]
-                                                        .trainingModel
-                                                        ?.ID_training;
-                                                attendanceRequestModel
-                                                        .userModel?.userId =
-                                                    filteredList[index]
-                                                        .userModel
-                                                        ?.userId;
-                                                attendanceRequestModel
-                                                        .trainingDateModel
-                                                        ?.iD_TrainingDate =
-                                                    filteredList[index]
-                                                        .iD_TrainingDate;
-                                                List<UserRequestModel>
-                                                    userList = [];
-                                                userList.add(UserRequestModel(
-                                                    surname: "",
-                                                    password: "",
-                                                    name: "",
-                                                    email: "",
-                                                    addres: "",
-                                                    salt: "",
-                                                    userId: 0,
-                                                    username: "",
-                                                    userRoleID: 0));
-                                                attendanceRequestModel
-                                                    .trainingDateModel
-                                                    ?.userModelList = userList;
-
-                                                attendanceProvider
-                                                    .addAttendanceNotSubmitted(
-                                                        attendanceRequestModel)
-                                                    .then((value) => {
-                                                          AppMessage
-                                                              .showSuccessMessage(
-                                                                  message:
-                                                                      "Uspješno zabilježeno"),
-                                                          Navigator.pop(context)
-                                                        })
-                                                    .catchError(
-                                                        (error) => {
-                                                              Navigator.pop(
-                                                                  context),
-                                                              AppMessage.showErrorMessage(
-                                                                  message: error
-                                                                      .toString())
-                                                            })
-                                                    .whenComplete(() => {
-                                                          setState(() {
-                                                            initializeAttendanceAndMembers();
-                                                          }),
-                                                        });
-                                              },
-                                            ),
-                                          }
+                                          // if (attendanceDoesNotExist(index,
+                                          //     attendList, filteredList)) ...{
+                                          //   DropdownButton<String>(
+                                          //     onChanged: (String? newValue) {
+                                          //       setState(() {
+                                          //         valueStatus = newValue!;
+                                          //       });
+                                          //     },
+                                          //     hint: const Text("Razlog"),
+                                          //     value: valueStatus.isNotEmpty
+                                          //         ? valueStatus
+                                          //         : null,
+                                          //     items: <String>[
+                                          //       AttendanceDescription.Late,
+                                          //       AttendanceDescription.Sick
+                                          //     ].map<DropdownMenuItem<String>>(
+                                          //         (String value) {
+                                          //       return DropdownMenuItem<String>(
+                                          //         value: value,
+                                          //         child: Text(value),
+                                          //       );
+                                          //     }).toList(),
+                                          //   ),
+                                          //   TextButton(
+                                          //     child: const Text("Ok"),
+                                          //     onPressed: () {
+                                          //       AttendanceRequestModel
+                                          //           attendanceRequestModel =
+                                          //           AttendanceRequestModel();
+                                          //       attendanceRequestModel.attDesc =
+                                          //           valueStatus;
+                                          //       attendanceRequestModel.type =
+                                          //           "Ne bitno";
+                                          //       attendanceRequestModel
+                                          //               .trainingModel
+                                          //               ?.iD_training =
+                                          //           filteredList[index]
+                                          //               .trainingModel
+                                          //               ?.ID_training;
+                                          //       attendanceRequestModel
+                                          //               .userModel?.userId =
+                                          //           filteredList[index]
+                                          //               .userModel
+                                          //               ?.userId;
+                                          //       attendanceRequestModel
+                                          //               .trainingDateModel
+                                          //               ?.iD_TrainingDate =
+                                          //           filteredList[index]
+                                          //               .iD_TrainingDate;
+                                          //       List<UserRequestModel>
+                                          //           userList = [];
+                                          //       userList.add(UserRequestModel(
+                                          //           surname: "",
+                                          //           password: "",
+                                          //           name: "",
+                                          //           email: "",
+                                          //           addres: "",
+                                          //           salt: "",
+                                          //           userId: 0,
+                                          //           username: "",
+                                          //           userRoleID: 0));
+                                          //       attendanceRequestModel
+                                          //           .trainingDateModel
+                                          //           ?.userModelList = userList;
+                                          //
+                                          //       attendanceProvider
+                                          //           .addAttendanceNotSubmitted(
+                                          //               attendanceRequestModel)
+                                          //           .then((value) => {
+                                          //                 AppMessage
+                                          //                     .showSuccessMessage(
+                                          //                         message:
+                                          //                             "Uspješno zabilježeno"),
+                                          //                 Navigator.pop(context)
+                                          //               })
+                                          //           .catchError(
+                                          //               (error) => {
+                                          //                     Navigator.pop(
+                                          //                         context),
+                                          //                     AppMessage.showErrorMessage(
+                                          //                         message: error
+                                          //                             .toString())
+                                          //                   })
+                                          //           .whenComplete(() => {
+                                          //                 setState(() {
+                                          //                   initializeAttendanceAndMembers();
+                                          //                 }),
+                                          //               });
+                                          //     },
+                                          //   ),
+                                          // }
                                         ],
                                       );
                                     },
@@ -477,7 +473,7 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                                         const SizedBox(height: 16.0),
                                         AttendanceStatusWidget(
                                           index: index,
-                                          attendList: attendList,
+                                          attendList: [],
                                           list: filteredList,
                                         ),
                                       ],

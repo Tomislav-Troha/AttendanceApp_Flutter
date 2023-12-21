@@ -1,8 +1,8 @@
 import 'package:swimming_app_client/Models/trainingDate_model.dart';
 
-import '../Server/server_response.dart';
-import '../Server/server_service.dart';
 import '../constants.dart';
+import '../server_helper/server_response.dart';
+import '../server_helper/server_service.dart';
 
 const urlApi = url;
 String? token;

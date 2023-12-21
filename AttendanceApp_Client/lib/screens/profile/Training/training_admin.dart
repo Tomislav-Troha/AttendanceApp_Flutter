@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 import 'package:swimming_app_client/responsive.dart';
 
-import '../../../Models/training_model.dart';
-import '../../../Provider/training_provider.dart';
-import '../../../Widgets/app_message.dart';
-import '../../../Widgets/custom_dialog.dart';
+import '../../../models/training_model.dart';
+import '../../../provider/training_provider.dart';
+import '../../../server_helper/server_response.dart';
+import '../../../widgets/app_message.dart';
 import '../../../widgets/components/background.dart';
+import '../../../widgets/custom_dialog.dart';
 
 class TrainingAdmin extends StatefulWidget {
   const TrainingAdmin({super.key});

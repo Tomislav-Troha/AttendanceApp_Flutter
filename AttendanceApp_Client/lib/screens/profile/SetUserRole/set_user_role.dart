@@ -8,12 +8,12 @@ import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/contract_provider.dart';
 import 'package:swimming_app_client/Provider/user_role_provider.dart';
 import 'package:swimming_app_client/Screens/Profile/SetUserRole/userRole_controller.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/custom_dialog.dart';
 import '../../../Widgets/custom_dropdown_button.dart';
 import '../../../Widgets/custom_text_form_field.dart';
+import '../../../server_helper/server_response.dart';
 
 class SetUserRole extends StatefulWidget {
   const SetUserRole({super.key});

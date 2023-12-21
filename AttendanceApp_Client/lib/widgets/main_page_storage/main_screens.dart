@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Managers/token_manager.dart';
 import 'package:swimming_app_client/Screens/Login/login_screen.dart';
-import 'package:swimming_app_client/Screens/PageStorageHome/AttendanceEmployee/attendanceEmployee.dart';
-import 'package:swimming_app_client/Screens/PageStorageHome/AttendanceMember/attendanceMember.dart';
 import 'package:swimming_app_client/Screens/PageStorageHome/ProfileHome/profile_home.dart';
 import 'package:swimming_app_client/Stats/my_stats.dart';
 import 'package:swimming_app_client/enums/current_tab.dart';
+import 'package:swimming_app_client/screens/add_training_date_screen/add_training_date_screen.dart';
+import 'package:swimming_app_client/screens/attendance_member/attendance_member_screen.dart';
 
 import '../../enums/user_roles.dart';
 import '../../responsive.dart';
-import '../../screens/TrainingDate/add_trainingDate.dart';
+import '../../screens/attendance_employee/attendance_employee_screen.dart';
 import '../components/background.dart';
 import '../custom_dialog.dart';
 
@@ -47,7 +47,7 @@ class _MainScreensState extends State<MainScreens> {
     if (_isAdmin) {
       setState(() {
         buttonStatsEnables = true;
-        currentScreen = const AddTrainingDate();
+        currentScreen = const AddTrainingDateScreen();
         currentTab = 2;
         icon = currentTab == 2 ? Icons.access_alarms_rounded : Icons.add;
       });

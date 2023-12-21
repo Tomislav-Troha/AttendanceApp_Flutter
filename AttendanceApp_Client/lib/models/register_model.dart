@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:swimming_app_client/Models/userRole_model.dart';
 
 class RegisterResponseModel {
@@ -9,10 +6,9 @@ class RegisterResponseModel {
 
   RegisterResponseModel({this.errors, this.success});
 
-  factory RegisterResponseModel.fromJson(Map<String, dynamic> json){
+  factory RegisterResponseModel.fromJson(Map<String, dynamic> json) {
     return RegisterResponseModel(
-      errors: json["errors"], success: json["success"]
-    );
+        errors: json["errors"], success: json["success"]);
   }
 }
 
@@ -26,17 +22,16 @@ class RegisterRequestModel {
   int? userRoleID = 0;
   final UserRoleRequestModel? userRole = UserRoleRequestModel();
 
-  RegisterRequestModel({
-    this.name = "",
-    this.surname = "",
-    this.email = "",
-    this.password = "",
-    this.username = "",
-    this.addres = "",
-    this.userRoleID = 0
-  });
+  RegisterRequestModel(
+      {this.name = "",
+      this.surname = "",
+      this.email = "",
+      this.password = "",
+      this.username = "",
+      this.addres = "",
+      this.userRoleID = 0});
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
       'name': name!.trim(),
       'surname': surname!.trim(),
@@ -50,6 +45,4 @@ class RegisterRequestModel {
 
     return map;
   }
-
-
 }

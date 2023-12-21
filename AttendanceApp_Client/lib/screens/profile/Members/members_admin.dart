@@ -5,9 +5,9 @@ import 'package:swimming_app_client/Provider/member_admin_provider.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
 import 'package:swimming_app_client/Screens/Profile/Employees/edit_employees_admin.dart';
 
-import '../../../Server/server_response.dart';
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/custom_dialog.dart';
+import '../../../server_helper/server_response.dart';
 
 class MemberAdmin extends StatefulWidget {
   const MemberAdmin({super.key});

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/member_admin_provider.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 import 'package:swimming_app_client/enums/user_roles.dart';
 
-import '../Enums/attendance_description.dart';
-import '../Managers/token_manager.dart';
 import '../Models/attendance_model.dart';
 import '../Provider/attendance_provider.dart';
 import '../Widgets/app_message.dart';
+import '../enums/attendance_description.dart';
+import '../managers/token_manager.dart';
+import '../server_helper/server_response.dart';
 
 class MyStats extends StatefulWidget {
   const MyStats({super.key});
@@ -32,7 +32,7 @@ class _MyStats extends State<MyStats> {
 
   late bool isAdmin = false;
 
-  Map<String, dynamic>? token;
+  Map<String, dynamic> token = {};
 
   void initializeUserModel() async {
     ServerResponse getAttendanceByUser =
@@ -79,13 +79,17 @@ class _MyStats extends State<MyStats> {
     }
   }
 
+  void _getToken() async {
+    token = await TokenManager.getTokenUserRole();
+  }
+
   @override
   initState() {
-    token = TokenManager().getTokenUserRole();
+    _getToken();
 
-    if (token!["UserRoleId"] == UserRoles.Admin ||
-        token!["UserRoleId"] == UserRoles.Moderator ||
-        token!["UserRoleId"] == UserRoles.Employee) {
+    if (token["UserRoleId"] == UserRoles.Admin ||
+        token["UserRoleId"] == UserRoles.Moderator ||
+        token["UserRoleId"] == UserRoles.Employee) {
       isAdmin = true;
     }
 

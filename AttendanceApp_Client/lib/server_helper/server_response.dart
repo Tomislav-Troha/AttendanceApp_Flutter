@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class ServerResponse {
@@ -23,10 +24,9 @@ class ServerResponse {
             'Server did not return a message';
 
         error = "Error: $errorMessage";
-      }else if(response.statusCode == 404){
+      } else if (response.statusCode == 404) {
         error = "Not found";
-      }
-      else if(response.statusCode == 400){
+      } else if (response.statusCode == 400) {
         Map<String, dynamic> jsonException = jsonDecode(response.body);
 
         var errors = jsonException["errors"];
@@ -36,13 +36,16 @@ class ServerResponse {
         String finalMessage = outputMessage;
 
         error = "Error: $finalMessage";
-      }
-      else {
+      } else {
         result = json.decode(response.body);
       }
     } catch (ex) {
-      error = "Unknown error: ${response.body }${ex.toString()}}";
+      error = "Unknown error: ${response.body}${ex.toString()}}";
     }
+  }
+
+  ServerResponse.success(this.result) {
+    isSuccessful = true;
   }
 
   ServerResponse.xmlHttpRequestError() {

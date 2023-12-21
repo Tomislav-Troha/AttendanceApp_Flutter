@@ -10,27 +10,15 @@ import 'package:swimming_app_client/Models/register_model.dart';
 import '../Managers/token_manager.dart';
 import '../Models/login_model.dart';
 import '../Models/user_model.dart';
-import '../Server/server_response.dart';
-import '../Server/server_service.dart';
 import '../constants.dart';
+import '../server_helper/server_response.dart';
+import '../server_helper/server_service.dart';
 
 const urlApi = url;
 String? token;
 
 class UserProvider {
   bool get isUserLoggedIn => token != null;
-
-  Future<void> checkForToken() async {
-    token = TokenManager.getToken('token');
-    if (token != null) {
-      TokenManager tokenManager = TokenManager();
-      Map<String, dynamic> tokenData = tokenManager.getTokenUserRole();
-      // If tokenData is empty, the token is expired.
-      if (tokenData.isEmpty) {
-        token = null;
-      }
-    }
-  }
 
   Future<RegisterResponseModel> register(
       RegisterRequestModel model, BuildContext context) async {

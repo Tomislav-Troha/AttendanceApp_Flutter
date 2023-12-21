@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
-  final String label;
-  final List<DropdownMenuItem<T>> items;
-  final T value;
-  final String hint;
-  final ValueChanged onChanged;
-
-  CustomDropdownButton({
+  const CustomDropdownButton({
+    super.key,
     required this.label,
     required this.items,
     required this.value,
     required this.onChanged,
     required this.hint,
+    this.textColor,
   });
+
+  final String label;
+  final List<DropdownMenuItem<T>> items;
+  final T value;
+  final String hint;
+  final ValueChanged onChanged;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +32,19 @@ class CustomDropdownButton<T> extends StatelessWidget {
         children: <Widget>[
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18.0,
-              fontWeight: FontWeight.bold
+              fontWeight: FontWeight.bold,
+              color: textColor,
             ),
           ),
           const SizedBox(height: 10.0),
-            DropdownButton(
-              hint: Text(hint),
-              value: value,
-              items: items,
-              onChanged: onChanged,
+          DropdownButton(
+            style: TextStyle(color: textColor),
+            hint: Text(hint),
+            value: value,
+            items: items,
+            onChanged: onChanged,
           ),
         ],
       ),

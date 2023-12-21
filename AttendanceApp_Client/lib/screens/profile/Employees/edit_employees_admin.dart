@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
 import 'package:swimming_app_client/Screens/Profile/Members/member_controller.dart';
 import 'package:swimming_app_client/Screens/Profile/Members/members_admin.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 
 import '../../../Models/user_model.dart';
 import '../../../Widgets/app_message.dart';
+import '../../../server_helper/server_response.dart';
 
 class EditEmployeeAdmin extends StatefulWidget {
   const EditEmployeeAdmin({super.key, required this.userID});

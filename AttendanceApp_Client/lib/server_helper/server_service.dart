@@ -3,14 +3,10 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-import '../Managers/token_manager.dart';
 import '../constants.dart';
+import '../managers/token_manager.dart';
 
 const urlApi = url;
-
-String? getToken() {
-  return TokenManager.getToken('token');
-}
 
 Uri generateUrl(String endpoint) {
   return Uri.parse('$urlApi/$endpoint/');
@@ -19,7 +15,7 @@ Uri generateUrl(String endpoint) {
 class ServerService {
   Future<http.Response> executeGetRequest(String endpoint) async {
     var url = generateUrl(endpoint);
-    var token = getToken();
+    var token = await TokenManager.getToken('token');
 
     var response = await http.get(
       url,
@@ -34,7 +30,7 @@ class ServerService {
 
   Future<http.Response> executeDeleteRequest(String endpoint) async {
     var url = generateUrl(endpoint);
-    var token = getToken();
+    var token = await TokenManager.getToken('token');
 
     var response = await http.delete(url, headers: {
       HttpHeaders.contentTypeHeader: "application/json",
@@ -47,7 +43,7 @@ class ServerService {
   Future<http.Response> executePostRequest(
       String endpoint, dynamic model) async {
     var url = generateUrl(endpoint);
-    var token = getToken();
+    var token = await TokenManager.getToken('token');
 
     var response = await http.post(url, body: jsonEncode(model), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
@@ -60,7 +56,7 @@ class ServerService {
   Future<http.Response> executePutRequest(
       String endpoint, dynamic model) async {
     var url = generateUrl(endpoint);
-    var token = getToken();
+    var token = await TokenManager.getToken('token');
 
     var response = await http.put(url, body: jsonEncode(model), headers: {
       HttpHeaders.contentTypeHeader: "application/json",

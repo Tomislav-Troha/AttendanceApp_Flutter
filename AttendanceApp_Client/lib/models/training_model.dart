@@ -5,10 +5,19 @@ class TrainingResponseModel {
 
   TrainingResponseModel({this.ID_training, this.code, this.trainingType});
 
-  factory TrainingResponseModel.fromJson(Map<String, dynamic> json){
+  factory TrainingResponseModel.fromJson(Map<String, dynamic> json) {
     return TrainingResponseModel(
-        ID_training: json["iD_training"], code: json["code"], trainingType: json["trainingType"]
-    );
+        ID_training: json["iD_training"],
+        code: json["code"],
+        trainingType: json["trainingType"]);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'iD_training': ID_training,
+      'code': code,
+      'trainingType': trainingType,
+    };
   }
 }
 
@@ -17,13 +26,10 @@ class TrainingRequestModel {
   String? code = "";
   String? trainingType = "";
 
-  TrainingRequestModel({
-    this.iD_training = 0,
-    this.code = "",
-    this.trainingType = ""
-  });
+  TrainingRequestModel(
+      {this.iD_training = 0, this.code = "", this.trainingType = ""});
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
       'iD_training': iD_training,
       'code': code!.trim(),

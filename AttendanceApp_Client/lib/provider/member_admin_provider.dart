@@ -1,8 +1,7 @@
-import 'package:swimming_app_client/Server/server_response.dart';
-import 'package:swimming_app_client/Server/server_service.dart';
-
 import '../Models/user_model.dart';
 import '../constants.dart';
+import '../server_helper/server_response.dart';
+import '../server_helper/server_service.dart';
 
 const urlApi = url;
 String? token;

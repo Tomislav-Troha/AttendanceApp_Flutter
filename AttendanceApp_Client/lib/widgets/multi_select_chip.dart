@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MultiSelectChip<T> extends StatefulWidget {
@@ -31,7 +30,9 @@ class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
           selected: selectedReportList.contains(item),
           onSelected: (selected) {
             setState(() {
-              selected ? selectedReportList.add(item) : selectedReportList.remove(item);
+              selected
+                  ? selectedReportList.add(item)
+                  : selectedReportList.remove(item);
               widget.onSelectionChanged(selectedReportList);
             });
           },

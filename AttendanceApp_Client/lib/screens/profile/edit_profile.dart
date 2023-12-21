@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
-import 'package:swimming_app_client/Server/server_response.dart';
 
-import '../../Managers/token_manager.dart';
 import '../../Widgets/app_message.dart';
+import '../../managers/token_manager.dart';
+import '../../server_helper/server_response.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key, required this.userCache, this.callback});
@@ -23,10 +23,10 @@ class _EditProfile extends State<EditProfile> {
   final TextEditingController _addressController = TextEditingController();
 
   UserProvider userProvider = UserProvider();
-  late Map<String, dynamic> token;
+  Map<String, dynamic> token = {};
 
   void initialize() async {
-    token = TokenManager().getTokenUserRole();
+    token = await TokenManager.getTokenUserRole();
     ServerResponse users =
         await userProvider.getUserByID(int.parse(token["UserID"]));
 
@@ -39,9 +39,8 @@ class _EditProfile extends State<EditProfile> {
 
   @override
   void initState() {
-    initialize();
-
     super.initState();
+    initialize();
   }
 
   @override

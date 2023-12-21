@@ -1,15 +1,32 @@
-import '../Models/training_model.dart';
-import '../Server/server_response.dart';
-import '../Server/server_service.dart';
+import '../cache_manager/training_cache_manager.dart';
 import '../constants.dart';
+import '../models/training_model.dart';
+import '../server_helper/server_response.dart';
+import '../server_helper/server_service.dart';
 
 const urlApi = url;
 String? token;
 
 class TrainingProvider {
   Future<ServerResponse> getTraining(int? id) async {
-    var url = 'training/getTraining';
+    var cacheManager = TrainingCacheManager();
 
+    // Fetch all trainings from cache if id is null
+    if (id == null) {
+      List<TrainingResponseModel> cachedTrainings =
+          await cacheManager.getCachedTrainings();
+      if (cachedTrainings.isNotEmpty) {
+        return ServerResponse.success(cachedTrainings);
+      }
+    } else {
+      // Try fetching a specific training from cache
+      var cachedTraining = cacheManager.getTrainingFromCache(id);
+      if (cachedTraining != null) {
+        return ServerResponse.success(cachedTraining);
+      }
+    }
+
+    var url = 'training/getTraining';
     var server = await ServerService().executeGetRequest(url);
     var serverResponse = ServerResponse(server);
 
@@ -21,11 +38,14 @@ class TrainingProvider {
                 TrainingResponseModel.fromJson(item as Map<String, dynamic>))
             .toList();
 
+        // Cache the trainings
+        cacheManager.cacheTrainings(responseModels);
+
         serverResponse.result = responseModels;
       }
     } else {
       serverResponse.error =
-          "Error while getting user by member ${server.reasonPhrase}";
+          "Error while getting training: ${server.reasonPhrase}";
     }
     return serverResponse;
   }

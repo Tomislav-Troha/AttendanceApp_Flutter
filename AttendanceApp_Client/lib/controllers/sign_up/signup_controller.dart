@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:swimming_app_client/Models/register_model.dart';
@@ -21,9 +19,8 @@ class SignupController extends GetxController {
   var userRoleID = 0;
   UserRoleRequestModel? userRoleModel = UserRoleRequestModel();
 
-
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
