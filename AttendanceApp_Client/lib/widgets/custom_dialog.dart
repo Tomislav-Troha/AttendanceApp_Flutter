@@ -28,7 +28,7 @@ class CustomDialog extends StatelessWidget {
           right: 10.0,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onSecondary,
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: SingleChildScrollView(

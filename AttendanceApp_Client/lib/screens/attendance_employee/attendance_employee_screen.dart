@@ -158,21 +158,16 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
   }
 
   void _showMultiMembers() {
-    ShowMultiItems.showMultiMembers(
-      context,
-      membersList,
-      (selectedList) {
-        setState(() {
-          _valueMember = selectedList;
-          for (var element in selectedList) {
-            searchTerm.add(element.userId.toString());
-          }
-        });
-      },
-      (user) {
-        return Text("${user.name} ${user.surname}");
-      },
-    );
+    ShowMultiItems.showMultiMembers(context, membersList, (selectedList) {
+      setState(() {
+        _valueMember = selectedList;
+        for (var element in selectedList) {
+          searchTerm.add(element.userId.toString());
+        }
+      });
+    }, (user) {
+      return Text("${user.name} ${user.surname}");
+    }, _valueMember);
   }
 
   @override

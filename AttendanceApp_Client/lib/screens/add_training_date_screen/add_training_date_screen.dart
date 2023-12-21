@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/controllers/training_date_controller/training_date_controller.dart';
+import 'package:swimming_app_client/widgets/add_training_date/pick_training.dart';
 
 import '../../constants.dart';
 import '../../models/training_model.dart';
@@ -8,8 +9,8 @@ import '../../provider/member_admin_provider.dart';
 import '../../provider/training_date_provider.dart';
 import '../../provider/training_provider.dart';
 import '../../server_helper/server_response.dart';
+import '../../widgets/add_training_date/multi_members_choice.dart';
 import '../../widgets/app_message.dart';
-import '../../widgets/custom_dropdown_button.dart';
 import '../../widgets/custom_text_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import '../../widgets/show_multi_items.dart';
@@ -90,18 +91,21 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
   }
 
   void _showMultiMembers() {
-    ShowMultiItems.showMultiMembers(
-      context,
-      _userList,
-      (selected) {
-        setState(() {
-          _valueMember = selected;
-        });
-      },
-      (user) {
-        return Text("${user.name} ${user.surname}");
-      },
-    );
+    ShowMultiItems.showMultiMembers(context, _userList, (selected) {
+      setState(() {
+        _valueMember = selected;
+      });
+    }, (item) {
+      bool isSelected = _valueMember.contains(item);
+      return Text(
+        "${item.name} ${item.surname}",
+        style: TextStyle(
+          color: isSelected
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSecondary,
+        ),
+      );
+    }, _valueMember);
   }
 
   @override
@@ -126,35 +130,17 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
             key: _formKey,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPadding, vertical: defaultPadding),
-                  child: _trainingsAreLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : CustomDropdownButton(
-                          textColor: Theme.of(context).colorScheme.onPrimary,
-                          label: "Pick a training",
-                          items: _trainings
-                              .map<DropdownMenuItem<TrainingResponseModel>>(
-                                  (TrainingResponseModel values) {
-                            return DropdownMenuItem<TrainingResponseModel>(
-                              value: values,
-                              child: SizedBox(
-                                width: 140.0,
-                                child: Text(values.trainingType!),
-                              ),
-                            );
-                          }).toList(),
-                          value: _valueTraining,
-                          onChanged: (value) {
-                            setState(() {
-                              _valueTraining = value;
-                              trainingDateController.trainingID.text =
-                                  _valueTraining!.ID_training.toString();
-                            });
-                          },
-                          hint: 'Training',
-                        ),
+                PickTraining(
+                  trainingsAreLoading: _trainingsAreLoading,
+                  trainings: _trainings,
+                  valueTraining: _valueTraining,
+                  onChanged: (value) {
+                    setState(() {
+                      _valueTraining = value;
+                      trainingDateController.trainingID.text =
+                          _valueTraining!.ID_training.toString();
+                    });
+                  },
                 ),
                 CustomTextFormField(
                   validate: (trainingDate) {
@@ -221,27 +207,21 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
                   labelText: 'Pick time to',
                   prefixIcon: Icons.access_time_filled,
                 ),
-                CustomTextFormField(
-                    textColor: Theme.of(context).colorScheme.onPrimary,
-                    controller: trainingDateController.members,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.text,
-                    onTap: _showMultiMembers,
-                    readOnly: true,
-                    labelText: 'Pick members',
-                    prefixIcon: Icons.model_training_outlined),
-                Wrap(
-                  children: _valueMember
-                      .map((e) => Container(
-                            margin: const EdgeInsets.all(4),
-                            child: Chip(
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
-                              label: Text("${e.name!} ${e.surname!}"),
-                            ),
-                          ))
-                      .toList(),
+                Visibility(
+                  visible: _valueMember.isEmpty,
+                  child: CustomTextFormField(
+                      textColor: Theme.of(context).colorScheme.onPrimary,
+                      controller: trainingDateController.members,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.text,
+                      onTap: _showMultiMembers,
+                      readOnly: true,
+                      labelText: 'Pick members',
+                      prefixIcon: Icons.model_training_outlined),
+                ),
+                MultiMemberChoice(
+                  valueMember: _valueMember,
+                  showMultiMembers: _showMultiMembers,
                 ),
                 CustomTextButton(
                   textSize: 18,

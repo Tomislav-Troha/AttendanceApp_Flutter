@@ -7,7 +7,8 @@ class ShowMultiItems {
       BuildContext context,
       List<T> userList,
       Function(List<T>) onSelectionComplete,
-      Widget Function(T) labelBuilder) async {
+      Widget Function(T) labelBuilder,
+      List<T>? alreadySelectedChips) async {
     await showDialog(
       context: context,
       builder: (context) {
@@ -19,14 +20,17 @@ class ShowMultiItems {
               reportList: userList,
               onSelectionChanged: onSelectionComplete,
               labelBuilder: labelBuilder,
+              alreadySelected: alreadySelectedChips,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  child: const Text(
+                  child: Text(
                     "Done!",
                     textScaleFactor: 1.4,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary),
                   ),
                   onPressed: () {
                     Navigator.pop(context);

@@ -40,6 +40,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
           ),
           const SizedBox(height: 10.0),
           DropdownButton(
+            dropdownColor: Theme.of(context).colorScheme.onSecondary,
             style: TextStyle(color: textColor),
             hint: Text(hint),
             value: value,
