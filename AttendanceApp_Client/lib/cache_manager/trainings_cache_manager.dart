@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/training_model.dart';
 
-class TrainingCacheManager {
+class TrainingsCacheManager {
   static const String _cacheKey = 'trainingCache';
   final Map<int, TrainingResponseModel> _cache = {};
 

@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
-import 'package:swimming_app_client/Models/attendance_model.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
-import 'package:swimming_app_client/Provider/attendance_provider.dart';
 import 'package:swimming_app_client/constants.dart';
 import 'package:swimming_app_client/enums/attendance_description.dart';
 
-import '../../Models/trainingDate_model.dart';
-import '../../Provider/training_date_provider.dart';
-import '../../Widgets/app_message.dart';
-import '../../Widgets/attendance_status.dart';
-import '../../Widgets/training_time_utils.dart';
 import '../../controllers/sumbit_attendance/submit_attendance_controller.dart';
+import '../../models/attendance_model.dart';
+import '../../models/trainingDate_model.dart';
+import '../../models/user_model.dart';
+import '../../provider/attendance_provider.dart';
+import '../../provider/training_date_provider.dart';
 import '../../server_helper/server_response.dart';
+import '../../widgets/app_message.dart';
+import '../../widgets/attendance_status.dart';
+import '../../widgets/training_time_utils.dart';
 
 class SubmitAttendance extends StatefulWidget {
   const SubmitAttendance(

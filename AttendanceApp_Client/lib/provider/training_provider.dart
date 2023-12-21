@@ -1,4 +1,4 @@
-import '../cache_manager/training_cache_manager.dart';
+import '../cache_manager/trainings_cache_manager.dart';
 import '../constants.dart';
 import '../models/training_model.dart';
 import '../server_helper/server_response.dart';
@@ -9,7 +9,7 @@ String? token;
 
 class TrainingProvider {
   Future<ServerResponse> getTraining(int? id) async {
-    var cacheManager = TrainingCacheManager();
+    var cacheManager = TrainingsCacheManager();
 
     // Fetch all trainings from cache if id is null
     if (id == null) {

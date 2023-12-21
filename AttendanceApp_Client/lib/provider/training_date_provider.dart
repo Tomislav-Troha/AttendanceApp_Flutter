@@ -1,6 +1,5 @@
-import 'package:swimming_app_client/Models/trainingDate_model.dart';
-
 import '../constants.dart';
+import '../models/trainingDate_model.dart';
 import '../server_helper/server_response.dart';
 import '../server_helper/server_service.dart';
 

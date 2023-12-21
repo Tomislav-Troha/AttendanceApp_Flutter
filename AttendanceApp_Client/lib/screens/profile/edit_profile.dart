@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:swimming_app_client/Models/user_model.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
 
-import '../../Widgets/app_message.dart';
 import '../../managers/token_manager.dart';
 import '../../server_helper/server_response.dart';
+import '../../widgets/app_message.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({super.key, required this.userCache, this.callback});
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key, required this.userCache, this.callback});
 
   final Map<String, UserResponseModel> userCache;
   final VoidCallback? callback;
 
-  createState() => _EditProfile();
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfile extends State<EditProfile> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final UserRequestModel userRequestModel = UserRequestModel();
   final TextEditingController _firstNameController = TextEditingController();

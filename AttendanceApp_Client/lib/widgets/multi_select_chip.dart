@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 class MultiSelectChip<T> extends StatefulWidget {
-  final List<T> reportList;
-  final Function(List<T>) onSelectionChanged;
-  final Widget Function(T) labelBuilder;
-
-  MultiSelectChip({
+  const MultiSelectChip({
+    super.key,
     required this.reportList,
     required this.onSelectionChanged,
     required this.labelBuilder,
   });
 
+  final List<T> reportList;
+  final Function(List<T>) onSelectionChanged;
+  final Widget Function(T) labelBuilder;
+
   @override
-  _MultiSelectChipState<T> createState() => _MultiSelectChipState<T>();
+  State<MultiSelectChip<T>> createState() => _MultiSelectChipState<T>();
 }
 
 class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
@@ -23,21 +24,23 @@ class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
     List<Widget> choices = [];
     for (var item in widget.reportList) {
       final label = widget.labelBuilder(item);
-      choices.add(Container(
-        padding: const EdgeInsets.all(2.0),
-        child: ChoiceChip(
-          label: label,
-          selected: selectedReportList.contains(item),
-          onSelected: (selected) {
-            setState(() {
-              selected
-                  ? selectedReportList.add(item)
-                  : selectedReportList.remove(item);
-              widget.onSelectionChanged(selectedReportList);
-            });
-          },
+      choices.add(
+        Container(
+          padding: const EdgeInsets.all(2.0),
+          child: ChoiceChip(
+            label: label,
+            selected: selectedReportList.contains(item),
+            onSelected: (selected) {
+              setState(() {
+                selected
+                    ? selectedReportList.add(item)
+                    : selectedReportList.remove(item);
+                widget.onSelectionChanged(selectedReportList);
+              });
+            },
+          ),
         ),
-      ));
+      );
     }
     return choices;
   }

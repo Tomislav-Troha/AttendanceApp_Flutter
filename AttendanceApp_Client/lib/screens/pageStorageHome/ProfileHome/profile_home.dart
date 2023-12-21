@@ -10,9 +10,9 @@ import 'package:swimming_app_client/Provider/contract_provider.dart';
 import 'package:swimming_app_client/Provider/user_provider.dart';
 import 'package:swimming_app_client/Screens/PageStorageHome/ProfileHome/profile_controller.dart';
 import 'package:swimming_app_client/Screens/Profile/AdminProfile/profile_admin.dart';
-import 'package:swimming_app_client/Screens/Profile/edit_profile.dart';
 import 'package:swimming_app_client/enums/user_roles.dart';
 import 'package:swimming_app_client/managers/token_manager.dart';
+import 'package:swimming_app_client/screens/profile/edit_profile.dart';
 
 import '../../../Widgets/app_message.dart';
 import '../../../Widgets/custom_dialog.dart';
@@ -394,7 +394,7 @@ class _ProfileState extends State<Profile> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return EditProfile(
+                                    return EditProfileScreen(
                                         userCache: userCache,
                                         callback: getUserData);
                                   }));

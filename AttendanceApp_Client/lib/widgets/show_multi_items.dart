@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'custom_dialog.dart';
-import 'multi_select_chip.dart';
+import 'package:swimming_app_client/widgets/custom_dialog.dart';
+import 'package:swimming_app_client/widgets/multi_select_chip.dart';
 
 class ShowMultiItems {
   static void showMultiMembers<T>(
@@ -14,7 +13,7 @@ class ShowMultiItems {
       builder: (context) {
         return CustomDialog(
           message: "",
-          title: "Odaberi člana",
+          title: "Pick a member",
           children: [
             MultiSelectChip(
               reportList: userList,
@@ -26,7 +25,7 @@ class ShowMultiItems {
               children: [
                 TextButton(
                   child: const Text(
-                    "Ok",
+                    "Done!",
                     textScaleFactor: 1.4,
                   ),
                   onPressed: () {

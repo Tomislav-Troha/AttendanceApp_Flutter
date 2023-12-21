@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:swimming_app_client/Models/userRole_model.dart';
+import 'package:swimming_app_client/models/userRole_model.dart';
 
 class UserResponseModel {
-  int? userId ;
+  int? userId;
   String? name;
   String? surname;
   String? email;
@@ -13,26 +13,38 @@ class UserResponseModel {
   UserRoleResponseModel? userRoleModel;
   int? userRoleID;
   Uint8List? profileImage;
-  UserResponseModel({this.userId , this.name, this.surname, this.email, this.username, this.addres, this.userRoleModel, this.userRoleID,  this.profileImage});
+  UserResponseModel(
+      {this.userId,
+      this.name,
+      this.surname,
+      this.email,
+      this.username,
+      this.addres,
+      this.userRoleModel,
+      this.userRoleID,
+      this.profileImage});
 
-
-  factory UserResponseModel.fromJson(Map<String, dynamic> json){
+  factory UserResponseModel.fromJson(Map<String, dynamic> json) {
     return UserResponseModel(
-        userId : json["userId"],
+        userId: json["userId"],
         name: json["name"],
         surname: json["surname"],
         email: json["email"],
         username: json["username"],
         addres: json["addres"],
-        userRoleModel: json["userRoleModel"] == null ? null : UserRoleResponseModel.fromJson(Map<String, dynamic>.from(json["userRoleModel"])),
+        userRoleModel: json["userRoleModel"] == null
+            ? null
+            : UserRoleResponseModel.fromJson(
+                Map<String, dynamic>.from(json["userRoleModel"])),
         userRoleID: json["userRoleID"],
-        profileImage: json['profileImage'] != null ? const Base64Decoder().convert(json['profileImage']) : null
-    );
+        profileImage: json['profileImage'] != null
+            ? const Base64Decoder().convert(json['profileImage'])
+            : null);
   }
 }
 
 class UserRequestModel {
-  int? userId  = 0;
+  int? userId = 0;
   String? name = "";
   String? surname = "";
   String? email = "";
@@ -45,7 +57,7 @@ class UserRequestModel {
   Uint8List? profileImage;
 
   UserRequestModel({
-    this.userId  = 0,
+    this.userId = 0,
     this.name = "",
     this.surname = "",
     this.email = "",
@@ -57,9 +69,9 @@ class UserRequestModel {
     this.profileImage,
   });
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
-      'userId': userId !,
+      'userId': userId!,
       'name': name!.trim(),
       'surname': surname!.trim(),
       'email': email!.trim(),
@@ -74,6 +86,4 @@ class UserRequestModel {
 
     return map;
   }
-
-
 }

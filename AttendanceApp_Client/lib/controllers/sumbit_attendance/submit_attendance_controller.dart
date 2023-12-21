@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:swimming_app_client/Models/attendance_model.dart';
+import 'package:swimming_app_client/models/attendance_model.dart';
 
-class SubmitAttendanceController extends GetxController{
-
-
+class SubmitAttendanceController extends GetxController {
   late AttendanceRequestModel requestModel = AttendanceRequestModel();
   late AttendanceResponseModel responseModel = AttendanceResponseModel();
 
@@ -16,12 +14,12 @@ class SubmitAttendanceController extends GetxController{
   var trainingDateID = TextEditingController();
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
   @override
-  void onInit(){
+  void onInit() {
     id_attendance = TextEditingController(text: "");
     attDesc = TextEditingController(text: "");
     type = TextEditingController(text: "");
@@ -31,6 +29,4 @@ class SubmitAttendanceController extends GetxController{
 
     super.onInit();
   }
-
-
 }

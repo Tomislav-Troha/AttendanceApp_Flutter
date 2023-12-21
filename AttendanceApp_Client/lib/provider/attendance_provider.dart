@@ -1,4 +1,4 @@
-import 'package:swimming_app_client/Models/attendance_model.dart';
+import 'package:swimming_app_client/models/attendance_model.dart';
 
 import '../constants.dart';
 import '../server_helper/server_response.dart';

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:swimming_app_client/Models/trainingDate_model.dart';
+import 'package:swimming_app_client/models/trainingDate_model.dart';
 
-import '../../Models/user_model.dart';
-import '../../Widgets/app_message.dart';
+import '../../models/user_model.dart';
 
-class TrainingDateController extends GetxController {
+class TrainingDateController {
   late TrainingDateRequestModel requestModel = TrainingDateRequestModel();
   late TrainingDateResponseModel responseModel = TrainingDateResponseModel();
 
@@ -15,21 +13,6 @@ class TrainingDateController extends GetxController {
   var timeFrom = TextEditingController();
   var timeTo = TextEditingController();
   var members = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void onInit() {
-    trainingID = TextEditingController(text: "");
-    date = TextEditingController(text: "");
-    timeFrom = TextEditingController(text: "");
-    timeTo = TextEditingController(text: "");
-    members = TextEditingController(text: "");
-    super.onInit();
-  }
 
   DateTime selectedDate = DateTime.now();
   Future<void> selectDate(BuildContext context) async {
@@ -44,12 +27,8 @@ class TrainingDateController extends GetxController {
     }
   }
 
-  Future<void> selectTimeFrom(BuildContext context) async {
-    final timeFormat = DateFormat.Hm();
+  Future<DateTime?> selectTime(BuildContext context) async {
     final now = DateTime.now();
-    final initialTime = timeFrom.text.isNotEmpty
-        ? timeFormat.parse(timeFrom.text).toLocal()
-        : DateTime(now.hour, now.minute).toLocal();
 
     final picked = await showTimePicker(
       context: context,
@@ -61,19 +40,11 @@ class TrainingDateController extends GetxController {
         );
       },
     );
-
     if (picked != null) {
-      final selectedTime =
-          DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
-      final selectedDateNow = DateTime(now.year, now.month, now.day);
-      if (selectedTime.isBefore(now) && selectedDate == selectedDateNow) {
-        // show error message to user
-        AppMessage.showErrorMessage(
-            message: "Vrijeme dolaska ne može biti manje od trenutnog vremena");
-      } else {
-        timeFrom.text = timeFormat.format(selectedTime);
-      }
+      return DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      // timeFrom.text = timeFormat.format(selectedTime);
     }
+    return null;
   }
 
   void addUserToRequestModel(UserResponseModel user) {
@@ -86,22 +57,6 @@ class TrainingDateController extends GetxController {
       surname: user.surname,
       userRoleID: user.userRoleID,
     ));
-  }
-
-  Future<void> selectTimeTo(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (context, child) {
-        return MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-            child: child!);
-      },
-    );
-
-    if (picked != null && picked != TimeOfDay.now()) {
-      timeTo.text = picked.hour.toString() + ":" + picked.minute.toString();
-    }
   }
 
   String? validateTrainingDateInputs({
@@ -119,7 +74,8 @@ class TrainingDateController extends GetxController {
     return null;
   }
 
-  DateTime parseDate(String dateText) {
+  DateTime? parseDate(String dateText) {
+    if (dateText.isEmpty) return null;
     return DateFormat('dd-MM-yyyy').parse(dateText);
   }
 

@@ -1,5 +1,5 @@
-import '../Models/user_model.dart';
 import '../constants.dart';
+import '../models/user_model.dart';
 import '../server_helper/server_response.dart';
 import '../server_helper/server_service.dart';
 

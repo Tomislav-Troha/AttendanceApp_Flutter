@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Models/attendance_model.dart';
+import 'package:swimming_app_client/models/attendance_model.dart';
 
-import '../Enums/attendance_description.dart';
+import '../enums/attendance_description.dart';
 
 class AttendanceStatusWidget extends StatelessWidget {
   final int index;
