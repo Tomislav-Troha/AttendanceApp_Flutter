@@ -84,9 +84,15 @@ class TrainingDateProvider {
     var serverResponse = ServerResponse(response);
 
     if (serverResponse.isSuccessful) {
-      TrainingDateResponseModel responseModels =
-          TrainingDateResponseModel.fromJson(serverResponse.result);
-      serverResponse.result = responseModels;
+      if (serverResponse.result is List<dynamic>) {
+        List<TrainingDateResponseModel> responseModels =
+            (serverResponse.result as List<dynamic>)
+                .map((item) => TrainingDateResponseModel.fromJson(
+                    item as Map<String, dynamic>))
+                .toList();
+
+        serverResponse.result = responseModels;
+      }
     } else {
       serverResponse.error =
           "Error while adding training date ${serverResponse.error}";

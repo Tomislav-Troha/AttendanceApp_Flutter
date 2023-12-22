@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:swimming_app_client/Models/contract_model.dart';
 
-class UserRoleController extends GetxController{
+import '../../../models/contract_model.dart';
 
+class UserRoleController extends GetxController {
   late ContractRequestModel requestModel = ContractRequestModel();
   late ContractResponseModel responseModel = ContractResponseModel();
 
@@ -14,14 +14,13 @@ class UserRoleController extends GetxController{
   var dateFrom = TextEditingController();
   var dateTo = TextEditingController();
 
-
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
   @override
-  void onInit(){
+  void onInit() {
     roleID = TextEditingController(text: "");
     roleName = TextEditingController(text: "");
     roleDesc = TextEditingController(text: "");
@@ -49,5 +48,4 @@ class UserRoleController extends GetxController{
       }
     }
   }
-
 }

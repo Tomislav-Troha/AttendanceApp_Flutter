@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
-import 'package:swimming_app_client/Provider/user_provider.dart';
 
 import '../../managers/token_manager.dart';
+import '../../models/user_model.dart';
+import '../../provider/user_provider.dart';
 import '../../server_helper/server_response.dart';
 import '../../widgets/app_message.dart';
 

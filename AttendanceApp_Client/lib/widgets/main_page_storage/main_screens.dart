@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Managers/token_manager.dart';
-import 'package:swimming_app_client/Screens/Login/login_screen.dart';
-import 'package:swimming_app_client/Screens/PageStorageHome/ProfileHome/profile_home.dart';
-import 'package:swimming_app_client/Stats/my_stats.dart';
 import 'package:swimming_app_client/enums/current_tab.dart';
-import 'package:swimming_app_client/screens/add_training_date_screen/add_training_date_screen.dart';
+import 'package:swimming_app_client/models/trainingDate_model.dart';
 import 'package:swimming_app_client/screens/attendance_member/attendance_member_screen.dart';
 
 import '../../enums/user_roles.dart';
+import '../../managers/token_manager.dart';
 import '../../responsive.dart';
+import '../../screens/add_training_date/add_training_date_screen.dart';
 import '../../screens/attendance_employee/attendance_employee_screen.dart';
+import '../../screens/login/login_screen.dart';
+import '../../screens/pageStorageHome/profile_home/profile_home.dart';
+import '../../stats/my_stats.dart';
 import '../components/background.dart';
 import '../custom_dialog.dart';
 
@@ -24,6 +25,7 @@ class MainScreens extends StatefulWidget {
 
 class _MainScreensState extends State<MainScreens> {
   final PageStorageBucket bucket = PageStorageBucket();
+  TrainingDateResponseModel newTrainingDate = TrainingDateResponseModel();
 
   IconData icon = Icons.add;
   Widget currentScreen = const AttendanceMember();
@@ -38,18 +40,40 @@ class _MainScreensState extends State<MainScreens> {
     } else if (widget.decodedToken!["UserRoleId"] == UserRoles.Employee ||
         widget.decodedToken!["UserRoleId"] == UserRoles.Admin ||
         widget.decodedToken!["UserRoleId"] == UserRoles.Moderator) {
-      currentScreen = const AttendanceEmployee();
+      currentScreen = const AttendanceEmployee(
+        newTrainingDate: [],
+      );
       _isAdmin = true;
+    }
+  }
+
+  _openAddNewAttendanceOverlay() async {
+    final result = await showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
+      context: context,
+      builder: (builder) => const AddTrainingDateScreen(),
+    );
+
+    if (result != null) {
+      if ((widget.decodedToken!["UserRoleId"] == UserRoles.Employee ||
+              widget.decodedToken!["UserRoleId"] == UserRoles.Admin ||
+              widget.decodedToken!["UserRoleId"] == UserRoles.Moderator) &&
+          currentTab == CurrentTab.attendance) {
+        setState(() {
+          currentScreen = AttendanceEmployee(
+            newTrainingDate: result,
+          );
+        });
+      }
     }
   }
 
   void _canUserAddNewAttendance() {
     if (_isAdmin) {
+      _openAddNewAttendanceOverlay();
       setState(() {
         buttonStatsEnables = true;
-        currentScreen = const AddTrainingDateScreen();
-        currentTab = 2;
-        icon = currentTab == 2 ? Icons.access_alarms_rounded : Icons.add;
       });
     } else {
       showDialog(
@@ -84,7 +108,9 @@ class _MainScreensState extends State<MainScreens> {
         widget.decodedToken!["UserRoleId"] == UserRoles.Moderator) {
       setState(() {
         buttonStatsEnables = true;
-        currentScreen = const AttendanceEmployee();
+        currentScreen = const AttendanceEmployee(
+          newTrainingDate: [],
+        );
         currentTab = CurrentTab.attendance;
       });
     }

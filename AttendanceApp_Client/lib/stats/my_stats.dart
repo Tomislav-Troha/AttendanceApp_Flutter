@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
-import 'package:swimming_app_client/Provider/member_admin_provider.dart';
 import 'package:swimming_app_client/enums/user_roles.dart';
 
-import '../Models/attendance_model.dart';
-import '../Provider/attendance_provider.dart';
-import '../Widgets/app_message.dart';
 import '../enums/attendance_description.dart';
 import '../managers/token_manager.dart';
+import '../models/attendance_model.dart';
+import '../models/user_model.dart';
+import '../provider/attendance_provider.dart';
+import '../provider/member_admin_provider.dart';
 import '../server_helper/server_response.dart';
+import '../widgets/app_message.dart';
 
 class MyStats extends StatefulWidget {
   const MyStats({super.key});

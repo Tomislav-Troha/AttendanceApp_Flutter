@@ -12,7 +12,9 @@ import '../../widgets/screen_navigator.dart';
 import '../attendance/submit_attendance.dart';
 
 class AttendanceMember extends StatefulWidget {
-  const AttendanceMember({super.key});
+  const AttendanceMember({
+    super.key,
+  });
 
   @override
   State<AttendanceMember> createState() => _AttendanceMember();

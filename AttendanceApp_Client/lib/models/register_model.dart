@@ -1,4 +1,4 @@
-import 'package:swimming_app_client/Models/userRole_model.dart';
+import 'package:swimming_app_client/models/userRole_model.dart';
 
 class RegisterResponseModel {
   final List? errors;

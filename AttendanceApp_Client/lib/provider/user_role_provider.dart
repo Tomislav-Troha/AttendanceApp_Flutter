@@ -1,8 +1,7 @@
-import 'package:swimming_app_client/Models/contract_model.dart';
-
-import '../Models/userRole_model.dart';
-import '../Models/user_model.dart';
 import '../constants.dart';
+import '../models/contract_model.dart';
+import '../models/userRole_model.dart';
+import '../models/user_model.dart';
 import '../server_helper/server_response.dart';
 import '../server_helper/server_service.dart';
 

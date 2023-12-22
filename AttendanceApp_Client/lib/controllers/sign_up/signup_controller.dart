@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:swimming_app_client/Models/register_model.dart';
 
-import '../../Models/userRole_model.dart';
+import '../../models/register_model.dart';
+import '../../models/userRole_model.dart';
 
 class SignupController extends GetxController {
   bool validate = false;

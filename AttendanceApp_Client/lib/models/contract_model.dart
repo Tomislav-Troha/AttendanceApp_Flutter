@@ -1,6 +1,6 @@
-import 'package:swimming_app_client/Models/salary_package_type_model.dart';
-import 'package:swimming_app_client/Models/userRole_model.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
+import 'package:swimming_app_client/models/salary_package_type_model.dart';
+import 'package:swimming_app_client/models/userRole_model.dart';
+import 'package:swimming_app_client/models/user_model.dart';
 
 import 'contract_type_model.dart';
 import 'job_role_model.dart';
@@ -20,22 +20,20 @@ class ContractResponseModel {
   final SalaryPackageTypeResponseModel? salaryPackageTypeModel;
   final JobRoleResponseModel? jobRoleModel;
 
-
-  ContractResponseModel({
-    this.contractID,
-    this.userID,
-    this.userRoleID,
-    this.contractTypeID,
-    this.salaryPackageID,
-    this.jobRoleID,
-    this.startDate,
-    this.expiryDate,
-    this.userModel,
-    this.userRoleModel,
-    this.contractTypeModel,
-    this.salaryPackageTypeModel,
-    this.jobRoleModel
-  });
+  ContractResponseModel(
+      {this.contractID,
+      this.userID,
+      this.userRoleID,
+      this.contractTypeID,
+      this.salaryPackageID,
+      this.jobRoleID,
+      this.startDate,
+      this.expiryDate,
+      this.userModel,
+      this.userRoleModel,
+      this.contractTypeModel,
+      this.salaryPackageTypeModel,
+      this.jobRoleModel});
 
   factory ContractResponseModel.fromJson(Map<String, dynamic> json) {
     return ContractResponseModel(
@@ -51,11 +49,26 @@ class ContractResponseModel {
       expiryDate: (json['expiryDate'] != null)
           ? DateTime.parse(json['expiryDate'])
           : null,
-      userModel: json["userModel"] == null ? null : UserResponseModel.fromJson(Map<String, dynamic>.from(json["userModel"])),
-      userRoleModel: json["userRoleModel"] == null ? null : UserRoleResponseModel.fromJson(Map<String, dynamic>.from(json["userRoleModel"])),
-      contractTypeModel: json["contractTypeModel"] == null ? null : ContractTypeResponseModel.fromJson(Map<String, dynamic>.from(json["contractTypeModel"])),
-      salaryPackageTypeModel: json["salaryPackageTypeModel"] == null ? null : SalaryPackageTypeResponseModel.fromJson(Map<String, dynamic>.from(json["salaryPackageTypeModel"])),
-      jobRoleModel: json["jobRoleModel"] == null ? null : JobRoleResponseModel.fromJson(Map<String, dynamic>.from(json["jobRoleModel"])),
+      userModel: json["userModel"] == null
+          ? null
+          : UserResponseModel.fromJson(
+              Map<String, dynamic>.from(json["userModel"])),
+      userRoleModel: json["userRoleModel"] == null
+          ? null
+          : UserRoleResponseModel.fromJson(
+              Map<String, dynamic>.from(json["userRoleModel"])),
+      contractTypeModel: json["contractTypeModel"] == null
+          ? null
+          : ContractTypeResponseModel.fromJson(
+              Map<String, dynamic>.from(json["contractTypeModel"])),
+      salaryPackageTypeModel: json["salaryPackageTypeModel"] == null
+          ? null
+          : SalaryPackageTypeResponseModel.fromJson(
+              Map<String, dynamic>.from(json["salaryPackageTypeModel"])),
+      jobRoleModel: json["jobRoleModel"] == null
+          ? null
+          : JobRoleResponseModel.fromJson(
+              Map<String, dynamic>.from(json["jobRoleModel"])),
     );
   }
 }
@@ -72,18 +85,19 @@ class ContractRequestModel {
   DateTime? expiryDate = DateTime.now();
   final UserRequestModel? userModel = UserRequestModel();
   final UserRoleRequestModel? userRoleModel = UserRoleRequestModel();
-  final ContractTypeRequestModel? contractTypeModel = ContractTypeRequestModel();
-  final SalaryPackageTypeRequestModel? salaryPackageTypeModel = SalaryPackageTypeRequestModel();
+  final ContractTypeRequestModel? contractTypeModel =
+      ContractTypeRequestModel();
+  final SalaryPackageTypeRequestModel? salaryPackageTypeModel =
+      SalaryPackageTypeRequestModel();
   final JobRoleRequestModel? jobRoleModel = JobRoleRequestModel();
 
-  ContractRequestModel({
-    this.contractID = 0,
-    this.userID = 0,
-    this.userRoleID = 0,
-    this.contractTypeID = 0,
-    this.salaryPackageID = 0,
-    this.jobRoleID = 0
-  });
+  ContractRequestModel(
+      {this.contractID = 0,
+      this.userID = 0,
+      this.userRoleID = 0,
+      this.contractTypeID = 0,
+      this.salaryPackageID = 0,
+      this.jobRoleID = 0});
 
   Map<String, dynamic> toJson() {
     return {

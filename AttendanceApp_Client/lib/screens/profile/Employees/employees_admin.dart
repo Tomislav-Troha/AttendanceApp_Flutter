@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
-import 'package:swimming_app_client/Provider/employee_admin_provider.dart';
-import 'package:swimming_app_client/Screens/Profile/Members/edit_member_admin.dart';
+import 'package:swimming_app_client/screens/profile/Members/edit_member_admin.dart';
 
-import '../../../Widgets/app_message.dart';
-import '../../../Widgets/custom_dialog.dart';
 import '../../../enums/user_roles.dart';
 import '../../../managers/token_manager.dart';
+import '../../../models/user_model.dart';
+import '../../../provider/employee_admin_provider.dart';
 import '../../../server_helper/server_response.dart';
+import '../../../widgets/app_message.dart';
+import '../../../widgets/custom_dialog.dart';
 
 class EmployeeAdmin extends StatefulWidget {
   @override

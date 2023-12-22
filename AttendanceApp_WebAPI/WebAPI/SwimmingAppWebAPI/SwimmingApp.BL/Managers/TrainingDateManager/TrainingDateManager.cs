@@ -33,7 +33,7 @@ namespace SwimmingApp.BL.Managers.TrainingDateManager
             return trainingDateDTOs;
         }
 
-        public async Task<TrainingDateDTO> InsertTrainingDate(TrainingDateDTO trainingDateDto, int userID)
+        public async Task<List<TrainingDateModel>> InsertTrainingDate(TrainingDateDTO trainingDateDto, int userID)
         {
             return await _trainingDate.InsertTrainingDate(trainingDateDto, userID);
         }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../Widgets/sign_up/sign_up_top_image.dart';
-import '../../../Widgets/sign_up/signup_form.dart';
+import '../../../widgets/sign_up/sign_up_top_image.dart';
+import '../../../widgets/sign_up/signup_form.dart';
 
 class MobileSignupScreen extends StatelessWidget {
   const MobileSignupScreen({
@@ -10,18 +10,18 @@ class MobileSignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const SignUpScreenTopImage(),
+        SignUpScreenTopImage(),
         Row(
           children: [
-            const Spacer(),
+            Spacer(),
             Expanded(
               flex: 8,
               child: SignUpForm(),
             ),
-            const Spacer(),
+            Spacer(),
           ],
         ),
         // const SocalSignUp()

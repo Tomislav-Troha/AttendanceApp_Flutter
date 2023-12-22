@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Provider/user_provider.dart';
-import 'package:swimming_app_client/Screens/Profile/Members/member_controller.dart';
+import 'package:swimming_app_client/screens/profile/Members/member_controller.dart';
 
-import '../../../Models/user_model.dart';
-import '../../../Widgets/app_message.dart';
+import '../../../models/user_model.dart';
+import '../../../provider/user_provider.dart';
 import '../../../server_helper/server_response.dart';
+import '../../../widgets/app_message.dart';
 
 class EditMemberAdmin extends StatefulWidget {
   const EditMemberAdmin({super.key, required this.userID});

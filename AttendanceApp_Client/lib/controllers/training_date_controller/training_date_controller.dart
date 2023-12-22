@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:swimming_app_client/models/trainingDate_model.dart';
+import 'package:swimming_app_client/models/training_model.dart';
+import 'package:swimming_app_client/models/userRole_model.dart';
 
 import '../../models/user_model.dart';
 
@@ -47,7 +49,7 @@ class TrainingDateController {
     return null;
   }
 
-  void addUserToRequestModel(UserResponseModel user) {
+  void addMembersToRequestModel(UserResponseModel user) {
     members.text = user.userId.toString();
     requestModel.userModelList?.add(UserRequestModel(
       userId: user.userId,
@@ -59,19 +61,42 @@ class TrainingDateController {
     ));
   }
 
-  String? validateTrainingDateInputs({
-    required String trainingID,
-    required String date,
-    required String timeFrom,
-    required String timeTo,
-  }) {
-    if (trainingID.isEmpty ||
-        date.isEmpty ||
-        timeFrom.isEmpty ||
-        timeTo.isEmpty) {
-      return "Sva polja su obavezna";
-    }
-    return null;
+  TrainingDateResponseModel handleAddNewTrainingDate(
+      TrainingDateRequestModel model) {
+    TrainingDateResponseModel newTrainingDate = TrainingDateResponseModel(
+      iD_TrainingDate: model.iD_TrainingDate,
+      dates: model.dates,
+      timeFrom: model.timeFrom,
+      timeTo: model.timeTo,
+      userID: model.userID,
+      trainingID: model.trainingID,
+      trainingModel: TrainingResponseModel(
+        ID_training: model.trainingModel!.iD_training,
+        code: model.trainingModel!.code,
+        trainingType: model.trainingModel!.trainingType,
+      ),
+      userModel: UserResponseModel(
+        userId: model.userModel!.userId,
+        addres: model.userModel!.addres,
+        email: model.userModel!.email,
+        name: model.userModel!.name,
+        profileImage: model.userModel!.profileImage,
+        surname: model.userModel!.surname,
+        username: model.userModel!.username,
+        userRoleID: model.userModel!.userRoleID,
+        userRoleModel: UserRoleResponseModel(
+          roleDesc: model.userModel!.userRoleModel.roleDesc,
+          roleID: model.userModel!.userRoleModel.roleID,
+          roleName: model.userModel!.userRoleModel.roleName,
+        ),
+      ),
+      userRoleModel: UserRoleResponseModel(
+        roleDesc: model.userModel!.userRoleModel.roleDesc,
+        roleID: model.userModel!.userRoleModel.roleID,
+        roleName: model.userModel!.userRoleModel.roleName,
+      ),
+    );
+    return newTrainingDate;
   }
 
   DateTime? parseDate(String dateText) {

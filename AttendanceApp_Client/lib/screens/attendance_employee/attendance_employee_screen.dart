@@ -5,18 +5,24 @@ import 'package:swimming_app_client/models/user_model.dart';
 import 'package:swimming_app_client/provider/member_admin_provider.dart';
 import 'package:swimming_app_client/provider/training_date_provider.dart';
 import 'package:swimming_app_client/widgets/attendance/attendance_info.dart';
+import 'package:swimming_app_client/widgets/attendance/filter_attendances.dart';
+import 'package:swimming_app_client/widgets/attendance/on_delete_attendance.dart';
+import 'package:swimming_app_client/widgets/attendance/on_swipe_right_attendance.dart';
 
 import '../../controllers/attendance_employee/attendance_employee_controller.dart';
-import '../../enums/attendance_description.dart';
 import '../../provider/attendance_provider.dart';
 import '../../server_helper/server_response.dart';
 import '../../widgets/app_message.dart';
-import '../../widgets/custom_dialog.dart';
-import '../../widgets/custom_text_form_field.dart';
+import '../../widgets/show_modal_from_top.dart';
 import '../../widgets/show_multi_items.dart';
 
 class AttendanceEmployee extends StatefulWidget {
-  const AttendanceEmployee({super.key});
+  const AttendanceEmployee({
+    super.key,
+    required this.newTrainingDate,
+  });
+
+  final List<TrainingDateResponseModel>? newTrainingDate;
 
   @override
   State<AttendanceEmployee> createState() => _AttendanceEmployeeState();
@@ -128,17 +134,26 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     }).toList();
   }
 
-  void _deleteAttendance(
-      List<TrainingDateResponseModel> filteredList, int index) async {
-    ServerResponse response = await trainingDateProvider
-        .deleteTrainingDate(filteredList[index].iD_TrainingDate!);
-    if (response.isSuccessful) {
-      AppMessage.showSuccessMessage(message: response.result);
+  Future<bool> _deleteAttendance(TrainingDateResponseModel trainingDate) async {
+    ServerResponse response = await trainingDateProvider.deleteTrainingDate(
+      trainingDate.iD_TrainingDate!,
+    );
 
-      if (!mounted) return;
-      Navigator.pop(context);
+    if (response.isSuccessful) {
+      if (!mounted) return false;
+      AppMessage.showSuccessMessage(
+        message: response.result,
+        context: context,
+      );
+      return true;
     } else {
-      AppMessage.showErrorMessage(message: response.error, duration: 3);
+      if (!mounted) return false;
+      AppMessage.showErrorMessage(
+        message: response.error,
+        duration: 3,
+        context: context,
+      );
+      return false;
     }
   }
 
@@ -170,6 +185,79 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     }, _valueMember);
   }
 
+  void _showDialogOnDismissed(
+    List<TrainingDateResponseModel> filteredList,
+    int index,
+    DismissDirection direction,
+    List<TrainingDateResponseModel> list,
+  ) async {
+    final item = filteredList[index];
+    final result = await showDialog(
+      context: context,
+      builder: (context) {
+        if (direction == DismissDirection.endToStart) {
+          trainingsDatesForEmployeesList.remove(item);
+          return OnDeleteAttendance(
+            deleteAttendance: () async {
+              final isDeleted = await _deleteAttendance(item);
+              if (!mounted) return;
+              Navigator.pop(context, isDeleted);
+            },
+            item: item,
+          );
+        } else {
+          return OnSwipeRightAttendance(
+            filteredList: filteredList,
+            index: index,
+            addNotSubmittedAttendance: () => _addNotSubmittedAttendance(
+              filteredList,
+              index,
+            ),
+            valueStatus: valueStatus,
+            attendancesList: attendancesList,
+            attendanceDoesNotExist: _attendanceDoesNotExist(
+              index,
+              attendancesList,
+              list,
+            ),
+            onChanged: (String? newValue) {
+              setState(() {
+                valueStatus = newValue!;
+              });
+            },
+          );
+        }
+      },
+    );
+
+    if (result == null) {
+      setState(() {
+        trainingsDatesForEmployeesList.insert(index, item);
+      });
+    }
+  }
+
+  void _openFilterAttendances() {
+    setState(() {
+      isFilter = !isFilter;
+    });
+    showModalFromTop(
+      context,
+      FilterAttendances(
+        controller: _controller,
+        onPressed: () {
+          setState(() {
+            _controller.date.clear();
+          });
+        },
+        pickDate: _pickDate,
+        clearFilter: _clearFilter,
+        valueMember: _valueMember,
+        onTap: _showMultiMembers,
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -189,11 +277,7 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.filter_list),
-              onPressed: () {
-                setState(() {
-                  isFilter = !isFilter;
-                });
-              },
+              onPressed: _openFilterAttendances,
             ),
           ],
         ),
@@ -204,73 +288,21 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
               if (!future.hasData) {
                 return const CircularProgressIndicator();
               } else {
-                var list =
+                List<TrainingDateResponseModel> list =
                     future.data!.result.cast<TrainingDateResponseModel>();
-                var filteredList = _applyFilters(list);
+
+                if (widget.newTrainingDate != null &&
+                    widget.newTrainingDate!.isNotEmpty) {
+                  for (var newTrainingDate in widget.newTrainingDate!) {
+                    list.add(newTrainingDate);
+                  }
+                }
+                trainingsDatesForEmployeesList = _applyFilters(list);
                 return Column(
                   children: <Widget>[
-                    Visibility(
-                        maintainAnimation: true,
-                        maintainState: true,
-                        visible: isFilter,
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 1000),
-                          curve: Curves.linearToEaseOut,
-                          opacity: isFilter ? 1 : 0,
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                width: 300,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: CustomTextFormField(
-                                      controller: _controller.date,
-                                      iconButton: IconButton(
-                                        icon: const Icon(Icons.clear),
-                                        onPressed: () {
-                                          setState(() {
-                                            _controller.date.clear();
-                                          });
-                                        },
-                                      ),
-                                      textInputAction: TextInputAction.done,
-                                      keyboardType: TextInputType.text,
-                                      onTap: _pickDate,
-                                      readOnly: true,
-                                      labelText: 'Sort by date',
-                                      prefixIcon: Icons.date_range),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 300,
-                                child: CustomTextFormField(
-                                    controller: _controller.members,
-                                    iconButton: IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: _clearFilter,
-                                    ),
-                                    textInputAction: TextInputAction.done,
-                                    keyboardType: TextInputType.text,
-                                    onTap: _showMultiMembers,
-                                    readOnly: true,
-                                    labelText: 'Sort by member',
-                                    prefixIcon: Icons.man),
-                              ),
-                              Wrap(
-                                children: _valueMember
-                                    .map((e) => Chip(
-                                          label:
-                                              Text("${e.name!} ${e.surname!}"),
-                                        ))
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                        )),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: filteredList.length,
+                        itemCount: trainingsDatesForEmployeesList.length,
                         itemBuilder: (context, index) {
                           return Dismissible(
                             key: UniqueKey(),
@@ -301,75 +333,15 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                               ),
                             ),
                             onDismissed: (direction) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  if (direction ==
-                                      DismissDirection.endToStart) {
-                                    return AlertDialog(
-                                      actions: [
-                                        Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              child: TextButton(
-                                                child: const Text(
-                                                  "Delete attendance",
-                                                ),
-                                                onPressed: () {
-                                                  _deleteAttendance(
-                                                      filteredList, index);
-                                                },
-                                              ),
-                                            ))
-                                      ],
-                                    );
-                                  } else {
-                                    return CustomDialog(
-                                      title:
-                                          "${filteredList[index].userModel!.name} ${filteredList[index].userModel!.surname} ${filteredList[index].userModel!.userId}",
-                                      message:
-                                          "${filteredList[index].trainingModel!.trainingType}",
-                                      children: [
-                                        if (_attendanceDoesNotExist(index,
-                                            attendancesList, filteredList)) ...{
-                                          DropdownButton<String>(
-                                            onChanged: (String? newValue) {
-                                              setState(() {
-                                                valueStatus = newValue!;
-                                              });
-                                            },
-                                            hint: const Text("Reason"),
-                                            value: valueStatus.isNotEmpty
-                                                ? valueStatus
-                                                : null,
-                                            items: <String>[
-                                              AttendanceDescription.Late,
-                                              AttendanceDescription.Sick
-                                            ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                          ),
-                                          TextButton(
-                                            child: const Text("Ok"),
-                                            onPressed: () {
-                                              _addNotSubmittedAttendance(
-                                                  filteredList, index);
-                                            },
-                                          ),
-                                        }
-                                      ],
-                                    );
-                                  }
-                                },
+                              _showDialogOnDismissed(
+                                trainingsDatesForEmployeesList,
+                                index,
+                                direction,
+                                list,
                               );
                             },
                             child: AttendanceInfo(
-                              filteredList: filteredList,
+                              filteredList: trainingsDatesForEmployeesList,
                               attendancesList: attendancesList,
                               index: index,
                             ),

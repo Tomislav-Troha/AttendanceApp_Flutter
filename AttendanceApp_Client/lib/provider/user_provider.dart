@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:swimming_app_client/Models/change_password_model.dart';
-import 'package:swimming_app_client/Models/register_model.dart';
 
-import '../Managers/token_manager.dart';
-import '../Models/login_model.dart';
-import '../Models/user_model.dart';
 import '../constants.dart';
+import '../managers/token_manager.dart';
+import '../models/change_password_model.dart';
+import '../models/login_model.dart';
+import '../models/register_model.dart';
+import '../models/user_model.dart';
 import '../server_helper/server_response.dart';
 import '../server_helper/server_service.dart';
 

@@ -38,9 +38,11 @@ class CustomDialog extends StatelessWidget {
               title != ""
                   ? Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                     )
                   : Container(),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Models/change_password_model.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
-import 'package:swimming_app_client/Provider/member_admin_provider.dart';
-import 'package:swimming_app_client/Provider/user_provider.dart';
-import 'package:swimming_app_client/Screens/Profile/Employees/edit_employees_admin.dart';
+import 'package:swimming_app_client/screens/profile/Employees/edit_employees_admin.dart';
 
-import '../../../Widgets/app_message.dart';
-import '../../../Widgets/custom_dialog.dart';
+import '../../../models/change_password_model.dart';
+import '../../../models/user_model.dart';
+import '../../../provider/member_admin_provider.dart';
+import '../../../provider/user_provider.dart';
 import '../../../server_helper/server_response.dart';
+import '../../../widgets/app_message.dart';
+import '../../../widgets/custom_dialog.dart';
 
 class MemberAdmin extends StatefulWidget {
   const MemberAdmin({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../Widgets/login/login_form.dart';
-import '../../../Widgets/login/login_screen_top_image.dart';
+import '../../../widgets/login/login_form.dart';
+import '../../../widgets/login/login_screen_top_image.dart';
 
 class MobileLoginScreen extends StatelessWidget {
   const MobileLoginScreen({

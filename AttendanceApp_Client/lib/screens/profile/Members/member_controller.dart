@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../../Models/user_model.dart';
+import '../../../models/user_model.dart';
 
 class MemberAdminController extends GetxController {
   late UserRequestModel requestModel = UserRequestModel();

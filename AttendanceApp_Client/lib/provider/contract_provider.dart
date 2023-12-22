@@ -1,8 +1,7 @@
-import 'package:swimming_app_client/Models/contract_model.dart';
-import 'package:swimming_app_client/Models/contract_type_model.dart';
-import 'package:swimming_app_client/Models/job_role_model.dart';
-import 'package:swimming_app_client/Models/salary_package_type_model.dart';
-
+import '../models/contract_model.dart';
+import '../models/contract_type_model.dart';
+import '../models/job_role_model.dart';
+import '../models/salary_package_type_model.dart';
 import '../server_helper/server_response.dart';
 import '../server_helper/server_service.dart';
 

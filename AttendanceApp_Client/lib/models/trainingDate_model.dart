@@ -57,9 +57,9 @@ class TrainingDateRequestModel {
   late DateTime? timeTo = DateTime.now();
   int? trainingID = 0;
   int? userID = 0;
-  final UserRequestModel? userModel = UserRequestModel();
-  final TrainingRequestModel? trainingModel = TrainingRequestModel();
-  final UserRoleRequestModel? userRoleModel = UserRoleRequestModel();
+  UserRequestModel? userModel = UserRequestModel();
+  TrainingRequestModel? trainingModel = TrainingRequestModel();
+  UserRoleRequestModel? userRoleModel = UserRoleRequestModel();
   List<UserRequestModel>? userModelList = <UserRequestModel>[];
 
   TrainingDateRequestModel(

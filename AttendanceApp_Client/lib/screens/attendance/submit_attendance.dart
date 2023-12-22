@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:swimming_app_client/constants.dart';
+import 'package:swimming_app_client/controllers/sumbit_attendance/submit_attendance_controller.dart';
 import 'package:swimming_app_client/enums/attendance_description.dart';
 
-import '../../controllers/sumbit_attendance/submit_attendance_controller.dart';
 import '../../models/attendance_model.dart';
 import '../../models/trainingDate_model.dart';
 import '../../models/user_model.dart';

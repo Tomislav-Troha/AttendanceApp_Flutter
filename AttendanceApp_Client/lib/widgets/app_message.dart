@@ -7,17 +7,19 @@ class AppMessage {
   static void showSuccessMessage({
     required String message,
     int? duration = 2,
+    BuildContext? context,
   }) {
-    final context = navigatorKey.currentContext;
-    if (context != null) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
+    final navigatorContext = navigatorKey.currentContext;
+    if (navigatorContext != null) {
+      ScaffoldMessenger.of(context ?? navigatorContext).clearSnackBars();
+      ScaffoldMessenger.of(context ?? navigatorContext).showSnackBar(
         SnackBar(
           content: Text(
             message,
             textAlign: TextAlign.center,
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor:
+              Theme.of(context ?? navigatorContext).colorScheme.primary,
           duration: Duration(seconds: duration!),
         ),
       );
@@ -27,20 +29,26 @@ class AppMessage {
   static void showErrorMessage({
     String? message = "",
     int? duration = 2,
+    BuildContext? context,
   }) {
-    final context = navigatorKey.currentContext;
-    if (context != null) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
+    final navigatorContext = navigatorKey.currentContext;
+    if (navigatorContext != null) {
+      ScaffoldMessenger.of(context ?? navigatorContext).clearSnackBars();
+      ScaffoldMessenger.of(context ?? navigatorContext).showSnackBar(
         SnackBar(
           content: Text(
             message!,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  color: Theme.of(context).colorScheme.onError,
+            style: Theme.of(context ?? navigatorContext)
+                .textTheme
+                .titleSmall!
+                .copyWith(
+                  color:
+                      Theme.of(context ?? navigatorContext).colorScheme.onError,
                 ),
           ),
-          backgroundColor: Theme.of(context).colorScheme.error,
+          backgroundColor:
+              Theme.of(context ?? navigatorContext).colorScheme.error,
           duration: Duration(seconds: duration!),
         ),
       );

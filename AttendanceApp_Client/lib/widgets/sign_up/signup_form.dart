@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Provider/user_provider.dart';
-import 'package:swimming_app_client/Screens/Login/login_screen.dart';
 import 'package:swimming_app_client/constants.dart';
 
-import '../../Models/register_model.dart';
 import '../../controllers/sign_up/signup_controller.dart';
+import '../../models/register_model.dart';
+import '../../provider/user_provider.dart';
+import '../../screens/Login/login_screen.dart';
 import '../app_message.dart';
 import '../custom_dialog.dart';
 import '../custom_text_button.dart';

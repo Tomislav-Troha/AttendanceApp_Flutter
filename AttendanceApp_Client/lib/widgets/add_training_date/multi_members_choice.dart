@@ -57,9 +57,9 @@ class MultiMemberChoice extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'Selected members',
-                style: Theme.of(context).textTheme.titleMedium!,
+              child: Icon(
+                Icons.supervised_user_circle_outlined,
+                color: Theme.of(context).colorScheme.background,
               ),
             ),
           ),

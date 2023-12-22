@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Linq;
+using Dapper;
 using SwimmingApp.Abstract.DataModel;
 using SwimmingApp.Abstract.DTO;
 using SwimmingApp.DAL.Contex;
@@ -83,23 +84,36 @@ namespace SwimmingApp.DAL.Repositories.TrainingDateService
             return trainingDateEmployee;
         }
 
-        public async Task<TrainingDateDTO> InsertTrainingDate(TrainingDateDTO trainingDateDTO, int userID)
+        public async Task<List<TrainingDateModel>> InsertTrainingDate(TrainingDateDTO trainingDateDTO, int userID)
         {
+                List<TrainingDateModel> newTrainingDate = new List<TrainingDateModel>();
+                var query = "SELECT * FROM TrainingDate_Insert(@e_dates, @e_timeFrom, @e_timeTo, @e_trainingID, @e_userID)";
+                using var connection = _contex.CreateConnection();
 
-            foreach (var item in trainingDateDTO.UserModelList)
-            {
-                DynamicParameters param = new DynamicParameters();
-                param.Add("dates", trainingDateDTO.Dates);
-                param.Add("timeFrom", trainingDateDTO.TimeFrom);
-                param.Add("timeTo", trainingDateDTO.TimeTo);
-                param.Add("trainingID", trainingDateDTO.TrainingModel.ID_training);
-                param.Add("UserID", item.UserId);
+                foreach (var item in trainingDateDTO.UserModelList)
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add("e_dates", trainingDateDTO.Dates);
+                    param.Add("e_timeFrom", trainingDateDTO.TimeFrom);
+                    param.Add("e_timeTo", trainingDateDTO.TimeTo);
+                    param.Add("e_trainingID", trainingDateDTO.TrainingModel.ID_training);
+                    param.Add("e_userID", item.UserId);
 
-                await _db.InsertAsync("CALL TrainingDate_Insert(@dates, @timeFrom, @timeTo, @trainingID, @userID)", param);
-            }
+                    IEnumerable<TrainingDateModel> result = await connection.QueryAsync<TrainingDateModel, TrainingModel, UserModel, TrainingDateModel>(query,
+                    (trainingDate, training, user) =>
+                    {
+                        trainingDate.TrainingModel = training;
+                        trainingDate.UserModel = user;
+                        return trainingDate;
+                    }, param, splitOn: "id_training, userID");
 
-            return trainingDateDTO;
-        }
+                    if (result != null)
+                    {
+                        newTrainingDate.AddRange(result);
+                    }
+                }
+                return newTrainingDate;
+         }
 
         public async Task<TrainingDateDTO> UpdateTrainingDate(TrainingDateDTO trainingDateDTO)
         {

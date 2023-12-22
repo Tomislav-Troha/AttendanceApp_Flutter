@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Screens/Profile/Employees/employees_admin.dart';
-import 'package:swimming_app_client/Screens/Profile/Members/members_admin.dart';
-import 'package:swimming_app_client/Screens/Profile/SetUserRole/set_user_role.dart';
-import 'package:swimming_app_client/Screens/Profile/Training/training_admin.dart';
+import 'package:swimming_app_client/screens/profile/Employees/employees_admin.dart';
+import 'package:swimming_app_client/screens/profile/Members/members_admin.dart';
+import 'package:swimming_app_client/screens/profile/SetUserRole/set_user_role.dart';
+import 'package:swimming_app_client/screens/profile/Training/training_admin.dart';
 
-import '../../../Widgets/screen_navigator.dart';
 import '../../../constants.dart';
+import '../../../widgets/screen_navigator.dart';
 
 class ProfileAdmin extends StatefulWidget {
   @override

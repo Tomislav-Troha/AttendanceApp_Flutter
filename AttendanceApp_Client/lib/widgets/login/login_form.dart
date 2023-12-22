@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:swimming_app_client/Provider/user_provider.dart';
-import 'package:swimming_app_client/Screens/Signup/signup_screen.dart';
 import 'package:swimming_app_client/constants.dart';
 
 import '../../controllers/login/login_controller.dart';
 import '../../managers/token_manager.dart';
+import '../../provider/user_provider.dart';
+import '../../screens/signup/signup_screen.dart';
 import '../app_message.dart';
 import '../main_page_storage/main_screens.dart';
 import '../screen_navigator.dart';

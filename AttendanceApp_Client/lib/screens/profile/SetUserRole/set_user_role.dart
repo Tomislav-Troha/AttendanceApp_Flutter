@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:swimming_app_client/Models/contract_model.dart';
-import 'package:swimming_app_client/Models/contract_type_model.dart';
-import 'package:swimming_app_client/Models/job_role_model.dart';
-import 'package:swimming_app_client/Models/salary_package_type_model.dart';
-import 'package:swimming_app_client/Models/userRole_model.dart';
-import 'package:swimming_app_client/Models/user_model.dart';
-import 'package:swimming_app_client/Provider/contract_provider.dart';
-import 'package:swimming_app_client/Provider/user_role_provider.dart';
-import 'package:swimming_app_client/Screens/Profile/SetUserRole/userRole_controller.dart';
+import 'package:swimming_app_client/screens/profile/SetUserRole/userRole_controller.dart';
 
-import '../../../Widgets/app_message.dart';
-import '../../../Widgets/custom_dialog.dart';
-import '../../../Widgets/custom_dropdown_button.dart';
-import '../../../Widgets/custom_text_form_field.dart';
+import '../../../models/contract_model.dart';
+import '../../../models/contract_type_model.dart';
+import '../../../models/job_role_model.dart';
+import '../../../models/salary_package_type_model.dart';
+import '../../../models/userRole_model.dart';
+import '../../../models/user_model.dart';
+import '../../../provider/contract_provider.dart';
+import '../../../provider/user_role_provider.dart';
 import '../../../server_helper/server_response.dart';
+import '../../../widgets/app_message.dart';
+import '../../../widgets/custom_dialog.dart';
+import '../../../widgets/custom_dropdown_button.dart';
+import '../../../widgets/custom_text_form_field.dart';
 
 class SetUserRole extends StatefulWidget {
   const SetUserRole({super.key});
