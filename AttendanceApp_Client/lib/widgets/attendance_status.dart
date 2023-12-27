@@ -4,13 +4,6 @@ import 'package:swimming_app_client/models/attendance_model.dart';
 import '../enums/attendance_description.dart';
 
 class AttendanceStatusWidget extends StatelessWidget {
-  final int index;
-  final List<AttendanceResponseModel>? attendList;
-  final List list;
-  final double? width;
-  final double? height;
-  final double? fontSize;
-
   const AttendanceStatusWidget({
     Key? key,
     required this.index,
@@ -21,6 +14,13 @@ class AttendanceStatusWidget extends StatelessWidget {
     this.fontSize = 14,
   }) : super(key: key);
 
+  final int index;
+  final List<AttendanceResponseModel>? attendList;
+  final List list;
+  final double? width;
+  final double? height;
+  final double? fontSize;
+
   String? _getAttendanceText() {
     for (var element in attendList!) {
       int? trainingDateId = element.trainingDateModel?.iD_TrainingDate;
@@ -30,10 +30,10 @@ class AttendanceStatusWidget extends StatelessWidget {
         return attDesc;
       }
     }
-    return 'Još nije zabilježen';
+    return 'Not yet submitted';
   }
 
-  Color _getStatusColor(String attendanceText) {
+  Color _getStatusColor(String attendanceText, BuildContext context) {
     if (attendanceText == AttendanceDescription.Accepted) {
       return Colors.green;
     } else if (attendanceText == AttendanceDescription.NotAccepted) {
@@ -43,14 +43,14 @@ class AttendanceStatusWidget extends StatelessWidget {
     } else if (attendanceText == AttendanceDescription.Sick) {
       return Colors.purple;
     } else {
-      return Colors.grey;
+      return Theme.of(context).colorScheme.onPrimary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     String? attendanceText = _getAttendanceText();
-    Color statusColor = _getStatusColor(attendanceText!);
+    Color statusColor = _getStatusColor(attendanceText!, context);
     double width = this.width ?? 180;
     double height = this.height ?? 35;
     double fontSize = this.fontSize ?? 14;

@@ -7,7 +7,6 @@ import 'package:swimming_app_client/provider/training_date_provider.dart';
 import 'package:swimming_app_client/widgets/attendance/attendance_info.dart';
 import 'package:swimming_app_client/widgets/attendance/filter_attendances.dart';
 import 'package:swimming_app_client/widgets/attendance/on_delete_attendance.dart';
-import 'package:swimming_app_client/widgets/attendance/on_swipe_right_attendance.dart';
 
 import '../../controllers/attendance_employee/attendance_employee_controller.dart';
 import '../../provider/attendance_provider.dart';
@@ -86,17 +85,16 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     }
   }
 
-  void _addNotSubmittedAttendance(
-      List<TrainingDateResponseModel> filteredList, int index) async {
+  Future<bool> _addNotSubmittedAttendance(
+      TrainingDateResponseModel item) async {
     AttendanceRequestModel attendanceRequestModel = AttendanceRequestModel();
     attendanceRequestModel.attDesc = valueStatus;
     attendanceRequestModel.type = "Some text";
     attendanceRequestModel.trainingModel?.iD_training =
-        filteredList[index].trainingModel?.ID_training;
-    attendanceRequestModel.userModel?.userId =
-        filteredList[index].userModel?.userId;
+        item.trainingModel?.ID_training;
+    attendanceRequestModel.userModel?.userId = item.userModel?.userId;
     attendanceRequestModel.trainingDateModel?.iD_TrainingDate =
-        filteredList[index].iD_TrainingDate;
+        item.iD_TrainingDate;
     List<UserRequestModel>? usersList = [];
     usersList.add(UserRequestModel());
     attendanceRequestModel.trainingDateModel?.userModelList = usersList;
@@ -106,11 +104,12 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
 
     if (response.isSuccessful) {
       AppMessage.showSuccessMessage(message: "Done!");
-      if (!mounted) return;
+      if (!mounted) return false;
       Navigator.pop(context);
-      setState(() {});
+      return true;
     } else {
       AppMessage.showErrorMessage(message: response.error);
+      return false;
     }
   }
 
@@ -195,38 +194,15 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     final result = await showDialog(
       context: context,
       builder: (context) {
-        if (direction == DismissDirection.endToStart) {
-          trainingsDatesForEmployeesList.remove(item);
-          return OnDeleteAttendance(
-            deleteAttendance: () async {
-              final isDeleted = await _deleteAttendance(item);
-              if (!mounted) return;
-              Navigator.pop(context, isDeleted);
-            },
-            item: item,
-          );
-        } else {
-          return OnSwipeRightAttendance(
-            filteredList: filteredList,
-            index: index,
-            addNotSubmittedAttendance: () => _addNotSubmittedAttendance(
-              filteredList,
-              index,
-            ),
-            valueStatus: valueStatus,
-            attendancesList: attendancesList,
-            attendanceDoesNotExist: _attendanceDoesNotExist(
-              index,
-              attendancesList,
-              list,
-            ),
-            onChanged: (String? newValue) {
-              setState(() {
-                valueStatus = newValue!;
-              });
-            },
-          );
-        }
+        trainingsDatesForEmployeesList.remove(item);
+        return OnDeleteAttendance(
+          deleteAttendance: () async {
+            final isDeleted = await _deleteAttendance(item);
+            if (!mounted) return;
+            Navigator.pop(context, isDeleted);
+          },
+          item: item,
+        );
       },
     );
 
@@ -306,8 +282,14 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                         itemBuilder: (context, index) {
                           return Dismissible(
                             key: UniqueKey(),
-                            secondaryBackground: Container(
-                              color: Colors.red,
+                            background: Container(
+                              margin: const EdgeInsets.all(5),
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                color: Colors.red,
+                              ),
                               child: const Align(
                                 alignment: Alignment.centerRight,
                                 child: Padding(
@@ -319,19 +301,7 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                                 ),
                               ),
                             ),
-                            background: Container(
-                              color: Colors.blue,
-                              child: const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 20.0),
-                                  child: Icon(
-                                    Icons.info_outline,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
                               _showDialogOnDismissed(
                                 trainingsDatesForEmployeesList,

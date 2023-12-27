@@ -119,4 +119,17 @@ class TrainingDateController {
     timeFrom.clear();
     timeTo.clear();
   }
+
+  DateTime? getCombinedDateTime(DateTime? selectedTimeFrom) {
+    DateTime currentDate = DateTime.now();
+    DateTime combinedDateTime = DateTime(
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
+      selectedTimeFrom!.hour,
+      selectedTimeFrom.minute,
+      selectedTimeFrom.second,
+    );
+    return combinedDateTime;
+  }
 }

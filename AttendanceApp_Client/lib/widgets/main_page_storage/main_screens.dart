@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/enums/current_tab.dart';
-import 'package:swimming_app_client/models/trainingDate_model.dart';
 import 'package:swimming_app_client/screens/attendance_member/attendance_member_screen.dart';
 
 import '../../enums/user_roles.dart';
@@ -24,23 +23,21 @@ class MainScreens extends StatefulWidget {
 }
 
 class _MainScreensState extends State<MainScreens> {
-  final PageStorageBucket bucket = PageStorageBucket();
-  TrainingDateResponseModel newTrainingDate = TrainingDateResponseModel();
-
-  IconData icon = Icons.add;
-  Widget currentScreen = const AttendanceMember();
+  final PageStorageBucket _bucket = PageStorageBucket();
+  final IconData _icon = Icons.add;
+  Widget _currentScreen = const AttendanceMember();
   bool _isAdmin = false;
-  bool buttonStatsEnables = true;
-  int currentTab = 0;
+  bool _buttonStatsEnabled = true;
+  int _currentTab = 0;
 
   void _getScreenByRole() {
     if (widget.decodedToken!["UserRoleId"] == UserRoles.Member) {
-      currentScreen = const AttendanceMember();
+      _currentScreen = const AttendanceMember();
       _isAdmin = false;
     } else if (widget.decodedToken!["UserRoleId"] == UserRoles.Employee ||
         widget.decodedToken!["UserRoleId"] == UserRoles.Admin ||
         widget.decodedToken!["UserRoleId"] == UserRoles.Moderator) {
-      currentScreen = const AttendanceEmployee(
+      _currentScreen = const AttendanceEmployee(
         newTrainingDate: [],
       );
       _isAdmin = true;
@@ -59,9 +56,9 @@ class _MainScreensState extends State<MainScreens> {
       if ((widget.decodedToken!["UserRoleId"] == UserRoles.Employee ||
               widget.decodedToken!["UserRoleId"] == UserRoles.Admin ||
               widget.decodedToken!["UserRoleId"] == UserRoles.Moderator) &&
-          currentTab == CurrentTab.attendance) {
+          _currentTab == CurrentTab.attendance) {
         setState(() {
-          currentScreen = AttendanceEmployee(
+          _currentScreen = AttendanceEmployee(
             newTrainingDate: result,
           );
         });
@@ -73,7 +70,7 @@ class _MainScreensState extends State<MainScreens> {
     if (_isAdmin) {
       _openAddNewAttendanceOverlay();
       setState(() {
-        buttonStatsEnables = true;
+        _buttonStatsEnabled = true;
       });
     } else {
       showDialog(
@@ -99,38 +96,38 @@ class _MainScreensState extends State<MainScreens> {
   void _attendanceScreen() {
     if (widget.decodedToken!["UserRoleId"] == UserRoles.Member) {
       setState(() {
-        buttonStatsEnables = true;
-        currentScreen = const AttendanceMember();
-        currentTab = CurrentTab.attendance;
+        _buttonStatsEnabled = true;
+        _currentScreen = const AttendanceMember();
+        _currentTab = CurrentTab.attendance;
       });
     } else if (widget.decodedToken!["UserRoleId"] == UserRoles.Employee ||
         widget.decodedToken!["UserRoleId"] == UserRoles.Admin ||
         widget.decodedToken!["UserRoleId"] == UserRoles.Moderator) {
       setState(() {
-        buttonStatsEnables = true;
-        currentScreen = const AttendanceEmployee(
+        _buttonStatsEnabled = true;
+        _currentScreen = const AttendanceEmployee(
           newTrainingDate: [],
         );
-        currentTab = CurrentTab.attendance;
+        _currentTab = CurrentTab.attendance;
       });
     }
   }
 
   void _myStatsScreen() {
-    if (buttonStatsEnables) {
+    if (_buttonStatsEnabled) {
       setState(() {
-        buttonStatsEnables = false;
-        currentScreen = const MyStats();
-        currentTab = CurrentTab.myStats;
+        _buttonStatsEnabled = false;
+        _currentScreen = const MyStats();
+        _currentTab = CurrentTab.myStats;
       });
     }
   }
 
   void _profileScreen() {
     setState(() {
-      currentScreen = const Profile();
-      currentTab = CurrentTab.profile;
-      buttonStatsEnables = true;
+      _currentScreen = const Profile();
+      _currentTab = CurrentTab.profile;
+      _buttonStatsEnabled = true;
     });
   }
 
@@ -165,16 +162,16 @@ class _MainScreensState extends State<MainScreens> {
           children: [
             Icon(
               icon,
-              color: currentTab == currentTabEnum
-                  ? Theme.of(context).colorScheme.onPrimary
-                  : Theme.of(context).colorScheme.onSecondary,
+              color: _currentTab == currentTabEnum
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onPrimary,
             ),
             Text(
               labelText,
               style: TextStyle(
-                color: currentTab == currentTabEnum
-                    ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.onSecondary,
+                color: _currentTab == currentTabEnum
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onSecondaryContainer,
               ),
             )
           ],
@@ -191,9 +188,9 @@ class _MainScreensState extends State<MainScreens> {
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: PageStorage(
-              key: PageStorageKey(currentTab),
-              bucket: bucket,
-              child: currentScreen,
+              key: PageStorageKey(_currentTab),
+              bucket: _bucket,
+              child: _currentScreen,
             ),
             floatingActionButton: Visibility(
               child: FloatingActionButton(
@@ -201,7 +198,7 @@ class _MainScreensState extends State<MainScreens> {
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 onPressed: _canUserAddNewAttendance,
                 child: Icon(
-                  icon,
+                  _icon,
                   color: Theme.of(context).colorScheme.onSecondary,
                 ),
               ),
@@ -209,7 +206,7 @@ class _MainScreensState extends State<MainScreens> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomAppBar(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onSecondary,
               shape: const CircularNotchedRectangle(),
               notchMargin: 10,
               child: SizedBox(

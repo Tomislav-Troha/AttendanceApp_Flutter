@@ -21,29 +21,24 @@ class AttendanceMember extends StatefulWidget {
 }
 
 class _AttendanceMember extends State<AttendanceMember> {
-  late TrainingDateProvider trainingDateProvider = TrainingDateProvider();
-  late AttendanceProvider attendanceProvider = AttendanceProvider();
+  final TrainingDateProvider _trainingDateProvider = TrainingDateProvider();
+  final AttendanceProvider _attendanceProvider = AttendanceProvider();
 
-  late List<AttendanceResponseModel> myAttendancesList;
-  List<TrainingDateResponseModel>? trainingDates;
-  late Future<List<TrainingResponseModel>> trainingsForEmployees;
+  late List<AttendanceResponseModel> _myAttendancesList;
+  List<TrainingDateResponseModel>? _trainingDates;
+  late Future<List<TrainingResponseModel>> _trainingsForEmployees;
 
-  bool isEmployee = false;
-  bool isSubmitted = false;
   bool _showAttendances = false;
-  bool isPressed = false;
-  bool isCurrentDate = true;
+  bool _isCurrentDate = true;
 
-  bool isAttendanceAddedLate = false;
+  DateTime? _currentDate;
 
-  DateTime? currentDate;
+  List<AttendanceResponseModel>? _attendanceList;
 
-  List<AttendanceResponseModel>? attendanceList;
-
-  void initializeAttendanceList() async {
-    ServerResponse allMyAttendances = await attendanceProvider.getAttendance();
+  void _getAttendances() async {
+    ServerResponse allMyAttendances = await _attendanceProvider.getAttendance();
     if (allMyAttendances.isSuccessful) {
-      myAttendancesList = allMyAttendances.result
+      _myAttendancesList = allMyAttendances.result
           .cast<AttendanceResponseModel>() as List<AttendanceResponseModel>;
     } else {
       AppMessage.showErrorMessage(
@@ -51,24 +46,24 @@ class _AttendanceMember extends State<AttendanceMember> {
     }
   }
 
-  void getTrainingDates() async {
-    if (isCurrentDate) {
-      currentDate = DateTime.now().toLocal();
+  void _getTrainingDates() async {
+    if (_isCurrentDate) {
+      _currentDate = DateTime.now().toLocal();
       ServerResponse allTrainingDatesByUser =
-          await trainingDateProvider.getTrainingDate(currentDate);
+          await _trainingDateProvider.getTrainingDate(_currentDate);
       if (allTrainingDatesByUser.isSuccessful) {
-        trainingDates =
+        _trainingDates =
             allTrainingDatesByUser.result.cast<TrainingDateResponseModel>();
       } else {
         AppMessage.showErrorMessage(
             message: allTrainingDatesByUser.error.toString(), duration: 5);
       }
     } else {
-      currentDate = null;
+      _currentDate = null;
       ServerResponse allTrainingDatesByUser =
-          await trainingDateProvider.getTrainingDate(currentDate);
+          await _trainingDateProvider.getTrainingDate(_currentDate);
       if (allTrainingDatesByUser.isSuccessful) {
-        trainingDates =
+        _trainingDates =
             allTrainingDatesByUser.result.cast<TrainingDateResponseModel>();
       } else {
         AppMessage.showErrorMessage(
@@ -79,9 +74,9 @@ class _AttendanceMember extends State<AttendanceMember> {
 
   @override
   void initState() {
-    getTrainingDates();
+    _getTrainingDates();
 
-    initializeAttendanceList();
+    _getAttendances();
 
     super.initState();
   }
@@ -112,7 +107,12 @@ class _AttendanceMember extends State<AttendanceMember> {
                                 color: Colors.blueAccent)
                             : const Icon(Icons.check_box_outline_blank,
                                 color: Colors.blueAccent),
-                        const Text("Zabilježeni dolasci"),
+                        Text(
+                          "Submitted attendances",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
                       ],
                     )),
                 PopupMenuItem<int>(
@@ -120,12 +120,12 @@ class _AttendanceMember extends State<AttendanceMember> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        isCurrentDate
+                        _isCurrentDate
                             ? const Icon(Icons.check_box,
                                 color: Colors.blueAccent)
                             : const Icon(Icons.check_box_outline_blank,
                                 color: Colors.blueAccent),
-                        const Text("Samo današnji treninzi"),
+                        const Text("Just today trainings"),
                       ],
                     )),
               ];
@@ -136,23 +136,28 @@ class _AttendanceMember extends State<AttendanceMember> {
                 });
               } else if (value == 1) {
                 setState(() {
-                  isCurrentDate = !isCurrentDate;
-                  getTrainingDates();
+                  _isCurrentDate = !_isCurrentDate;
+                  _getTrainingDates();
                 });
               }
             })
           ],
-          title: const Text("Moji dolasci"),
+          title: const Text("My attendances"),
           automaticallyImplyLeading: false,
         ),
         body: Center(
           child: FutureBuilder(
-            future: trainingDateProvider.getTrainingDate(currentDate),
+            future: _trainingDateProvider.getTrainingDate(_currentDate),
             builder: (context, future) {
               if (!future.hasData) {
                 return const CircularProgressIndicator();
               } else if (future.data!.result.isEmpty) {
-                return const Text("Nemaš nadolezećih termina");
+                return Text(
+                  "You don't have incoming trainings",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                );
               } else {
                 List<TrainingDateResponseModel>? list =
                     future.data!.result.cast<TrainingDateResponseModel>();
@@ -162,20 +167,22 @@ class _AttendanceMember extends State<AttendanceMember> {
                     return GestureDetector(
                       onTap: () {
                         ScreenNavigator.navigateToScreen(
-                            context,
-                            SubmitAttendance(
-                              trainingDateResponse: list,
-                              attendanceResponse: myAttendancesList,
-                              index: index,
-                            ));
+                          context,
+                          SubmitAttendance(
+                            trainingDateResponse: list,
+                            attendanceResponse: _myAttendancesList,
+                            index: index,
+                          ),
+                        );
                       },
                       onLongPress: () {},
                       child: Visibility(
-                          child: AttendanceInfo(
-                        filteredList: list,
-                        attendancesList: myAttendancesList,
-                        index: index,
-                      )),
+                        child: AttendanceInfo(
+                          filteredList: list,
+                          attendancesList: _myAttendancesList,
+                          index: index,
+                        ),
+                      ),
                     );
                   },
                 );

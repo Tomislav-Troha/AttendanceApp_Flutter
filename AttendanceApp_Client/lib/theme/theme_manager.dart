@@ -35,8 +35,8 @@ ThemeData themeLight = ThemeData(
   ),
 );
 
-Color darkPrimaryColor = HexColor("76d1ff");
-Color darkBackgroundColor = HexColor("004c69");
+Color darkPrimaryColor = HexColor("004266");
+Color darkBackgroundColor = HexColor("002133");
 
 ThemeData themeDark = ThemeData(
   textTheme: GoogleFonts.poppinsTextTheme(),

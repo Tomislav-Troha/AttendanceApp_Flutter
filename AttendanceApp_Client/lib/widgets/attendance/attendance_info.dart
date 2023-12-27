@@ -19,6 +19,7 @@ class AttendanceInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).colorScheme.onSecondary,
       elevation: 3,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -34,11 +35,10 @@ class AttendanceInfo extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "${filteredList[index].trainingModel!.trainingType} ${DateFormat('dd-MM-yyyy').format(filteredList[index].dates!.toLocal())}",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary),
                   ),
                   const SizedBox(
                     height: 8.0,
@@ -50,10 +50,9 @@ class AttendanceInfo extends StatelessWidget {
                       const SizedBox(width: 8.0),
                       Text(
                         "${DateFormat('HH:mm').format(filteredList[index].timeFrom!.toLocal())} - ${DateFormat('HH:mm').format(filteredList[index].timeTo!.toLocal())}",
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ],
                   ),
@@ -72,8 +71,10 @@ class AttendanceInfo extends StatelessWidget {
               foregroundColor: Colors.white,
               child: Text(
                 "${filteredList[index].userModel!.name!.substring(0, 1)}${filteredList[index].userModel!.surname!.substring(0, 1)}",
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

@@ -32,10 +32,9 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
 
   List<TrainingResponseModel> _trainings = [];
 
-  late List<UserResponseModel> usersByMember;
-  late MemberAdminProvider memberAdminProvider = MemberAdminProvider();
-  late TrainingDateProvider trainingDateProvider = TrainingDateProvider();
-  late TrainingProvider trainingProvider = TrainingProvider();
+  final MemberAdminProvider _memberAdminProvider = MemberAdminProvider();
+  final TrainingDateProvider _trainingDateProvider = TrainingDateProvider();
+  final TrainingProvider _trainingProvider = TrainingProvider();
   List<UserResponseModel> _userList = [];
 
   TrainingResponseModel? _valueTraining;
@@ -44,7 +43,7 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
   bool _trainingsAreLoading = false;
 
   void _getUsersByMember() async {
-    ServerResponse userByMember = await memberAdminProvider.getUserByMember();
+    ServerResponse userByMember = await _memberAdminProvider.getUserByMember();
     if (userByMember.isSuccessful) {
       _userList = userByMember.result.cast<UserResponseModel>()
           as List<UserResponseModel>;
@@ -57,7 +56,8 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
     setState(() {
       _trainingsAreLoading = true;
     });
-    ServerResponse trainingsResponse = await trainingProvider.getTraining(null);
+    ServerResponse trainingsResponse =
+        await _trainingProvider.getTraining(null);
     if (trainingsResponse.isSuccessful) {
       _trainings = trainingsResponse.result.cast<TrainingResponseModel>()
           as List<TrainingResponseModel>;
@@ -83,7 +83,7 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
       }
 
       ServerResponse response =
-          await trainingDateProvider.addTrainingDate(_controller.requestModel);
+          await _trainingDateProvider.addTrainingDate(_controller.requestModel);
       if (response.isSuccessful) {
         if (!mounted) return;
 
@@ -172,13 +172,9 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
                 ),
                 CustomTextFormField(
                   validate: (trainingDate) {
-                    if (trainingDate == null || trainingDate.isEmpty) {
-                      return "Please pick a date of a training";
-                    }
-                    if (_controller.parseDate(trainingDate) == null ||
-                        _controller
-                            .parseDate(trainingDate)!
-                            .isBefore(DateTime.now())) {
+                    if (trainingDate == null ||
+                        trainingDate.isEmpty ||
+                        _controller.parseDate(trainingDate) == null) {
                       return "Please select a date";
                     }
                     return null;
@@ -213,6 +209,8 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
                       setState(() {
                         _controller.timeFrom.text =
                             DateFormat("HH:mm:ss").format(_selectedTimeFrom!);
+                        _controller.requestModel.timeFrom =
+                            _controller.getCombinedDateTime(_selectedTimeFrom);
                       });
                     }
                   },
@@ -237,6 +235,8 @@ class _AddTrainingDateScreenState extends State<AddTrainingDateScreen> {
                       setState(() {
                         _controller.timeTo.text =
                             DateFormat("HH:mm:ss").format(_selectedTimeTo!);
+                        _controller.requestModel.timeTo =
+                            _controller.getCombinedDateTime(_selectedTimeTo);
                       });
                     }
                   },
