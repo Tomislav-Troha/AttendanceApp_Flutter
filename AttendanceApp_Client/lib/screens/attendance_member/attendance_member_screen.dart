@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/widgets/attendance/attendance_info.dart';
+import 'package:swimming_app_client/widgets/drawer/drawer_main.dart';
 
 import '../../models/attendance_model.dart';
 import '../../models/trainingDate_model.dart';
@@ -24,12 +25,13 @@ class _AttendanceMember extends State<AttendanceMember> {
   final TrainingDateProvider _trainingDateProvider = TrainingDateProvider();
   final AttendanceProvider _attendanceProvider = AttendanceProvider();
 
+  late Future<ServerResponse> _trainingDatesFuture;
+
   late List<AttendanceResponseModel> _myAttendancesList;
   List<TrainingDateResponseModel>? _trainingDates;
   late Future<List<TrainingResponseModel>> _trainingsForEmployees;
 
-  bool _showAttendances = false;
-  bool _isCurrentDate = true;
+  final bool _isCurrentDate = true;
 
   DateTime? _currentDate;
 
@@ -72,13 +74,25 @@ class _AttendanceMember extends State<AttendanceMember> {
     }
   }
 
+  void _navigateToAttendanceDetails(
+      TrainingDateResponseModel trainingDateResponse) {
+    ScreenNavigator.navigateToScreen(
+      context,
+      SubmitAttendance(
+        trainingDateResponse: trainingDateResponse,
+        attendanceResponse: _myAttendancesList,
+      ),
+    );
+  }
+
   @override
   void initState() {
+    super.initState();
     _getTrainingDates();
 
     _getAttendances();
 
-    super.initState();
+    _trainingDatesFuture = _trainingDateProvider.getTrainingDate(_currentDate);
   }
 
   @override
@@ -89,106 +103,48 @@ class _AttendanceMember extends State<AttendanceMember> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: double.infinity,
-      child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            PopupMenuButton(itemBuilder: (context) {
-              return [
-                PopupMenuItem<int>(
-                    value: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        _showAttendances
-                            ? const Icon(Icons.check_box,
-                                color: Colors.blueAccent)
-                            : const Icon(Icons.check_box_outline_blank,
-                                color: Colors.blueAccent),
-                        Text(
-                          "Submitted attendances",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                        ),
-                      ],
-                    )),
-                PopupMenuItem<int>(
-                    value: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        _isCurrentDate
-                            ? const Icon(Icons.check_box,
-                                color: Colors.blueAccent)
-                            : const Icon(Icons.check_box_outline_blank,
-                                color: Colors.blueAccent),
-                        const Text("Just today trainings"),
-                      ],
-                    )),
-              ];
-            }, onSelected: (value) {
-              if (value == 0) {
-                setState(() {
-                  _showAttendances = !_showAttendances;
-                });
-              } else if (value == 1) {
-                setState(() {
-                  _isCurrentDate = !_isCurrentDate;
-                  _getTrainingDates();
-                });
-              }
-            })
-          ],
-          title: const Text("My attendances"),
-          automaticallyImplyLeading: false,
-        ),
-        body: Center(
-          child: FutureBuilder(
-            future: _trainingDateProvider.getTrainingDate(_currentDate),
-            builder: (context, future) {
-              if (!future.hasData) {
-                return const CircularProgressIndicator();
-              } else if (future.data!.result.isEmpty) {
-                return Text(
-                  "You don't have incoming trainings",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                );
-              } else {
-                List<TrainingDateResponseModel>? list =
-                    future.data!.result.cast<TrainingDateResponseModel>();
-                return ListView.builder(
-                  itemCount: list!.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        ScreenNavigator.navigateToScreen(
-                          context,
-                          SubmitAttendance(
-                            trainingDateResponse: list,
-                            attendanceResponse: _myAttendancesList,
-                            index: index,
-                          ),
-                        );
-                      },
-                      onLongPress: () {},
-                      child: Visibility(
-                        child: AttendanceInfo(
-                          filteredList: list,
-                          attendancesList: _myAttendancesList,
-                          index: index,
-                        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("My attendances"),
+      ),
+      drawer: DrawerMain(
+        onSelectedScreen: (value) {},
+      ),
+      body: Center(
+        child: FutureBuilder(
+          future: _trainingDatesFuture,
+          builder: (context, future) {
+            if (!future.hasData) {
+              return const CircularProgressIndicator();
+            } else if (future.data!.result.isEmpty) {
+              return Text(
+                "You don't have incoming trainings",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              );
+            } else {
+              List<TrainingDateResponseModel>? list =
+                  future.data!.result.cast<TrainingDateResponseModel>();
+              return ListView.builder(
+                itemCount: list!.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      _navigateToAttendanceDetails(list[index]);
+                    },
+                    child: Visibility(
+                      child: AttendanceInfo(
+                        filteredList: list,
+                        attendancesList: _myAttendancesList,
+                        index: index,
                       ),
-                    );
-                  },
-                );
-              }
-            },
-          ),
+                    ),
+                  );
+                },
+              );
+            }
+          },
         ),
       ),
     );

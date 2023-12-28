@@ -133,7 +133,8 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     }).toList();
   }
 
-  Future<bool> _deleteAttendance(TrainingDateResponseModel trainingDate) async {
+  Future<bool> _deleteAttendance(
+      TrainingDateResponseModel trainingDate, int index) async {
     ServerResponse response = await trainingDateProvider.deleteTrainingDate(
       trainingDate.iD_TrainingDate!,
     );
@@ -145,6 +146,12 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
         context: context,
       );
       return true;
+    } else if (response.error != null &&
+        response.error!.contains("This training date is already submitted")) {
+      setState(() {
+        trainingsDatesForEmployeesList.insert(index, trainingDate);
+      });
+      return false;
     } else {
       if (!mounted) return false;
       AppMessage.showErrorMessage(
@@ -197,7 +204,7 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
         trainingsDatesForEmployeesList.remove(item);
         return OnDeleteAttendance(
           deleteAttendance: () async {
-            final isDeleted = await _deleteAttendance(item);
+            final isDeleted = await _deleteAttendance(item, index);
             if (!mounted) return;
             Navigator.pop(context, isDeleted);
           },

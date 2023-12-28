@@ -39,10 +39,10 @@ class TrainingDateProvider {
     var serverResponse = ServerResponse(response);
 
     if (serverResponse.isSuccessful) {
-      serverResponse.result = "Training Date deleted successfully";
+      serverResponse.result = "Training date deleted successfully";
     } else {
       if (serverResponse.error!.contains("error: 23503")) {
-        serverResponse.error = "Training Date cannot be deleted";
+        serverResponse.error = "This training date is already submitted";
       } else {
         serverResponse.error =
             "Error while deleting training date ${serverResponse.error}";
