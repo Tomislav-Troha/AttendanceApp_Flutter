@@ -15,7 +15,7 @@ class FilterAttendances extends StatelessWidget {
     required this.onTap,
   });
 
-  final AttendanceEmplyoeeController controller;
+  final AttendanceEmployeeController controller;
   final void Function() onPressed;
   final void Function() pickDate;
   final void Function() clearFilter;

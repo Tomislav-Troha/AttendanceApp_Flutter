@@ -48,8 +48,8 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
 
   List<UserResponseModel> _valueMember = [];
 
-  final AttendanceEmplyoeeController _controller =
-      AttendanceEmplyoeeController();
+  final AttendanceEmployeeController _controller =
+      AttendanceEmployeeController();
 
   List<String> searchTerm = [];
 
@@ -246,6 +246,13 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
     super.initState();
 
     _initData();
+  }
+
+  @override
+  void dispose() {
+    _controller.members.dispose();
+    _controller.date.dispose();
+    super.dispose();
   }
 
   @override

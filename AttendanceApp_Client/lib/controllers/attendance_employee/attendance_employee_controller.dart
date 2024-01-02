@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class AttendanceEmplyoeeController extends GetxController {
+class AttendanceEmployeeController {
   var date = TextEditingController();
   var members = TextEditingController();
-  var currentDate;
-
-  @override
-  void onInit() {
-    date = TextEditingController(text: "");
-    members = TextEditingController(text: "");
-    currentDate = null;
-    super.onInit();
-  }
 
   DateTime? selectedDate;
   Future<DateTime?> selectDate(BuildContext context) async {
@@ -26,5 +16,6 @@ class AttendanceEmplyoeeController extends GetxController {
       date.text = DateFormat("dd-MM-yyyy").format(picked);
       return picked;
     }
+    return null;
   }
 }

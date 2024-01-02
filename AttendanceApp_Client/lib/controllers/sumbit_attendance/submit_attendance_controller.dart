@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:swimming_app_client/models/attendance_model.dart';
 
-class SubmitAttendanceController extends GetxController {
+import '../../models/user_model.dart';
+
+class SubmitAttendanceController {
   late AttendanceRequestModel requestModel = AttendanceRequestModel();
   late AttendanceResponseModel responseModel = AttendanceResponseModel();
 
@@ -13,20 +14,16 @@ class SubmitAttendanceController extends GetxController {
   var userID = TextEditingController();
   var trainingDateID = TextEditingController();
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void onInit() {
-    id_attendance = TextEditingController(text: "");
-    attDesc = TextEditingController(text: "");
-    type = TextEditingController(text: "");
-    trainingID = TextEditingController(text: "");
-    userID = TextEditingController(text: "");
-    trainingDateID = TextEditingController(text: "");
-
-    super.onInit();
+  void addMemberToRequestModel(AttendanceRequestModel requestModel) {
+    requestModel.trainingDateModel!.userModelList!.add(
+      UserRequestModel(
+        userId: requestModel.userModel!.userId,
+        addres: "",
+        email: requestModel.userModel!.email,
+        name: requestModel.userModel!.name,
+        surname: requestModel.userModel!.surname,
+        userRoleID: requestModel.userModel!.userRoleID,
+      ),
+    );
   }
 }

@@ -4,13 +4,12 @@ import 'package:swimming_app_client/widgets/drawer/drawer_main.dart';
 
 import '../../models/attendance_model.dart';
 import '../../models/trainingDate_model.dart';
-import '../../models/training_model.dart';
 import '../../provider/attendance_provider.dart';
 import '../../provider/training_date_provider.dart';
 import '../../server_helper/server_response.dart';
 import '../../widgets/app_message.dart';
 import '../../widgets/screen_navigator.dart';
-import '../attendance/submit_attendance.dart';
+import '../submit_attendance/submit_attendance_screen.dart';
 
 class AttendanceMember extends StatefulWidget {
   const AttendanceMember({
@@ -28,14 +27,8 @@ class _AttendanceMember extends State<AttendanceMember> {
   late Future<ServerResponse> _trainingDatesFuture;
 
   late List<AttendanceResponseModel> _myAttendancesList;
-  List<TrainingDateResponseModel>? _trainingDates;
-  late Future<List<TrainingResponseModel>> _trainingsForEmployees;
-
-  final bool _isCurrentDate = true;
 
   DateTime? _currentDate;
-
-  List<AttendanceResponseModel>? _attendanceList;
 
   void _getAttendances() async {
     ServerResponse allMyAttendances = await _attendanceProvider.getAttendance();
@@ -48,37 +41,11 @@ class _AttendanceMember extends State<AttendanceMember> {
     }
   }
 
-  void _getTrainingDates() async {
-    if (_isCurrentDate) {
-      _currentDate = DateTime.now().toLocal();
-      ServerResponse allTrainingDatesByUser =
-          await _trainingDateProvider.getTrainingDate(_currentDate);
-      if (allTrainingDatesByUser.isSuccessful) {
-        _trainingDates =
-            allTrainingDatesByUser.result.cast<TrainingDateResponseModel>();
-      } else {
-        AppMessage.showErrorMessage(
-            message: allTrainingDatesByUser.error.toString(), duration: 5);
-      }
-    } else {
-      _currentDate = null;
-      ServerResponse allTrainingDatesByUser =
-          await _trainingDateProvider.getTrainingDate(_currentDate);
-      if (allTrainingDatesByUser.isSuccessful) {
-        _trainingDates =
-            allTrainingDatesByUser.result.cast<TrainingDateResponseModel>();
-      } else {
-        AppMessage.showErrorMessage(
-            message: allTrainingDatesByUser.error.toString(), duration: 5);
-      }
-    }
-  }
-
   void _navigateToAttendanceDetails(
       TrainingDateResponseModel trainingDateResponse) {
     ScreenNavigator.navigateToScreen(
       context,
-      SubmitAttendance(
+      SubmitAttendanceScreen(
         trainingDateResponse: trainingDateResponse,
         attendanceResponse: _myAttendancesList,
       ),
@@ -88,8 +55,6 @@ class _AttendanceMember extends State<AttendanceMember> {
   @override
   void initState() {
     super.initState();
-    _getTrainingDates();
-
     _getAttendances();
 
     _trainingDatesFuture = _trainingDateProvider.getTrainingDate(_currentDate);
