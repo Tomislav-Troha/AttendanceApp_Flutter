@@ -325,9 +325,8 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
                               );
                             },
                             child: AttendanceInfo(
-                              filteredList: trainingsDatesForEmployeesList,
+                              training: trainingsDatesForEmployeesList[index],
                               attendancesList: attendancesList,
-                              index: index,
                             ),
                           );
                         },

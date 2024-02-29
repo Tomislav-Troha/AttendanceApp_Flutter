@@ -92,4 +92,11 @@ class TrainingTimeUtils {
       };
     }
   }
+
+  static DateTime getDateTimeFrom(DateTime date, DateTime timeFrom) {
+    DateTime dateTimeFrom = DateTime(date.year, date.month, date.day,
+        timeFrom.hour, timeFrom.minute, timeFrom.second);
+
+    return dateTimeFrom;
+  }
 }

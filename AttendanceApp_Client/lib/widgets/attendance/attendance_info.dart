@@ -6,15 +6,14 @@ import '../../models/attendance_model.dart';
 import '../../models/trainingDate_model.dart';
 
 class AttendanceInfo extends StatelessWidget {
-  const AttendanceInfo(
-      {super.key,
-      required this.filteredList,
-      required this.attendancesList,
-      required this.index});
+  const AttendanceInfo({
+    super.key,
+    required this.training,
+    required this.attendancesList,
+  });
 
-  final List<TrainingDateResponseModel> filteredList;
+  final TrainingDateResponseModel training;
   final List<AttendanceResponseModel> attendancesList;
-  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class AttendanceInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "${filteredList[index].trainingModel!.trainingType} ${DateFormat('dd-MM-yyyy').format(filteredList[index].dates!.toLocal())}",
+                    "${training.trainingModel!.trainingType} ${DateFormat('dd-MM-yyyy').format(training.dates!.toLocal())}",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -49,7 +48,7 @@ class AttendanceInfo extends StatelessWidget {
                           size: 16, color: Colors.grey),
                       const SizedBox(width: 8.0),
                       Text(
-                        "${DateFormat('HH:mm').format(filteredList[index].timeFrom!.toLocal())} - ${DateFormat('HH:mm').format(filteredList[index].timeTo!.toLocal())}",
+                        "${DateFormat('HH:mm').format(training.timeFrom!.toLocal())} - ${DateFormat('HH:mm').format(training.timeTo!.toLocal())}",
                         style: TextStyle(
                             fontSize: 14.0,
                             color: Theme.of(context).colorScheme.onPrimary),
@@ -58,9 +57,8 @@ class AttendanceInfo extends StatelessWidget {
                   ),
                   const SizedBox(height: 16.0),
                   AttendanceStatusWidget(
-                    index: index,
                     attendList: attendancesList,
-                    list: filteredList,
+                    training: training,
                   ),
                 ],
               ),
@@ -70,7 +68,7 @@ class AttendanceInfo extends StatelessWidget {
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
               child: Text(
-                "${filteredList[index].userModel!.name!.substring(0, 1)}${filteredList[index].userModel!.surname!.substring(0, 1)}",
+                "${training.userModel!.name!.substring(0, 1)}${training.userModel!.surname!.substring(0, 1)}",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

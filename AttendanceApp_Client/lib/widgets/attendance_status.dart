@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:swimming_app_client/models/attendance_model.dart';
+import 'package:swimming_app_client/widgets/training_time_utils.dart';
 
 import '../enums/attendance_description.dart';
+import '../models/trainingDate_model.dart';
 
 class AttendanceStatusWidget extends StatelessWidget {
   const AttendanceStatusWidget({
     Key? key,
-    required this.index,
     required this.attendList,
-    required this.list,
+    required this.training,
     this.height,
     this.width,
     this.fontSize = 14,
   }) : super(key: key);
 
-  final int index;
   final List<AttendanceResponseModel>? attendList;
-  final List list;
+  final TrainingDateResponseModel training;
   final double? width;
   final double? height;
   final double? fontSize;
@@ -26,11 +26,19 @@ class AttendanceStatusWidget extends StatelessWidget {
       int? trainingDateId = element.trainingDateModel?.iD_TrainingDate;
       String? attDesc = element.attDesc;
 
-      if (trainingDateId == list[index].iD_TrainingDate) {
+      if (trainingDateId == training.iD_TrainingDate) {
         return attDesc;
       }
     }
-    return 'Not yet submitted';
+
+    DateTime timeFrom =
+        TrainingTimeUtils.getDateTimeFrom(training.dates!, training.timeFrom!);
+    if (timeFrom.isAfter(DateTime.now())) {
+      Duration waitTime = timeFrom.difference(DateTime.now());
+      return "Starts in ${waitTime.inHours} hours";
+    }
+
+    return 'Expired';
   }
 
   Color _getStatusColor(String attendanceText, BuildContext context) {
@@ -42,8 +50,10 @@ class AttendanceStatusWidget extends StatelessWidget {
       return Colors.orange;
     } else if (attendanceText == AttendanceDescription.Sick) {
       return Colors.purple;
+    } else if (attendanceText.contains("Starts in")) {
+      return Colors.greenAccent;
     } else {
-      return Theme.of(context).colorScheme.onPrimary;
+      return Theme.of(context).colorScheme.error;
     }
   }
 

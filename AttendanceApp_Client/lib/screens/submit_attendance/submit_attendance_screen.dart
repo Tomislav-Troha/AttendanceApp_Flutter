@@ -77,15 +77,12 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
 
   void _submitAttendance() async {
     if (_isInTime) {
-      if (_userIsLateForAttendance) {
-        _controller.requestModel.attDesc =
-            AttendanceDescription.AcceptedWithLate;
-        _controller.requestModel.type =
-            "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes";
-      } else {
-        _controller.requestModel.attDesc = AttendanceDescription.Accepted;
-        _controller.requestModel.type = "On time";
-      }
+      _controller.requestModel.attDesc = _userIsLateForAttendance
+          ? AttendanceDescription.AcceptedWithLate
+          : AttendanceDescription.Accepted;
+      _controller.requestModel.type = _userIsLateForAttendance
+          ? "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes"
+          : "On time";
       _controller.requestModel.trainingModel?.iD_training =
           widget.trainingDateResponse.trainingModel?.ID_training;
       _controller.requestModel.userModel?.userId =

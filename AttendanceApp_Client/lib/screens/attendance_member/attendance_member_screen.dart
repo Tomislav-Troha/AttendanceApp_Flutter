@@ -28,6 +28,8 @@ class _AttendanceMember extends State<AttendanceMember> {
 
   late List<AttendanceResponseModel> _myAttendancesList;
 
+  List<TrainingDateResponseModel>? trainingList;
+
   DateTime? _currentDate;
 
   void _getAttendances() async {
@@ -81,7 +83,7 @@ class _AttendanceMember extends State<AttendanceMember> {
           builder: (context, future) {
             if (!future.hasData) {
               return const CircularProgressIndicator();
-            } else if (future.data!.result.isEmpty) {
+            } else if (future.data?.result.isEmpty) {
               return Text(
                 "You don't have incoming trainings",
                 style: TextStyle(
@@ -89,20 +91,19 @@ class _AttendanceMember extends State<AttendanceMember> {
                 ),
               );
             } else {
-              List<TrainingDateResponseModel>? list =
+              trainingList =
                   future.data!.result.cast<TrainingDateResponseModel>();
               return ListView.builder(
-                itemCount: list!.length,
+                itemCount: trainingList!.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      _navigateToAttendanceDetails(list[index]);
+                      _navigateToAttendanceDetails(trainingList![index]);
                     },
                     child: Visibility(
                       child: AttendanceInfo(
-                        filteredList: list,
+                        training: trainingList![index],
                         attendancesList: _myAttendancesList,
-                        index: index,
                       ),
                     ),
                   );
