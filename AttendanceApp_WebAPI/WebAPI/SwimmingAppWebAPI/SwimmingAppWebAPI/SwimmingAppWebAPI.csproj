@@ -8,20 +8,21 @@
     <Compile Remove="Controllers\WeatherForecastController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.4.0" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost" Version="5.2.9" />
     <PackageReference Include="Npgsql" Version="7.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
     <PackageReference Include="Octopus.Client" Version="14.2.319" />
     <PackageReference Include="Swashbuckle" Version="5.6.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SwimmingApp.Abstract\SwimmingApp.Abstract.csproj" />
