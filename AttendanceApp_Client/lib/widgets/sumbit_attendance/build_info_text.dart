@@ -20,10 +20,11 @@ class InfoText extends StatelessWidget {
       padding: const EdgeInsets.all(defaultPadding),
       child: Text(
         text,
+        textAlign: TextAlign.center,
         textScaleFactor: scale,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
+            color: Theme.of(context).colorScheme.onSecondary,
+            fontWeight: FontWeight.bold),
       ),
     );
   }

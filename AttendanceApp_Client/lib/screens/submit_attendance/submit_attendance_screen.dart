@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:swimming_app_client/constants.dart';
 import 'package:swimming_app_client/controllers/sumbit_attendance/submit_attendance_controller.dart';
 import 'package:swimming_app_client/enums/attendance_description.dart';
+import 'package:swimming_app_client/widgets/sumbit_attendance/submit_attendance_info.dart';
 
 import '../../models/attendance_model.dart';
 import '../../models/trainingDate_model.dart';
@@ -12,7 +12,6 @@ import '../../provider/attendance_provider.dart';
 import '../../provider/training_date_provider.dart';
 import '../../server_helper/server_response.dart';
 import '../../widgets/app_message.dart';
-import '../../widgets/sumbit_attendance/build_info_text.dart';
 import '../../widgets/training_time_utils.dart';
 
 class SubmitAttendanceScreen extends StatefulWidget {
@@ -44,12 +43,15 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
   final SubmitAttendanceController _controller = SubmitAttendanceController();
 
   late bool _isInTime = false;
+  late bool _isEarly = false;
   final bool _userIsLateForAttendance = false;
   late bool _isAttendanceCompleted = false;
 
   String _lateDays = "";
   String _lateHours = "";
   String _lateMinutes = "";
+
+  String _earlyHours = "";
 
   late StreamController<Map<String, int>> _timeStreamController;
   late Map<String, int> _lateTime = {'days': 0, 'hours': 0, 'minutes': 0};
@@ -105,37 +107,41 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
     }
   }
 
-  void _calculateTimeOfTraining() {
-    bool isInTime = TrainingTimeUtils.isTrainingInProgress(
+  void _validateTrainingTime() {
+    bool isTrainingIsProgress = TrainingTimeUtils.isTrainingInProgress(
       widget.trainingDateResponse.dates!.toLocal(),
       TimeOfDay.fromDateTime(widget.trainingDateResponse.timeFrom!.toLocal()),
       TimeOfDay.fromDateTime(widget.trainingDateResponse.timeTo!.toLocal()),
     );
 
-    if (!isInTime) {
+    if (!isTrainingIsProgress) {
       _lateTime = TrainingTimeUtils.calculateLateTime(
         widget.trainingDateResponse.dates!.toLocal(),
-        TimeOfDay.fromDateTime(widget.trainingDateResponse.timeFrom!.toLocal()),
-        TimeOfDay.fromDateTime(widget.trainingDateResponse.timeTo!.toLocal()),
+        TimeOfDay.fromDateTime(
+          widget.trainingDateResponse.timeTo!.toLocal(),
+        ),
       );
 
-      _timeStreamController.add(_lateTime);
+      _isEarly = _lateTime.values.every((value) => value == 0);
+
+      if (_isEarly) {
+        Duration? waitTime = TrainingTimeUtils.calculateWaitTime(
+            widget.trainingDateResponse.dates!.toLocal(),
+            widget.trainingDateResponse.timeFrom!);
+        if (waitTime != null) {
+          _earlyHours = "Training starts in ${waitTime.inHours} hours";
+        }
+      } else {
+        _timeStreamController.add(_lateTime);
+      }
     } else {
       _isInTime = true;
     }
   }
 
-  String _formatDate(DateTime date) {
-    return DateFormat("dd.MM.yyyy").format(date);
-  }
-
-  String _formatTime(DateTime from, DateTime to) {
-    return "${from.toLocal().hour}:${from.toLocal().minute.toString().padLeft(2, '0')} - ${to.toLocal().hour}:${to.toLocal().minute.toString().padLeft(2, '0')}";
-  }
-
   void _startTimer() {
     _timer = Timer.periodic(const Duration(minutes: 1), (Timer t) {
-      _calculateTimeOfTraining();
+      _validateTrainingTime();
     });
   }
 
@@ -144,7 +150,7 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
     super.initState();
     _timeStreamController = StreamController<Map<String, int>>();
     _getAttendanceInfo();
-    _calculateTimeOfTraining();
+    _validateTrainingTime();
     _startTimer();
     _trainingDatesFuture = _trainingDateProvider.getTrainingDate(null);
   }
@@ -158,9 +164,6 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime timeFrom = widget.trainingDateResponse.timeFrom!.toLocal();
-    DateTime timeTo = widget.trainingDateResponse.timeTo!.toLocal();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Submit Attendance"),
@@ -176,22 +179,8 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
             } else {
               return Column(
                 children: [
-                  InfoText(
-                    context: context,
-                    text: widget
-                        .trainingDateResponse.trainingModel!.trainingType!,
-                    scale: 1.6,
-                  ),
-                  InfoText(
-                    context: context,
-                    text: _formatDate(
-                        widget.trainingDateResponse.dates!.toLocal()),
-                    scale: 1.4,
-                  ),
-                  InfoText(
-                    context: context,
-                    text: _formatTime(timeFrom, timeTo),
-                    scale: 1.4,
+                  SubmitAttendanceInfo(
+                    trainingDateResponseModel: trainingDateResponseModel,
                   ),
                   StreamBuilder<Map<String, int>>(
                     stream: _timeStreamController.stream,
@@ -214,13 +203,25 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
                         visible: _isInTime && !_isAttendanceCompleted,
                         replacement: Container(
                           padding: const EdgeInsets.all(12),
-                          child: Text(
-                            "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(color: Colors.redAccent),
-                          ),
+                          child: _isEarly
+                              ? Text(
+                                  _earlyHours,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                )
+                              : Text(
+                                  "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(color: Colors.redAccent),
+                                ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(defaultPadding),

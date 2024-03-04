@@ -31,10 +31,9 @@ class AttendanceStatusWidget extends StatelessWidget {
       }
     }
 
-    DateTime timeFrom =
-        TrainingTimeUtils.getDateTimeFrom(training.dates!, training.timeFrom!);
-    if (timeFrom.isAfter(DateTime.now())) {
-      Duration waitTime = timeFrom.difference(DateTime.now());
+    Duration? waitTime = TrainingTimeUtils.calculateWaitTime(
+        training.dates!.toLocal(), training.timeFrom!);
+    if (waitTime != null) {
       return "Starts in ${waitTime.inHours} hours";
     }
 

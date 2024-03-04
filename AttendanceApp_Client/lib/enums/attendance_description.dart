@@ -1,7 +1,7 @@
 abstract class AttendanceDescription {
-  static String Accepted = "Attendance accepted";
-  static String AcceptedWithLate = "Attendance accepted with late";
-  static String NotAccepted = "Attendance is not accepted";
-  static String Late = "Late";
-  static String Sick = "Sick";
+  static const String Accepted = "Attendance accepted";
+  static const String AcceptedWithLate = "Attendance accepted with late";
+  static const String NotAccepted = "Attendance is not accepted";
+  static const String Late = "Late";
+  static const String Sick = "Sick";
 }

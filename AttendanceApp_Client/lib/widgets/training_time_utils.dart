@@ -64,12 +64,9 @@ class TrainingTimeUtils {
     }
   }
 
-  static Map<String, int> calculateLateTime(DateTime trainingDate,
-      TimeOfDay trainingTimeFrom, TimeOfDay trainingTimeTo) {
+  static Map<String, int> calculateLateTime(
+      DateTime trainingDate, TimeOfDay trainingTimeTo) {
     final now = DateTime.now().toLocal();
-    final trainingStart = DateTime(trainingDate.year, trainingDate.month,
-            trainingDate.day, trainingTimeFrom.hour, trainingTimeFrom.minute)
-        .toLocal();
     final trainingEnd = DateTime(trainingDate.year, trainingDate.month,
             trainingDate.day, trainingTimeTo.hour, trainingTimeTo.minute)
         .toLocal();
@@ -91,6 +88,15 @@ class TrainingTimeUtils {
         'minutes': 0,
       };
     }
+  }
+
+  static Duration? calculateWaitTime(DateTime date, DateTime timeFrom) {
+    DateTime dateTimeFrom = getDateTimeFrom(date, timeFrom);
+    if (dateTimeFrom.isAfter(DateTime.now())) {
+      Duration waitTime = dateTimeFrom.difference(DateTime.now());
+      return waitTime;
+    }
+    return null;
   }
 
   static DateTime getDateTimeFrom(DateTime date, DateTime timeFrom) {
