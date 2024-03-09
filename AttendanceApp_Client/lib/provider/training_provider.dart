@@ -1,4 +1,4 @@
-import '../cache_manager/trainings_cache_manager.dart';
+import '../cache_manager/cache_manager.dart';
 import '../constants.dart';
 import '../models/training_model.dart';
 import '../server_helper/server_response.dart';
@@ -8,19 +8,23 @@ const urlApi = url;
 String? token;
 
 class TrainingProvider {
-  Future<ServerResponse> getTraining(int? id) async {
-    var cacheManager = TrainingsCacheManager();
+  var cacheManager = CacheManager<TrainingResponseModel>(
+    fromJson: (json) => TrainingResponseModel.fromJson(json),
+    toJson: (training) => training.toJson(),
+    getIdFromItem: (training) => training.ID_training!,
+  );
 
+  Future<ServerResponse> getTraining(int? id) async {
     // Fetch all trainings from cache if id is null
     if (id == null) {
       List<TrainingResponseModel> cachedTrainings =
-          await cacheManager.getCachedTrainings();
+          await cacheManager.getCachedItems();
       if (cachedTrainings.isNotEmpty) {
         return ServerResponse.success(cachedTrainings);
       }
     } else {
       // Try fetching a specific training from cache
-      var cachedTraining = cacheManager.getTrainingFromCache(id);
+      var cachedTraining = cacheManager.getItemFromCache(id);
       if (cachedTraining != null) {
         return ServerResponse.success(cachedTraining);
       }
@@ -39,7 +43,7 @@ class TrainingProvider {
             .toList();
 
         // Cache the trainings
-        cacheManager.cacheTrainings(responseModels);
+        await cacheManager.cacheItems(responseModels);
 
         serverResponse.result = responseModels;
       }
@@ -57,6 +61,13 @@ class TrainingProvider {
     var serverResponse = ServerResponse(server);
 
     if (serverResponse.isSuccessful) {
+      // cacheManager.removeItemFromCache(model.iD_training!);
+
+      serverResponse.result =
+          TrainingResponseModel.fromJson(serverResponse.result);
+
+      await cacheManager.cacheItems([serverResponse.result]);
+
       serverResponse.result = "Training updated successfully";
     } else {
       serverResponse.error =

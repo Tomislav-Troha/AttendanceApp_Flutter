@@ -50,7 +50,7 @@ class SubmitAttendanceInfo extends StatelessWidget {
         ),
         Card(
           color: Theme.of(context).colorScheme.primary,
-          elevation: 4,
+          elevation: 10,
           margin: const EdgeInsets.only(left: 20, right: 20),
           child: ListTile(
             title: Row(
@@ -63,7 +63,7 @@ class SubmitAttendanceInfo extends StatelessWidget {
                 ),
                 const Icon(
                   Icons.sports_baseball_outlined,
-                  color: Colors.deepOrangeAccent,
+                  color: Colors.deepOrange,
                   size: 40,
                 )
               ],
@@ -78,7 +78,7 @@ class SubmitAttendanceInfo extends StatelessWidget {
                 ),
                 const Icon(
                   Icons.calendar_month_outlined,
-                  color: Colors.deepOrangeAccent,
+                  color: Colors.deepOrange,
                   size: 40,
                 )
               ],
@@ -87,7 +87,7 @@ class SubmitAttendanceInfo extends StatelessWidget {
         ),
         Card(
           color: Theme.of(context).colorScheme.primary,
-          elevation: 4,
+          elevation: 10,
           margin: const EdgeInsets.all(20),
           child: ListTile(
             title: Row(
@@ -98,9 +98,9 @@ class SubmitAttendanceInfo extends StatelessWidget {
                   text: formatTime(timeFrom, timeTo),
                   scale: 1.4,
                 ),
-                Icon(
+                const Icon(
                   Icons.timelapse_outlined,
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: Colors.deepOrange,
                   size: 40,
                 )
               ],

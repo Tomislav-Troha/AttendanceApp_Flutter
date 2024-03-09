@@ -105,4 +105,12 @@ class TrainingTimeUtils {
 
     return dateTimeFrom;
   }
+
+  static String calculateTrainingStartsIn(Duration waitTime) {
+    if (waitTime.inHours < 24) {
+      return "${waitTime.inHours} hours";
+    } else {
+      return "${waitTime.inDays} days";
+    }
+  }
 }

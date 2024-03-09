@@ -33,7 +33,8 @@ class _AttendanceMember extends State<AttendanceMember> {
   DateTime? _currentDate;
 
   void _getAttendances() async {
-    ServerResponse allMyAttendances = await _attendanceProvider.getAttendance();
+    ServerResponse allMyAttendances =
+        await _attendanceProvider.getAttendanceAll(null);
     if (allMyAttendances.isSuccessful) {
       _myAttendancesList = allMyAttendances.result
           .cast<AttendanceResponseModel>() as List<AttendanceResponseModel>;

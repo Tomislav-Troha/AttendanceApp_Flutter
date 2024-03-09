@@ -9,6 +9,7 @@ import 'package:swimming_app_client/widgets/attendance/filter_attendances.dart';
 import 'package:swimming_app_client/widgets/attendance/on_delete_attendance.dart';
 
 import '../../controllers/attendance_employee/attendance_employee_controller.dart';
+import '../../managers/token_manager.dart';
 import '../../provider/attendance_provider.dart';
 import '../../server_helper/server_response.dart';
 import '../../widgets/app_message.dart';
@@ -44,7 +45,6 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
   bool notSet = false;
 
   String valueStatus = "";
-  int? userID;
 
   List<UserResponseModel> _valueMember = [];
 
@@ -65,8 +65,9 @@ class _AttendanceEmployeeState extends State<AttendanceEmployee> {
   }
 
   void _getAttendanceAndMembers() async {
+    Map<String, dynamic> token = await TokenManager.getTokenUserRole();
     ServerResponse allAttendances =
-        await attendanceProvider.getAttendanceAll(userID);
+        await attendanceProvider.getAttendanceAll(int.parse(token["UserID"]));
     if (allAttendances.isSuccessful) {
       attendancesList = allAttendances.result.cast<AttendanceResponseModel>()
           as List<AttendanceResponseModel>;

@@ -34,9 +34,18 @@ class AttendanceStatusWidget extends StatelessWidget {
     Duration? waitTime = TrainingTimeUtils.calculateWaitTime(
         training.dates!.toLocal(), training.timeFrom!);
     if (waitTime != null) {
-      return "Starts in ${waitTime.inHours} hours";
+      String startsIn = TrainingTimeUtils.calculateTrainingStartsIn(waitTime);
+      return "Starts in $startsIn";
+    } else {
+      bool isTrainingIsProgress = TrainingTimeUtils.isTrainingInProgress(
+        training.dates!.toLocal(),
+        TimeOfDay.fromDateTime(training.timeFrom!.toLocal()),
+        TimeOfDay.fromDateTime(training.timeTo!.toLocal()),
+      );
+      if (isTrainingIsProgress) {
+        return "Training in progress";
+      }
     }
-
     return 'Expired';
   }
 
@@ -51,6 +60,8 @@ class AttendanceStatusWidget extends StatelessWidget {
       return Colors.purple;
     } else if (attendanceText.contains("Starts in")) {
       return Colors.greenAccent;
+    } else if (attendanceText.contains("Training in progress")) {
+      return Colors.orangeAccent;
     } else {
       return Theme.of(context).colorScheme.error;
     }
@@ -77,9 +88,10 @@ class AttendanceStatusWidget extends StatelessWidget {
         attendanceText,
         textAlign: TextAlign.center,
         style: TextStyle(
-            color: statusColor,
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold),
+          color: statusColor,
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

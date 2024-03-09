@@ -6,6 +6,7 @@ import 'package:swimming_app_client/controllers/sumbit_attendance/submit_attenda
 import 'package:swimming_app_client/enums/attendance_description.dart';
 import 'package:swimming_app_client/widgets/sumbit_attendance/submit_attendance_info.dart';
 
+import '../../managers/token_manager.dart';
 import '../../models/attendance_model.dart';
 import '../../models/trainingDate_model.dart';
 import '../../provider/attendance_provider.dart';
@@ -58,8 +59,10 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
   late Timer _timer;
 
   void _getAttendanceInfo() async {
+    Map<String, dynamic> token = await TokenManager.getTokenUserRole();
+
     ServerResponse getAttendanceByUser =
-        await _attendanceProvider.getAttendance();
+        await _attendanceProvider.getAttendanceAll(int.parse(token["UserID"]));
     if (getAttendanceByUser.isSuccessful) {
       _attendances = getAttendanceByUser.result.cast<AttendanceResponseModel>();
 
@@ -129,7 +132,9 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
             widget.trainingDateResponse.dates!.toLocal(),
             widget.trainingDateResponse.timeFrom!);
         if (waitTime != null) {
-          _earlyHours = "Training starts in ${waitTime.inHours} hours";
+          String startsIn =
+              TrainingTimeUtils.calculateTrainingStartsIn(waitTime);
+          _earlyHours = "Training starts in $startsIn";
         }
       } else {
         _timeStreamController.add(_lateTime);
@@ -186,29 +191,31 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
                     stream: _timeStreamController.stream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        Map<String, int> lateTime = snapshot.data!;
-                        _lateDays = lateTime['days'].toString();
-                        _lateHours = lateTime['hours'].toString();
-                        _lateMinutes = lateTime['minutes'].toString();
+                        if (!_isAttendanceCompleted) {
+                          Map<String, int> lateTime = snapshot.data!;
+                          _lateDays = lateTime['days'].toString();
+                          _lateHours = lateTime['hours'].toString();
+                          _lateMinutes = lateTime['minutes'].toString();
 
-                        return Text(
-                          "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(color: Colors.redAccent),
-                        );
+                          return Text(
+                            "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(color: Colors.redAccent),
+                          );
+                        }
                       }
                       return Visibility(
                         visible: _isInTime && !_isAttendanceCompleted,
                         replacement: Container(
                           padding: const EdgeInsets.all(12),
-                          child: _isEarly
+                          child: _isEarly && !_isAttendanceCompleted
                               ? Text(
                                   _earlyHours,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .titleMedium!
+                                      .titleLarge!
                                       .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -216,27 +223,55 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
                                       ),
                                 )
                               : Text(
-                                  "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .copyWith(color: Colors.redAccent),
+                                  _isAttendanceCompleted
+                                      ? "Training completed"
+                                      : "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes",
+                                  style: !_isAttendanceCompleted
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                            color: Colors.redAccent,
+                                          )
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold),
                                 ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(defaultPadding),
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
                             onPressed: _submitAttendance,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              "Submit attendance",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "Submit attendance",
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.check_sharp,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                              ],
                             ),
                           ),
                         ),
