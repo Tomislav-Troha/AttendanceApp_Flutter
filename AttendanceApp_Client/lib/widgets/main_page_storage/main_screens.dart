@@ -8,7 +8,7 @@ import '../../responsive.dart';
 import '../../screens/add_training_date/add_training_date_screen.dart';
 import '../../screens/attendance_employee/attendance_employee_screen.dart';
 import '../../screens/login/login_screen.dart';
-import '../../screens/pageStorageHome/profile_home/profile_home.dart';
+import '../../screens/profile_home/profile_home_screen.dart';
 import '../../stats/my_stats.dart';
 import '../components/background.dart';
 import '../custom_dialog.dart';
@@ -125,7 +125,7 @@ class _MainScreensState extends State<MainScreens> {
 
   void _profileScreen() {
     setState(() {
-      _currentScreen = const Profile();
+      _currentScreen = const ProfileHomeScreen();
       _currentTab = CurrentTab.profile;
       _buttonStatsEnabled = true;
     });

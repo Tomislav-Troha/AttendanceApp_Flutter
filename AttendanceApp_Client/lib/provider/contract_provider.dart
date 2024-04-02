@@ -21,6 +21,9 @@ class ContractProvider {
             .toList();
 
         serverResponse.result = responseModels;
+      } else {
+        serverResponse.result =
+            ContractResponseModel.fromJson(serverResponse.result);
       }
     } else {
       serverResponse.error =

@@ -201,7 +201,7 @@ class _SubmitAttendance extends State<SubmitAttendanceScreen> {
                             "Late: $_lateDays days, $_lateHours hours and $_lateMinutes minutes",
                             style: Theme.of(context)
                                 .textTheme
-                                .titleMedium!
+                                .titleLarge!
                                 .copyWith(color: Colors.redAccent),
                           );
                         }
