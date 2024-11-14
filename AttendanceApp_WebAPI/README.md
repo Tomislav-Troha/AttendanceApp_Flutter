@@ -11,7 +11,7 @@ Using the Flutter framework for developing the user interface allows for fast an
 ## How to use this project
 
 1. Download the code from this repository.
-2. Install .NET Core SDK 6.0. More details can be found at: https://dotnet.microsoft.com/download
+2. Install .NET Core SDK 8.0. More details can be found at: https://dotnet.microsoft.com/download
 3. Install PostgreSQL database and create a database for this application. More detailed instructions on installation and creating a database can be found here: https://www.postgresql.org/docs/
 4. Run the application using Visual Studio or VS Code.
 5. Customize database settings and connection in the appsettings.json file.
