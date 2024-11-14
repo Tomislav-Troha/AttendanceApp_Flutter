@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SwimmingApp.Abstract.Data
+﻿namespace SwimmingApp.Abstract.Data
 {
     public class Contract
     {
@@ -15,7 +9,7 @@ namespace SwimmingApp.Abstract.Data
         public int SalaryPackageID { get; set; }
         public int JobRoleID { get; set; }
         public DateTime? StartDate { get; set; }
-        public DateTime? ExpiryDate { get; set;}
+        public DateTime? ExpiryDate { get; set; }
 
 
 

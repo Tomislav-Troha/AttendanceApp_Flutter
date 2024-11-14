@@ -6,7 +6,7 @@ namespace SwimmingApp.Abstract.DTO
     {
         public JobRoleDTO()
         {
-                
+
         }
         public JobRoleDTO(JobRoleModel model) : base(model)
         {

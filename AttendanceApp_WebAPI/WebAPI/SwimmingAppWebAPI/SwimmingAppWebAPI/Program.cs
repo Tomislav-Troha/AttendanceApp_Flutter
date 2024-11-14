@@ -1,19 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SwimmingApp.Abstract.Data;
-using SwimmingApp.BL.Managers.AttendanceManager;
-using SwimmingApp.BL.Managers.ChangePasswordManager;
-using SwimmingApp.BL.Managers.ContractTypeManager;
-using SwimmingApp.BL.Managers.EmployeeContractManager;
-using SwimmingApp.BL.Managers.JobRoleManager;
-using SwimmingApp.BL.Managers.Log;
-using SwimmingApp.BL.Managers.SalaryPackageTypeManager;
-using SwimmingApp.BL.Managers.TrainingDateManager;
-using SwimmingApp.BL.Managers.TrainingManager;
-using SwimmingApp.BL.Managers.UserLoginManager;
-using SwimmingApp.BL.Managers.UserManager;
-using SwimmingApp.BL.Managers.UserRegisterManager;
 using SwimmingApp.DAL.Contex;
 using SwimmingApp.DAL.Core;
 using SwimmingApp.DAL.Repositories.AttendanceService;
@@ -29,7 +17,6 @@ using SwimmingApp.DAL.Repositories.UserLoginService;
 using SwimmingApp.DAL.Repositories.UserRegisterService;
 using SwimmingApp.DAL.Repositories.UserService;
 using SwimmingApp.DAL.Utils;
-using System.Text;
 
 internal class Program
 {
@@ -84,7 +71,7 @@ internal class Program
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
                      ValidateIssuerSigningKey = true,
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"])),
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder?.Configuration["AppSettings:Token"]!)),
                      ValidateIssuer = false,
                      ValidateAudience = false
                  };
@@ -100,40 +87,28 @@ internal class Program
         services.AddScoped<IDbService, DbService>();
 
         services.AddScoped<IUserService, UserService>();
-        services.AddTransient<UserManager>();
 
         services.AddScoped<IUserRegisterService, UserRegisterService>();
-        services.AddTransient<UserRegisterManager>();
 
         services.AddScoped<IUserLoginService, UserLoginService>();
-        services.AddTransient<UserLoginManager>();
 
         services.AddScoped<ITrainingService, TrainingService>();
-        services.AddTransient<TrainingManager>();
 
         services.AddScoped<IAttendanceService, AttendanceService>();
-        services.AddTransient<AttendanceManager>();
 
         services.AddScoped<ITrainingDateService, TrainingDateService>();
-        services.AddTransient<TrainingDateManager>();
 
         services.AddScoped<IPasswordResetService, PasswordResetService>();
-        services.AddTransient<PasswordResetManager>();
 
         services.AddScoped<IErrorLogService, ErrorLogService>();
-        services.AddTransient<ErrorLogsManager>();
 
         services.AddScoped<IContractService, ContractService>();
-        services.AddTransient<ContractManager>();
 
         services.AddScoped<IJobRoleService, JobRoleService>();
-        services.AddTransient<JobRoleManager>();
 
         services.AddScoped<IContractTypeService, ContractTypeService>();
-        services.AddTransient<ContractTypeManager>();
 
         services.AddScoped<ISalaryPackageTypeService, SalaryPackageTypeService>();
-        services.AddTransient<SalaryPackageTypeManager>();
 
         #endregion
 

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Dapper;
+﻿using Dapper;
 using SwimmingApp.Abstract.DataModel;
 using SwimmingApp.Abstract.DTO;
 using SwimmingApp.DAL.Contex;
@@ -27,9 +26,9 @@ namespace SwimmingApp.DAL.Repositories.TrainingDateService
             await _db.DeleteAsync("CALL TrainingDate_Delete(@id)", param);
         }
 
-        public async Task<IEnumerable<TrainingDateDTO>> GetTrainingDate(int userID, DateTime? currentDate)
+        public async Task<IEnumerable<TrainingDateDTO>?> GetTrainingDate(int userID, DateTime? currentDate)
         {
-           
+
             DynamicParameters param = new DynamicParameters();
             param.Add("userId", userID);
             param.Add("currentDate", currentDate);
@@ -47,25 +46,9 @@ namespace SwimmingApp.DAL.Repositories.TrainingDateService
                 }, param, splitOn: "ID_training, userId, RoleId");
 
             return trainingDates;
-
-            //--ovo bi se koristilo kad si PostrgreSQL mogao u funkciji/proceduri selectati vise querya od jednom, onda bi sa Dapperom joinao u kodu--
-            //var result = await connection.QueryMultipleAsync(query, param);
-
-            //List<TrainingDateModel> trainingDateModels = result.Read<TrainingDateModel>().ToList();
-            //List<MemberModel> memberModels = result.Read<MemberModel>().ToList();
-            //List<TrainingModel> trainingModels = result.Read<TrainingModel>().ToList();
-
-            //foreach (TrainingDateModel traDateModel in trainingDateModels)
-            //{
-            //    //traDateModel.MemberModel.AddRange(memberModels.Where(x => x.ID_member == traDateModel.MemberID));
-            //    //traDateModel.TrainingModel.AddRange(trainingModels.Where(x => x.ID_training == traDateModel.TrainingID));
-            //}
-
-            //return trainingDateModels;
-
         }
 
-        public async Task<IEnumerable<TrainingDateModel>> GetTrainingDateForEmployee(DateTime? currentDate)
+        public async Task<IEnumerable<TrainingDateModel>?> GetTrainingDateForEmployee(DateTime? currentDate)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("currentDate", currentDate);
@@ -84,20 +67,22 @@ namespace SwimmingApp.DAL.Repositories.TrainingDateService
             return trainingDateEmployee;
         }
 
-        public async Task<List<TrainingDateModel>> InsertTrainingDate(TrainingDateDTO trainingDateDTO, int userID)
+        public async Task<List<TrainingDateModel>?> InsertTrainingDate(TrainingDateDTO trainingDateDTO, int userID)
         {
-                List<TrainingDateModel> newTrainingDate = new List<TrainingDateModel>();
-                var query = "SELECT * FROM TrainingDate_Insert(@e_dates, @e_timeFrom, @e_timeTo, @e_trainingID, @e_userID)";
-                using var connection = _contex.CreateConnection();
+            List<TrainingDateModel> newTrainingDate = new List<TrainingDateModel>();
+            var query = "SELECT * FROM TrainingDate_Insert(@e_dates, @e_timeFrom, @e_timeTo, @e_trainingID, @e_userID)";
+            using var connection = _contex.CreateConnection();
 
+            if (trainingDateDTO?.UserModelList != null)
+            {
                 foreach (var item in trainingDateDTO.UserModelList)
                 {
                     DynamicParameters param = new DynamicParameters();
-                    param.Add("e_dates", trainingDateDTO.Dates);
-                    param.Add("e_timeFrom", trainingDateDTO.TimeFrom);
-                    param.Add("e_timeTo", trainingDateDTO.TimeTo);
-                    param.Add("e_trainingID", trainingDateDTO.TrainingModel.ID_training);
-                    param.Add("e_userID", item.UserId);
+                    param.Add("e_dates", trainingDateDTO?.Dates);
+                    param.Add("e_timeFrom", trainingDateDTO?.TimeFrom);
+                    param.Add("e_timeTo", trainingDateDTO?.TimeTo);
+                    param.Add("e_trainingID", trainingDateDTO?.TrainingModel?.ID_training);
+                    param.Add("e_userID", item?.UserId);
 
                     IEnumerable<TrainingDateModel> result = await connection.QueryAsync<TrainingDateModel, TrainingModel, UserModel, TrainingDateModel>(query,
                     (trainingDate, training, user) =>
@@ -112,17 +97,18 @@ namespace SwimmingApp.DAL.Repositories.TrainingDateService
                         newTrainingDate.AddRange(result);
                     }
                 }
-                return newTrainingDate;
-         }
+            }
+            return newTrainingDate;
+        }
 
-        public async Task<TrainingDateDTO> UpdateTrainingDate(TrainingDateDTO trainingDateDTO)
+        public async Task<TrainingDateDTO?> UpdateTrainingDate(TrainingDateDTO trainingDateDTO)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("id", trainingDateDTO.ID_TrainingDate);
-            param.Add("dates", trainingDateDTO.Dates);
-            param.Add("timeFrom", trainingDateDTO.TimeFrom);
-            param.Add("timeTo", trainingDateDTO.TimeTo);
-            param.Add("trainingID", trainingDateDTO.TrainingModel.ID_training);
+            param.Add("id", trainingDateDTO?.ID_TrainingDate);
+            param.Add("dates", trainingDateDTO?.Dates);
+            param.Add("timeFrom", trainingDateDTO?.TimeFrom);
+            param.Add("timeTo", trainingDateDTO?.TimeTo);
+            param.Add("trainingID", trainingDateDTO?.TrainingModel?.ID_training);
 
             await _db.UpdateAsync("CALL TrainingDate_Update(@id, @dates, @timeFrom, @timeTo, @trainingID)", param);
 

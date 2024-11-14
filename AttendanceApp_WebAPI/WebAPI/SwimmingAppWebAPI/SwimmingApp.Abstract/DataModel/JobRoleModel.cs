@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SwimmingApp.Abstract.Data;
+﻿using SwimmingApp.Abstract.Data;
 
 namespace SwimmingApp.Abstract.DataModel
 {
@@ -11,12 +6,12 @@ namespace SwimmingApp.Abstract.DataModel
     {
         public JobRoleModel()
         {
-            
+
         }
 
-        public JobRoleModel(JobRoleModel model)
+        public JobRoleModel(JobRoleModel? model)
         {
-            
+
         }
     }
 }

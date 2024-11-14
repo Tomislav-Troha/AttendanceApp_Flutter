@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.BL.Managers.Log;
-using SwimmingApp.BL.Managers.TrainingDateManager;
+using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Repositories.TrainingDateService;
 #nullable enable
 
 namespace SwimmingAppWebAPI.Controllers
@@ -11,12 +11,12 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class TrainingDateController : Controller
     {
-        private readonly TrainingDateManager _trainingDateManager;
-        private readonly ErrorLogsManager _errorLogsManager;
-        public TrainingDateController(TrainingDateManager trainingDateManager, ErrorLogsManager errorLogsManager)
+        private readonly TrainingDateService _trainingDateService;
+        private readonly ErrorLogService _errorLogsService;
+        public TrainingDateController(TrainingDateService trainingDateService, ErrorLogService errorLogsService)
         {
-            _trainingDateManager = trainingDateManager;
-            _errorLogsManager = errorLogsManager;
+            _trainingDateService = trainingDateService;
+            _errorLogsService = errorLogsService;
         }
 
         [Authorize]
@@ -26,13 +26,16 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userID = HttpContext?.User.Claims.Where(x => x.Type == "UserID").Single();
-                var result = await _trainingDateManager.GetTrainingDate(int.Parse(userID.Value), currentDate);
+                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
+                if (userId == null)
+                    return BadRequest("User not found.");
+
+                var result = await _trainingDateService.GetTrainingDate(int.Parse(userId.Value), currentDate);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest($"{e.Message} {e.StackTrace}");
             }
         }
@@ -44,12 +47,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _trainingDateManager.GetTrainingDateForEmployee(currentDate);
+                var result = await _trainingDateService.GetTrainingDateForEmployee(currentDate);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -61,13 +64,16 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userID = HttpContext?.User.Claims.Where(x => x.Type == "UserID").Single();
-                var result = await _trainingDateManager.InsertTrainingDate(trainingDateDTO, int.Parse(userID.Value));
+                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
+                if (userId == null)
+                    return BadRequest("User not found.");
+
+                var result = await _trainingDateService.InsertTrainingDate(trainingDateDTO, int.Parse(userId.Value));
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest($"{e.Message}");
             }
         }
@@ -78,12 +84,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _trainingDateManager.UpdateTrainingDate(trainingDateDTO);
+                var result = await _trainingDateService.UpdateTrainingDate(trainingDateDTO);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest($"{e.Message}");
             }
         }
@@ -95,12 +101,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                await _trainingDateManager.DeleteTrainingDate(id);
+                await _trainingDateService.DeleteTrainingDate(id);
                 return Ok("Training date deleted");
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest($"{e.Message}");
             }
         }

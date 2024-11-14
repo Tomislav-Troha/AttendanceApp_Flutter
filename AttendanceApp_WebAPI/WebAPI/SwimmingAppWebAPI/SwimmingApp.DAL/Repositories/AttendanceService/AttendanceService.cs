@@ -16,7 +16,7 @@ namespace SwimmingApp.DAL.Repositories.AttendanceService
             _contex = context;
         }
 
-        public async Task DeleteAttendance(int id)
+        public async Task DeleteAttendance(int? id)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("id", id);
@@ -24,7 +24,7 @@ namespace SwimmingApp.DAL.Repositories.AttendanceService
             await _db.DeleteAsync("CALL Attendance_Delete(@id)", param);
         }
 
-        public async Task<IEnumerable<AttendanceModel>> GetAttendanceByUserID(int userID)
+        public async Task<IEnumerable<AttendanceModel>> GetAttendanceByUserID(int? userID)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("userId", userID);
@@ -66,28 +66,28 @@ namespace SwimmingApp.DAL.Repositories.AttendanceService
             return attendances;
         }
 
-        public async Task<AttendanceDTO> InsertAttendance(AttendanceDTO attendanceDTO, int userID)
+        public async Task<AttendanceDTO> InsertAttendance(AttendanceDTO attendanceDTO, int? userID)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("attDesc", attendanceDTO.AttDesc);
             param.Add("type", attendanceDTO.Type);
-            param.Add("trainingID", attendanceDTO.TrainingModel.ID_training);
+            param.Add("trainingID", attendanceDTO.TrainingModel?.ID_training);
             param.Add("userID", userID);
-            param.Add("trainingDateID", attendanceDTO.TrainingDateModel.ID_TrainingDate);
+            param.Add("trainingDateID", attendanceDTO.TrainingDateModel?.ID_TrainingDate);
 
             await _db.InsertAsync("CALL Attendance_Insert(@attDesc, @type, @trainingID, @userID, @trainingDateID)", param);
 
             return attendanceDTO;
         }
 
-        public async Task<AttendanceDTO> InsertAttendanceNotSubmitted(AttendanceDTO attendanceDTO, int userID)
+        public async Task<AttendanceDTO> InsertAttendanceNotSubmitted(AttendanceDTO attendanceDTO, int? userID)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("attDesc", attendanceDTO.AttDesc);
             param.Add("type", attendanceDTO.Type);
-            param.Add("trainingID", attendanceDTO.TrainingModel.ID_training);
+            param.Add("trainingID", attendanceDTO.TrainingModel?.ID_training);
             param.Add("userID", userID);
-            param.Add("trainingDateID", attendanceDTO.TrainingDateModel.ID_TrainingDate);
+            param.Add("trainingDateID", attendanceDTO.TrainingDateModel?.ID_TrainingDate);
 
             await _db.InsertAsync("CALL Attendance_Insert(@attDesc, @type, @trainingID, @userID, @trainingDateID)", param);
 

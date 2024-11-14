@@ -1,10 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SwimmingApp.Abstract.Data;
+﻿using SwimmingApp.Abstract.Data;
 
 namespace SwimmingApp.Abstract.DataModel
 {
@@ -12,12 +6,12 @@ namespace SwimmingApp.Abstract.DataModel
     {
         public ContractTypeModel()
         {
-            
+
         }
 
-        public ContractTypeModel(ContractTypeModel model)
+        public ContractTypeModel(ContractTypeModel? model)
         {
-            
+
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.BL.Managers.Log;
-using SwimmingApp.BL.Managers.TrainingManager;
+using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Repositories.TrainingService;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -10,13 +10,13 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class TrainingController : Controller
     {
-        private readonly TrainingManager _trainingManager;
-        private readonly ErrorLogsManager _errorLogsManager;
+        private readonly TrainingService _trainingService;
+        private readonly ErrorLogService _errorLogsService;
 
-        public TrainingController(TrainingManager trainingManager, ErrorLogsManager errorLogsManager)
+        public TrainingController(TrainingService trainingManager, ErrorLogService errorLogsManager)
         {
-            _trainingManager = trainingManager;
-            _errorLogsManager = errorLogsManager;
+            _trainingService = trainingManager;
+            _errorLogsService = errorLogsManager;
         }
 
 
@@ -26,12 +26,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _trainingManager.GetTraining(id);
+                var response = await _trainingService.GetTraining(id);
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -43,12 +43,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _trainingManager.InsertTraining(model);
+                var result = await _trainingService.InsertTraining(model);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -60,12 +60,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _trainingManager.UpdateTraining(model);
+                var result = await _trainingService.UpdateTraining(model);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -77,12 +77,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                await _trainingManager.DeleteTraining(id);
+                await _trainingService.DeleteTraining(id);
                 return Ok();
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }

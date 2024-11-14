@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.BL.Managers.AttendanceManager;
-using SwimmingApp.BL.Managers.Log;
+using SwimmingApp.DAL.Repositories.AttendanceService;
+using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -10,12 +10,12 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class AttendanceController : Controller
     {
-        private readonly AttendanceManager _attendanceManager;
-        private readonly ErrorLogsManager _errorLogsManager;
-        public AttendanceController(AttendanceManager attendanceManager, ErrorLogsManager errorLogsManager)
+        private readonly AttendanceService _attendanceService;
+        private readonly ErrorLogService _errorLogsService;
+        public AttendanceController(AttendanceService attendanceService, ErrorLogService errorLogsService)
         {
-            _attendanceManager = attendanceManager;
-            _errorLogsManager = errorLogsManager;
+            _attendanceService = attendanceService;
+            _errorLogsService = errorLogsService;
         }
 
 
@@ -26,14 +26,16 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userId = HttpContext?.User.Claims.Where(x => x.Type == "UserID").Single();
-                //var userRoleId = HttpContext?.User.Claims.Where(x => x.Type == "UserRoleId").Single();
-                var result = await _attendanceManager.InsertAttendance(attendanceDTO, int.Parse(userId.Value));
+                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
+                if (userId == null)
+                    return BadRequest("User not found.");
+
+                var result = await _attendanceService.InsertAttendance(attendanceDTO, int.Parse(userId.Value));
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -45,12 +47,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _attendanceManager.InsertAttendanceNotSubmitted(attendanceDTO, attendanceDTO.UserModel.UserId);
+                var result = await _attendanceService.InsertAttendanceNotSubmitted(attendanceDTO, attendanceDTO?.UserModel?.UserId);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -62,13 +64,15 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userId = HttpContext?.User.Claims.Where(x => x.Type == "UserID").Single();
-                var response = await _attendanceManager.GetAttendanceByUser(int.Parse(userId.Value));
+                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
+                if (userId == null)
+                    return BadRequest("User not found.");
+                var response = await _attendanceService.GetAttendanceByUserID(int.Parse(userId.Value));
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -80,12 +84,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                await _attendanceManager.DeleteAttendance(id);
+                await _attendanceService.DeleteAttendance(id);
                 return Ok();
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -97,12 +101,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _attendanceManager.GetAttendanceAll(userID);
+                var result = await _attendanceService.GetAttendanceAll(userID);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }

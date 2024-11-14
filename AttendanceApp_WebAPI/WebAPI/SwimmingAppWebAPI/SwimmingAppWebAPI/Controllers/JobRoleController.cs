@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
-using SwimmingApp.BL.Managers.JobRoleManager;
-using SwimmingApp.BL.Managers.Log;
+using SwimmingApp.DAL.Repositories.JobRoleService;
+using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -10,13 +9,13 @@ namespace SwimmingAppWebAPI.Controllers
     [Route("jobRole")]
     public class JobRoleController : Controller
     {
-        private readonly JobRoleManager _jobRoleManager;
-        private readonly ErrorLogsManager _errorLogsManager;
-       
-        public JobRoleController(JobRoleManager jobRoleManager, ErrorLogsManager errorLogsManager)
+        private readonly JobRoleService _jobRoleService;
+        private readonly ErrorLogService _errorLogsService;
+
+        public JobRoleController(JobRoleService jobRoleManager, ErrorLogService errorLogsManager)
         {
-            _jobRoleManager = jobRoleManager;
-            _errorLogsManager = errorLogsManager;
+            _jobRoleService = jobRoleManager;
+            _errorLogsService = errorLogsManager;
         }
 
         [HttpGet, Route("getJobRoles")]
@@ -24,12 +23,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _jobRoleManager.GetJobRoles();
+                var response = await _jobRoleService.GetJobRoles();
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e.Message);
             }
         }
@@ -39,12 +38,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _jobRoleManager.InsertJobRole(model);
+                var response = await _jobRoleService.InsertJobRole(model);
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e.Message);
             }
         }

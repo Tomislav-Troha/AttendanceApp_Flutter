@@ -6,7 +6,7 @@ namespace SwimmingApp.Abstract.DTO
     {
         public SalaryPackageTypeDTO()
         {
-            
+
         }
         public SalaryPackageTypeDTO(SalaryPackageTypeModel model) : base(model)
         {

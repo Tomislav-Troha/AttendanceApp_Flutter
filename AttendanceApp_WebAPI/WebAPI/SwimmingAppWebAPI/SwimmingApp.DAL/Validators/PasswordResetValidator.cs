@@ -1,16 +1,15 @@
-﻿using FluentValidation;
-using SwimmingApp.Abstract.DTO;
-using SwimmingApp.DAL.Repositories.UserService;
-using System.Collections;
+﻿using System.Collections;
 using System.Security.Cryptography;
 using System.Text;
+using FluentValidation;
+using SwimmingApp.Abstract.DTO;
+using SwimmingApp.DAL.Repositories.UserService;
 
 namespace SwimmingApp.DAL.Validators
 {
     public class PasswordResetValidator : AbstractValidator<PasswordResetDTO>
     {
         private readonly IUserService _userService;
-        private readonly byte[] _newPassword;
         public PasswordResetValidator(IUserService userService)
         {
             _userService = userService;
@@ -25,18 +24,15 @@ namespace SwimmingApp.DAL.Validators
             var email = await _userService.GetUserByEmail(resetPassword.Email);
 
             if (email == null)
-            {
                 return false;
-            }
+
             return true;
         }
 
         private async Task<bool> NewPasswordIsLikeOldPassword(PasswordResetDTO resetPassword, CancellationToken token)
         {
             if (!await VerifyEmail(resetPassword, token))
-            {
                 return true;
-            }
 
             var user = await _userService.GetUserLoginData(resetPassword.Email);
 
@@ -55,7 +51,5 @@ namespace SwimmingApp.DAL.Validators
             }
             return false;
         }
-
-
     }
 }

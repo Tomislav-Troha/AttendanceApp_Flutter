@@ -14,7 +14,7 @@ namespace SwimmingApp.DAL.Helper
 
             string methodName = $"{e.TargetSite?.DeclaringType?.FullName}.{e.TargetSite?.Name}";
 
-            ParameterInfo[] paramsInfo = e.TargetSite.GetParameters();
+            ParameterInfo[]? paramsInfo = e.TargetSite?.GetParameters();
 
             if (paramsInfo != null && paramsInfo.Length > 0)
             {

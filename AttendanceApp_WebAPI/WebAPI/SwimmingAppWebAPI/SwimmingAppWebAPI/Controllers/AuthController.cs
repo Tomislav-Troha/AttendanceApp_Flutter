@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.BL.Managers.Log;
-using SwimmingApp.BL.Managers.UserLoginManager;
-using SwimmingApp.BL.Managers.UserRegisterManager;
+using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Repositories.UserLoginService;
+using SwimmingApp.DAL.Repositories.UserRegisterService;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -11,14 +11,14 @@ namespace SwimmingAppWebAPI.Controllers
     public class AuthController : Controller
     {
 
-        private readonly UserRegisterManager _userRegisterManager;
-        private readonly UserLoginManager _userLoginManager;
-        private readonly ErrorLogsManager _errorLogsManager;
-        public AuthController(UserRegisterManager userRegisterManager, UserLoginManager userLoginManager, ErrorLogsManager errorLogsManager)
+        private readonly UserRegisterService _userRegisterService;
+        private readonly UserLoginService _userLoginService;
+        private readonly ErrorLogService _errorLogsService;
+        public AuthController(UserRegisterService userRegisterService, UserLoginService userLoginService, ErrorLogService errorLogsService)
         {
-            _userRegisterManager = userRegisterManager;
-            _userLoginManager = userLoginManager;
-            _errorLogsManager = errorLogsManager;
+            _userRegisterService = userRegisterService;
+            _errorLogsService = errorLogsService;
+            _userLoginService = userLoginService;
         }
 
 
@@ -29,12 +29,12 @@ namespace SwimmingAppWebAPI.Controllers
             try
             {
                 //var adminId = HttpContext?.User.Claims.Where(x => x.Type == "UserId").Single();
-                var response = await _userRegisterManager.UserRegister(userRegisterDTO, 1);
+                var response = await _userRegisterService.UserRegister(userRegisterDTO, 1);
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -45,12 +45,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _userLoginManager.LoginUser(login);
+                var response = await _userLoginService.UserLogin(login);
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }

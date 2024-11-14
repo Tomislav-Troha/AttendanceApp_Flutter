@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SwimmingApp.Abstract.DataModel;
+﻿using SwimmingApp.Abstract.DataModel;
 
 namespace SwimmingApp.Abstract.DTO
 {
     public class ContractDTO : ContractModel
     {
-        public ContractDTO(ContractModel model)
+        public ContractDTO(ContractModel model) : base(model)
         {
             ContractID = model.ContractID;
             UserModel = model.UserModel != null ? new UserDTO(model.UserModel) : null;
@@ -19,11 +14,6 @@ namespace SwimmingApp.Abstract.DTO
             JobRoleModel = model.JobRoleModel != null ? new JobRoleDTO(model.JobRoleModel) : null;
             StartDate = model.StartDate;
             ExpiryDate = model.ExpiryDate;
-        }
-
-        public ContractDTO()
-        {
-            
         }
     }
 }

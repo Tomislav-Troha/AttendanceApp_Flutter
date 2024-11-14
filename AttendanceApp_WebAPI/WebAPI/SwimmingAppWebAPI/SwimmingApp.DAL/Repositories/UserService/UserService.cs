@@ -23,12 +23,12 @@ namespace SwimmingApp.DAL.Repositories.UserService
             await _db.DeleteAsync("CALL User_Delete(@id)", param);
         }
 
-        public async Task<IEnumerable<UserRoleModel>> GetUserRoles()
+        public async Task<IEnumerable<UserRoleModel>?> GetUserRoles()
         {
             return await _db.GetAsync<UserRoleModel>("SELECT * FROM UserRole_Select()");
         }
 
-        public async Task<UserModel> GetUserByID(int id)
+        public async Task<UserModel?> GetUserByID(int id)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("id", id);
@@ -44,10 +44,10 @@ namespace SwimmingApp.DAL.Repositories.UserService
                     return user;
                 }, param, splitOn: "roleID");
 
-            return users.FirstOrDefault();
+            return users?.FirstOrDefault();
         }
 
-        public async Task<UserModel> GetUserByEmail(string email)
+        public async Task<UserModel?> GetUserByEmail(string? email)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("email", email);
@@ -63,10 +63,10 @@ namespace SwimmingApp.DAL.Repositories.UserService
                    return user;
                }, param, splitOn: "roleid");
 
-            return users.FirstOrDefault();
+            return users?.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<UserModel>> GetUserByMember()
+        public async Task<IEnumerable<UserModel>?> GetUserByMember()
         {
 
             var query = "SELECT * FROM User_Select_ByMember()";
@@ -83,7 +83,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             return users;
         }
 
-        public async Task<IEnumerable<UserModel>> GetUserByEmployee()
+        public async Task<IEnumerable<UserModel>?> GetUserByEmployee()
         {
             var query = "SELECT * FROM User_Select_ByEmployee()";
 
@@ -99,7 +99,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             return users;
         }
 
-        public async Task<UserModel> GetUserByUsername(string username)
+        public async Task<UserModel?> GetUserByUsername(string? username)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("username", username);
@@ -107,7 +107,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             return await _db.FindOneAsync<UserModel>("SELECT * FROM User_Select_ByUsername(@username)", param);
         }
 
-        public async Task<UserModel> GetUserLoginData(string email)
+        public async Task<UserModel?> GetUserLoginData(string? email)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("email", email);
@@ -123,24 +123,24 @@ namespace SwimmingApp.DAL.Repositories.UserService
                    return user;
                }, param, splitOn: "roleid");
 
-            return users.FirstOrDefault();
+            return users?.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<UserModel>> GetUsersRoleNull()
+        public async Task<IEnumerable<UserModel>?> GetUsersRoleNull()
         {
             return await _db.GetAsync<UserModel>("SELECT * FROM User_Select_RoleNull()");
         }
 
-        public async Task<UserModel> InsertUser(UserModel userModel)
+        public async Task<UserModel?> InsertUser(UserModel? userModel)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("name", userModel.Name);
-            param.Add("surname", userModel.Surname);
-            param.Add("email", userModel.Email);
-            param.Add("username", userModel.Username);
-            param.Add("password", userModel.Password);
-            param.Add("salt", userModel.Salt);
-            param.Add("adress", userModel.Addres);
+            param.Add("name", userModel?.Name);
+            param.Add("surname", userModel?.Surname);
+            param.Add("email", userModel?.Email);
+            param.Add("username", userModel?.Username);
+            param.Add("password", userModel?.Password);
+            param.Add("salt", userModel?.Salt);
+            param.Add("adress", userModel?.Addres);
 
             await _db.InsertAsync("CALL User_Insert(@name, @surname, @email, @username, @password, @adress, @salt)", param);
 
@@ -158,7 +158,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             return model;
         }
 
-        public async Task<UserModel> UpdateUser(UserModel userModel, int id)
+        public async Task<UserModel?> UpdateUser(UserModel userModel, int id)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("name", userModel.Name);
@@ -171,7 +171,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             return userModel;
         }
 
-        public async Task<UserModel> SetProfileImage(UserModel model, int id)
+        public async Task<UserModel?> SetProfileImage(UserModel model, int id)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("profileImage", model.ProfileImage);
@@ -182,7 +182,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             return model;
         }
 
-        public async Task<UserModel> UpdateUserPassword(UserModel userModel)
+        public async Task<UserModel?> UpdateUserPassword(UserModel userModel)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("email", userModel.Email);

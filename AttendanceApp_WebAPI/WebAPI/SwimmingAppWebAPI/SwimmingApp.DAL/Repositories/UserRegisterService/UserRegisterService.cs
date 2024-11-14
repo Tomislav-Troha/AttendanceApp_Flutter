@@ -15,28 +15,28 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
             _iuserService = userService;
         }
 
-        public async Task<UserRegisterResponse> UserRegister(UserRegisterDTO request, int adminID)
+        public async Task<UserRegisterResponse> UserRegister(UserRegisterDTO? request, int adminID)
         {
             var response = await Validate(request);
 
-            if(response.Success)
+            if (response.Success)
             {
                 //byte[] activationToken = PasswordManager.GenerateActivationToken();
 
                 //string encodedToken = WebEncoders.Base64UrlEncode(activationToken);
                 PasswordManager passwordManager = new PasswordManager();
                 byte[] salt = passwordManager.GenerateSaltHash();
-                byte[] hashPassword = passwordManager.GeneratePasswordHash(request.Password, salt);
+                byte[] hashPassword = passwordManager.GeneratePasswordHash(request?.Password, salt);
 
                 var userModel = new UserModel
                 {
-                    Name = request.Name,
-                    Surname = request.Surname,
-                    Email = request.Email,
+                    Name = request?.Name,
+                    Surname = request?.Surname,
+                    Email = request?.Email,
                     Password = hashPassword,
                     Salt = salt,
-                    Username = request.Username,
-                    Addres = request.Addres
+                    Username = request?.Username,
+                    Addres = request?.Addres
                 };
 
                 await _iuserService.InsertUser(userModel);
@@ -45,19 +45,23 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
             return response;
         }
 
-        public async Task<UserRegisterResponse> Validate(UserRegisterDTO request)
+        public async Task<UserRegisterResponse> Validate(UserRegisterDTO? request)
         {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
             var response = new UserRegisterResponse();
             bool userExist = false;
-            var userEmail = await _iuserService.GetUserByEmail(request.Email);
+            var userEmail = await _iuserService.GetUserByEmail(request?.Email);
 
-            if(userEmail != null) 
+            if (userEmail != null)
                 userExist = true;
 
             var validator = new UserRegisterValidator(_iuserService);
-            var validatorResult = await validator.ValidateAsync(request);
 
-            if(validatorResult.Errors.Count > 0)
+            var validatorResult = await validator.ValidateAsync(request!);
+
+            if (validatorResult.Errors.Count > 0)
             {
                 response.Success = false;
                 foreach (var error in validatorResult.Errors)
@@ -65,7 +69,7 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
                     response.Errors.Add(error.ErrorMessage);
                 }
             }
-            else if(userExist == true)
+            else if (userExist == true)
             {
                 response.Success = false;
                 response.Errors.Add("E-mail već postoji");

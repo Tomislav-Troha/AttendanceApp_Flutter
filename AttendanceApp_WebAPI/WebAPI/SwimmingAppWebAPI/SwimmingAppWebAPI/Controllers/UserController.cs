@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
-using SwimmingApp.BL.Managers.Log;
-using SwimmingApp.BL.Managers.UserManager;
+using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Repositories.UserService;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -10,12 +10,12 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly UserManager _userManager;
-        private readonly ErrorLogsManager _errorLogsManager;
-        public UserController(UserManager userManager, ErrorLogsManager errorLogsManager)
+        private readonly UserService _userService;
+        private readonly ErrorLogService _errorLogsService;
+        public UserController(UserService userManager, ErrorLogService errorLogsManager)
         {
-            _userManager = userManager;
-            _errorLogsManager = errorLogsManager;
+            _userService = userManager;
+            _errorLogsService = errorLogsManager;
         }
 
         [Authorize]
@@ -25,12 +25,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.GetUserByMember();
+                var result = await _userService.GetUserByMember();
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -42,12 +42,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.GetUserByEmployee();
+                var result = await _userService.GetUserByEmployee();
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -59,12 +59,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.GetUserByID(id);
+                var result = await _userService.GetUserByID(id);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -76,12 +76,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.UserSetRole(model, id);
+                var result = await _userService.SetUserRole(model, id);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -92,12 +92,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.GetUserRoleNull();
+                var result = await _userService.GetUsersRoleNull();
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -108,12 +108,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.GetUserRoles();
+                var result = await _userService.GetUserRoles();
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -125,12 +125,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                await _userManager.DeleteUser(id);
+                await _userService.DeleteUser(id);
                 return Ok();
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -142,12 +142,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.UpdateUser(id, model);
+                var result = await _userService.UpdateUser(model, id);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e.Message);
             }
         }
@@ -159,12 +159,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _userManager.SetProfileImage(model, id);
+                var result = await _userService.SetProfileImage(model, id);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }

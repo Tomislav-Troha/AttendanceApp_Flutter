@@ -18,7 +18,7 @@ namespace SwimmingApp.BL.Managers.AttendanceManager
             return await _attendanceService.InsertAttendance(attendanceDTO, userID);
         }
 
-        public async Task<AttendanceDTO> InsertAttendanceNotSubmitted(AttendanceDTO attendanceDTO, int userID)
+        public async Task<AttendanceDTO> InsertAttendanceNotSubmitted(AttendanceDTO attendanceDTO, int? userID)
         {
             return await _attendanceService.InsertAttendanceNotSubmitted(attendanceDTO, userID);
         }

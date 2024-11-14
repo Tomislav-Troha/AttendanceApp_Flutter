@@ -1,7 +1,7 @@
-﻿using Dapper;
+﻿using System.Data;
+using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System.Data;
 
 namespace SwimmingApp.DAL.Core
 {
@@ -16,19 +16,19 @@ namespace SwimmingApp.DAL.Core
 
         public async Task<DbInsertResult> InsertAsync(string? command, object? parms)
         {
-                var query = await _db.QueryAsync(command, parms);
-                var result = query.FirstOrDefault();
+            var query = await _db.QueryAsync(command, parms);
+            var result = query.FirstOrDefault();
 
-                if (result == null)
-                {
-                    return new DbInsertResult(0, null, null);
-                }
-                var rowCount = Convert.ToInt32(result.RowCount);
-                if (rowCount > 0)
-                {
-                    return new DbInsertResult(rowCount, result.Id, result);
-                }
-                return new DbInsertResult(rowCount, null, result);
+            if (result == null)
+            {
+                return new DbInsertResult(0, null, null);
+            }
+            var rowCount = Convert.ToInt32(result.RowCount);
+            if (rowCount > 0)
+            {
+                return new DbInsertResult(rowCount, result.Id, result);
+            }
+            return new DbInsertResult(rowCount, null, result);
         }
 
         public async Task<IEnumerable<T>> GetAsync<T>(string? command, object? parms)

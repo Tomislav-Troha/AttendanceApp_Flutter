@@ -4,11 +4,6 @@ using SwimmingApp.BL.Utils;
 using SwimmingApp.DAL.Repositories.UserService;
 using SwimmingApp.DAL.Responses;
 using SwimmingApp.DAL.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SwimmingApp.DAL.Repositories.UserLoginService
 {
@@ -23,13 +18,20 @@ namespace SwimmingApp.DAL.Repositories.UserLoginService
             _configuration = configuration;
         }
 
-        public async Task<UserLoginResponse> UserLogin(UserLoginDTO request)
+        public async Task<UserLoginResponse> UserLogin(UserLoginDTO? request)
         {
             var response = await Validate(request);
 
-            if(response.Success)
+            if (response.Success)
             {
-                var userModel = await _userService.GetUserByEmail(request.Email);
+                var userModel = await _userService.GetUserByEmail(request?.Email);
+
+                if (userModel == null)
+                {
+                    response.Success = false;
+                    response.Errors.Add("User not found");
+                    return response;
+                }
 
                 //dodatno mozda jos uvesti UserLoginHistory
 
@@ -39,16 +41,19 @@ namespace SwimmingApp.DAL.Repositories.UserLoginService
             return response;
         }
 
-        public async Task<UserLoginResponse> Validate(UserLoginDTO request)
+        public async Task<UserLoginResponse> Validate(UserLoginDTO? request)
         {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
             var response = new UserLoginResponse();
             var validator = new UserLoginValidator(_userService);
             var validatorResult = await validator.ValidateAsync(request);
 
-            if(validatorResult.Errors.Count > 0)
+            if (validatorResult.Errors.Count > 0)
             {
                 response.Success = false;
-                foreach (var error in validatorResult.Errors )
+                foreach (var error in validatorResult.Errors)
                 {
                     response.Errors.Add(error.ErrorMessage);
                 }

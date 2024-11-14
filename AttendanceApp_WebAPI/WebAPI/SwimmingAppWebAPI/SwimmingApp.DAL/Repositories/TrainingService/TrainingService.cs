@@ -2,11 +2,6 @@
 using SwimmingApp.Abstract.DataModel;
 using SwimmingApp.Abstract.DTO;
 using SwimmingApp.DAL.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SwimmingApp.DAL.Repositories.TrainingService
 {
@@ -30,7 +25,7 @@ namespace SwimmingApp.DAL.Repositories.TrainingService
             DynamicParameters param = new DynamicParameters();
             param.Add("id", id);
 
-            return await _db.GetAsync<TrainingModel>("SELECT * FROM Training_Select(@id)", param);  
+            return await _db.GetAsync<TrainingModel>("SELECT * FROM Training_Select(@id)", param);
         }
 
         public async Task<TrainingDTO> InsertTraining(TrainingDTO trainingDTO)

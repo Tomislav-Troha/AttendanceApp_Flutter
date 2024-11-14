@@ -4,11 +4,6 @@ using SwimmingApp.BL.Utils;
 using SwimmingApp.DAL.Repositories.UserService;
 using SwimmingApp.DAL.Responses;
 using SwimmingApp.DAL.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SwimmingApp.DAL.Repositories.PaswordResetService
 {

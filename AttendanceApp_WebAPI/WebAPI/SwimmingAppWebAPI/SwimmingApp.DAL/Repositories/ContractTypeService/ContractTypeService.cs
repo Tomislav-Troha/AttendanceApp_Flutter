@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
+﻿using Dapper;
 using SwimmingApp.Abstract.DataModel;
 using SwimmingApp.DAL.Core;
 
@@ -23,7 +18,7 @@ namespace SwimmingApp.DAL.Repositories.ContractTypeService
 
         public async Task<ContractTypeModel> InsertContractType(ContractTypeModel model)
         {
-            DynamicParameters param = new DynamicParameters();  
+            DynamicParameters param = new DynamicParameters();
             param.Add("contractTypeName", model.ContractTypeName);
             param.Add("contractTypeDescription", model.ContractTypeDescription);
 

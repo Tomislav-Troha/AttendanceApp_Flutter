@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.BL.Managers.ChangePasswordManager;
-using SwimmingApp.BL.Managers.Log;
+using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Repositories.PaswordResetService;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -9,13 +9,13 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class ResetPasswordController : Controller
     {
-        private readonly PasswordResetManager _changePasswordManager;
-        private readonly ErrorLogsManager _errorLogsManager;
+        private readonly PasswordResetService _changePasswordService;
+        private readonly ErrorLogService _errorLogsService;
 
-        public ResetPasswordController(PasswordResetManager changePasswordManager, ErrorLogsManager errorLogsManager)
+        public ResetPasswordController(PasswordResetService changePasswordManager, ErrorLogService errorLogsManager)
         {
-            _changePasswordManager = changePasswordManager;
-            _errorLogsManager = errorLogsManager;
+            _changePasswordService = changePasswordManager;
+            _errorLogsService = errorLogsManager;
         }
 
 
@@ -25,12 +25,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _changePasswordManager.ResetPassword(model);
+                var result = await _changePasswordService.PasswordReset(model);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
-using SwimmingApp.BL.Managers.SalaryPackageTypeManager;
+using SwimmingApp.DAL.Repositories.SalaryPackageTypeService;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -8,11 +8,11 @@ namespace SwimmingAppWebAPI.Controllers
     [Route("salaryPackageType")]
     public class SalaryPackageTypeController : Controller
     {
-        private readonly SalaryPackageTypeManager _salaryPackageTypeManager;
+        private readonly SalaryPackageTypeService _salaryPackageTypeService;
 
-        public SalaryPackageTypeController(SalaryPackageTypeManager salaryPackageTypeManager)
+        public SalaryPackageTypeController(SalaryPackageTypeService salaryPackageTypeManager)
         {
-            _salaryPackageTypeManager = salaryPackageTypeManager;
+            _salaryPackageTypeService = salaryPackageTypeManager;
         }
 
         [HttpGet, Route("getSalaryPackageType")]
@@ -20,7 +20,7 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _salaryPackageTypeManager.GetSalaryPackageTypes();
+                var response = await _salaryPackageTypeService.GetSalaryPackageTypes();
                 return Ok(response);
             }
             catch (Exception e)
@@ -34,7 +34,7 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _salaryPackageTypeManager.InsertSalaryPackageType(model);
+                var response = await _salaryPackageTypeService.InsertSalaryPackageType(model);
                 return Ok(response);
             }
             catch (Exception e)

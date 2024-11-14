@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SwimmingApp.Abstract.Data;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.BL.Managers.AttendanceManager;
-using SwimmingApp.BL.Managers.EmployeeContractManager;
-using SwimmingApp.BL.Managers.Log;
+using SwimmingApp.DAL.Repositories.EmployeeContract;
+using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -12,12 +10,12 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class ContractController : Controller
     {
-        private readonly ContractManager _contractManager;
-        private readonly ErrorLogsManager _errorLogsManager;
-        public ContractController(ContractManager contractManager, ErrorLogsManager errorLogsManager)
+        private readonly ContractService _contractService;
+        private readonly ErrorLogService _errorLogsService;
+        public ContractController(ContractService contractService, ErrorLogService errorLogsService)
         {
-            _contractManager = contractManager;
-            _errorLogsManager = errorLogsManager;
+            _contractService = contractService;
+            _errorLogsService = errorLogsService;
         }
 
         [Authorize]
@@ -27,12 +25,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _contractManager.InsertContract(employeeContractDTO, userId);
+                var result = await _contractService.InsertContract(employeeContractDTO, userId);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -43,12 +41,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _contractManager.GetContract(userID);
+                var result = await _contractService.GetContracts(userID);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }
@@ -59,12 +57,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _contractManager.UpdateContract(model);
+                var result = await _contractService.UpdateContract(model);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e);
             }
         }

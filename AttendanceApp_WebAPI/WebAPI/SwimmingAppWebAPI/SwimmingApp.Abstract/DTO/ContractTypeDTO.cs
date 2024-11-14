@@ -7,7 +7,7 @@ namespace SwimmingApp.Abstract.DTO
 
         public ContractTypeDTO()
         {
-            
+
         }
         public ContractTypeDTO(ContractTypeModel model) : base(model)
         {

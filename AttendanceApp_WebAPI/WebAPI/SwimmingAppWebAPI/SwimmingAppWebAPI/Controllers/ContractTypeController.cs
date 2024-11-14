@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
-using SwimmingApp.BL.Managers.ContractTypeManager;
-using SwimmingApp.BL.Managers.Log;
+using SwimmingApp.DAL.Repositories.ContractTypeService;
+using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -9,13 +9,13 @@ namespace SwimmingAppWebAPI.Controllers
     [Route("contractType")]
     public class ContractTypeController : Controller
     {
-        private readonly ContractTypeManager _contractTypeManager;
-        private readonly ErrorLogsManager _errorLogsManager;
+        private readonly ContractTypeService _contractTypeService;
+        private readonly ErrorLogService _errorLogsService;
 
-        public ContractTypeController(ContractTypeManager contractTypeManager, ErrorLogsManager errorLogsManager)
+        public ContractTypeController(ContractTypeService contractTypeManager, ErrorLogService errorLogsManager)
         {
-            _contractTypeManager = contractTypeManager;
-            _errorLogsManager = errorLogsManager;
+            _contractTypeService = contractTypeManager;
+            _errorLogsService = errorLogsManager;
         }
 
         [HttpGet, Route("getContractTypes")]
@@ -23,12 +23,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _contractTypeManager.GetContractTypes();
+                var response = await _contractTypeService.GetContractTypes();
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e.Message);
             }
         }
@@ -38,12 +38,12 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var response = await _contractTypeManager.InsertContractType(model);
+                var response = await _contractTypeService.InsertContractType(model);
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsManager.LogError(e);
+                await _errorLogsService.LogError(e);
                 return BadRequest(e.Message);
             }
         }

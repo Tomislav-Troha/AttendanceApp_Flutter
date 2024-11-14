@@ -1,33 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SwimmingApp.Abstract.Data;
+﻿using SwimmingApp.Abstract.Data;
 
 namespace SwimmingApp.Abstract.DataModel
 {
     public class ContractModel : Contract
     {
-        public ContractModel()
-        {  
-        }
-
-        public ContractModel(ContractModel model)
+        public ContractModel(ContractModel? model)
         {
-            UserModel = new UserModel(model.UserModel);
-            UserRoleModel = new UserRoleModel(model.UserRoleModel);
-            ContractTypeModel = new ContractTypeModel(model.ContractTypeModel);
-            SalaryPackageTypeModel = new SalaryPackageTypeModel(model.SalaryPackageTypeModel);
-            JobRoleModel = new JobRoleModel(model.JobRoleModel);
+            UserModel = new UserModel(model?.UserModel);
+            UserRoleModel = new UserRoleModel(model?.UserRoleModel);
+            ContractTypeModel = new ContractTypeModel(model?.ContractTypeModel);
+            SalaryPackageTypeModel = new SalaryPackageTypeModel(model?.SalaryPackageTypeModel);
+            JobRoleModel = new JobRoleModel(model?.JobRoleModel);
 
         }
 
-        public UserModel UserModel { get; set; }
-        public UserRoleModel UserRoleModel { get; set; }
-        public ContractTypeModel ContractTypeModel { get; set; }
-        public SalaryPackageTypeModel SalaryPackageTypeModel { get;set; }
-        public JobRoleModel JobRoleModel { get; set; }
+        public UserModel? UserModel { get; set; }
+        public UserRoleModel? UserRoleModel { get; set; }
+        public ContractTypeModel? ContractTypeModel { get; set; }
+        public SalaryPackageTypeModel? SalaryPackageTypeModel { get; set; }
+        public JobRoleModel? JobRoleModel { get; set; }
 
 
 
