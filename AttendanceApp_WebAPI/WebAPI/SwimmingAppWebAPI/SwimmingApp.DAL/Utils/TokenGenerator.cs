@@ -18,7 +18,7 @@ namespace SwimmingApp.BL.Utils
                 new Claim("UserID", user?.UserId?.ToString()!)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token")?.Value!));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(

@@ -14,7 +14,7 @@ namespace SwimmingApp.DAL.Core
             _db = new NpgsqlConnection(configuration.GetConnectionString("SwimmingAplication"));
         }
 
-        public async Task<DbInsertResult> InsertAsync(string? command, object? parms)
+        public async Task<DbInsertResult> InsertAsync(string command, object? parms)
         {
             var query = await _db.QueryAsync(command, parms);
             var result = query.FirstOrDefault();
@@ -31,19 +31,19 @@ namespace SwimmingApp.DAL.Core
             return new DbInsertResult(rowCount, null, result);
         }
 
-        public async Task<IEnumerable<T>> GetAsync<T>(string? command, object? parms)
+        public async Task<IEnumerable<T>> GetAsync<T>(string command, object? parms)
         {
             var result = await _db.QueryAsync<T>(command, parms);
             return result;
         }
 
-        public async Task<T> FindOneAsync<T>(string? command, object? parms)
+        public async Task<T> FindOneAsync<T>(string command, object? parms)
         {
             var result = await _db.QuerySingleAsync<T>(command, parms);
             return result;
         }
 
-        public async Task<int> UpdateAsync(string? command, object? parms)
+        public async Task<int> UpdateAsync(string command, object? parms)
         {
             var query = await _db.QueryAsync(command, parms);
             var result = query.FirstOrDefault();
@@ -54,7 +54,7 @@ namespace SwimmingApp.DAL.Core
             return Convert.ToInt32(result.RowCount);
         }
 
-        public async Task<int> DeleteAsync(string? command, object? parms)
+        public async Task<int> DeleteAsync(string command, object? parms)
         {
             var query = await _db.QueryAsync(command, parms);
             var result = query.FirstOrDefault();

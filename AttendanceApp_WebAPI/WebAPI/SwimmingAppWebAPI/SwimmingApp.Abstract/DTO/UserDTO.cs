@@ -16,10 +16,5 @@ namespace SwimmingApp.Abstract.DTO
             UserRoleModel = userModel?.UserRoleModel ?? new UserRoleDTO(userModel?.UserRoleModel);
             ProfileImage = userModel?.ProfileImage;
         }
-
-        public UserDTO()
-        {
-
-        }
     }
 }

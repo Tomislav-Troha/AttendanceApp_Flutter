@@ -13,10 +13,5 @@ namespace SwimmingApp.Abstract.DTO.Log
             StackTrace = model.StackTrace;
             AdditionalInfo = model.AdditionalInfo;
         }
-
-        public ErrorLogsDTO()
-        {
-
-        }
     }
 }

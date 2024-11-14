@@ -11,10 +11,5 @@ namespace SwimmingApp.Abstract.DTO
             Password = model.Password;
             SessionUuid = model.SessionUuid;
         }
-
-        public UserLoginDTO()
-        {
-
-        }
     }
 }

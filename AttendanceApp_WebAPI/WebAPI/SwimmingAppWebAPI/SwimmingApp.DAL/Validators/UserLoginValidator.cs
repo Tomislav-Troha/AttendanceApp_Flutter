@@ -17,7 +17,7 @@ namespace SwimmingApp.DAL.Validators
 
             RuleFor(x => x.Email).NotEmpty().NotNull().WithMessage("E-mail is required");
             RuleFor(x => x.Password).NotEmpty().NotNull().WithMessage("Password is required");
-            RuleFor(e => e).MustAsync(VerifyLogin).WithMessage("E-mail or password are incorrect");
+            RuleFor(e => e).MustAsync(VerifyLogin).WithMessage("E-mail or password is incorrect");
             RuleFor(e => e).MustAsync(IsUserSet).WithMessage("Contact your supervisor to activate your account");
         }
 
@@ -32,7 +32,7 @@ namespace SwimmingApp.DAL.Validators
             {
                 var sha256 = SHA256.Create();
 
-                byte[] password = sha256.ComputeHash(Encoding.UTF8.GetBytes((loginDto.Password) + user.Salt));
+                byte[] password = sha256.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password + user.Salt));
                 bool passwordIsTrue = StructuralComparisons.StructuralEqualityComparer.Equals(password, user.Password);
                 if (passwordIsTrue)
                 {
