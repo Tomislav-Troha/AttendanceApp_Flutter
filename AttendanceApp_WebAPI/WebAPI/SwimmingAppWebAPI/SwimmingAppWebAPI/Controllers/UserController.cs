@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
-using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.UserService;
 
 namespace SwimmingAppWebAPI.Controllers
@@ -10,12 +10,10 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly UserService _userService;
-        private readonly ErrorLogService _errorLogsService;
-        public UserController(UserService userManager, ErrorLogService errorLogsManager)
+        private readonly IUserService _userService;
+        public UserController(IUserService userManager)
         {
             _userService = userManager;
-            _errorLogsService = errorLogsManager;
         }
 
         [Authorize]
@@ -30,8 +28,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -47,8 +45,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -64,8 +62,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -81,8 +79,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -97,8 +95,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -113,8 +111,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -130,8 +128,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -147,8 +145,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e.Message);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -164,12 +162,9 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
-
-
-
     }
 }

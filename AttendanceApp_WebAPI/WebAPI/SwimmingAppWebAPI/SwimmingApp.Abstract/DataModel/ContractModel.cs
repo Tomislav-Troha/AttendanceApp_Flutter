@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DataModel
 {
     public class ContractModel : Contract
     {
+        public ContractModel()
+        {
+            
+        }
         public ContractModel(ContractModel? model)
         {
             UserModel = new UserModel(model?.UserModel);

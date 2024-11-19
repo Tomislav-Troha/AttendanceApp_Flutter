@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class UserDTO : UserModel
     {
+        public UserDTO()
+        {
+            
+        }
         public UserDTO(UserModel userModel)
         {
             UserId = userModel?.UserId;

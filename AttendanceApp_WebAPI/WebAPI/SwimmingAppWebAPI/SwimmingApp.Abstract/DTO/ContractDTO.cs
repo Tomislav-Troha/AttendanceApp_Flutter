@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class ContractDTO : ContractModel
     {
+        public ContractDTO()
+        {
+
+        }
         public ContractDTO(ContractModel model) : base(model)
         {
             ContractID = model.ContractID;

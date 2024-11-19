@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class TrainingDTO : TrainingModel
     {
+        public TrainingDTO()
+        {
+            
+        }
         public TrainingDTO(TrainingModel model) : base(model)
         {
             ID_training = model.ID_training;

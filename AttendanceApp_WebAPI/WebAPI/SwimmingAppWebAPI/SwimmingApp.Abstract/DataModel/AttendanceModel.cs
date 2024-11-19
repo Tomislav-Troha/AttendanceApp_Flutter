@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DataModel
 {
     public class AttendanceModel : Attendance
     {
+        public AttendanceModel()
+        {
+            
+        }
         public AttendanceModel(AttendanceModel model)
         {
             UserModel = new UserModel(model?.UserModel);

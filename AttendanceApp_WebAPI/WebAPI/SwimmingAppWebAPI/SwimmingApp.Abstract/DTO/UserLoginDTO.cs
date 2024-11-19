@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class UserLoginDTO : UserLoginModel
     {
+        public UserLoginDTO()
+        {
+            
+        }
         public UserLoginDTO(UserLoginModel model)
         {
             Email = model.Email;

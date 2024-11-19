@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DataModel
 {
     public class TrainingDateModel : TrainingDate
     {
+        public TrainingDateModel()
+        {
+            
+        }
         public TrainingDateModel(TrainingDateModel? model)
         {
             UserModel = new UserModel(model?.UserModel);

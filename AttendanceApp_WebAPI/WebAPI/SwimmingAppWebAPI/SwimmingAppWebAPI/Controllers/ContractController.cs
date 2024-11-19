@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.EmployeeContract;
-using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -10,12 +10,10 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class ContractController : Controller
     {
-        private readonly ContractService _contractService;
-        private readonly ErrorLogService _errorLogsService;
-        public ContractController(ContractService contractService, ErrorLogService errorLogsService)
+        private readonly IContractService _contractService;
+        public ContractController(IContractService contractService)
         {
             _contractService = contractService;
-            _errorLogsService = errorLogsService;
         }
 
         [Authorize]
@@ -30,8 +28,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -46,8 +44,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -62,8 +60,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 

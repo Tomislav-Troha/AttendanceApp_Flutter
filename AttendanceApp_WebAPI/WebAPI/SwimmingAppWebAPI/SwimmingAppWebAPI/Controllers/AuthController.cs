@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.UserLoginService;
 using SwimmingApp.DAL.Repositories.UserRegisterService;
 
@@ -11,13 +11,11 @@ namespace SwimmingAppWebAPI.Controllers
     public class AuthController : Controller
     {
 
-        private readonly UserRegisterService _userRegisterService;
-        private readonly UserLoginService _userLoginService;
-        private readonly ErrorLogService _errorLogsService;
-        public AuthController(UserRegisterService userRegisterService, UserLoginService userLoginService, ErrorLogService errorLogsService)
+        private readonly IUserRegisterService _userRegisterService;
+        private readonly IUserLoginService _userLoginService;
+        public AuthController(IUserRegisterService userRegisterService, IUserLoginService userLoginService)
         {
             _userRegisterService = userRegisterService;
-            _errorLogsService = errorLogsService;
             _userLoginService = userLoginService;
         }
 
@@ -34,14 +32,14 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(UserLoginDTO login)
+        public async Task<IActionResult> Login([FromQuery] UserLoginDTO login)
         {
             try
             {
@@ -50,11 +48,9 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
-
-
     }
 }

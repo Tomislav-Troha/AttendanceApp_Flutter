@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class UserRoleDTO : UserRoleModel
     {
+        public UserRoleDTO()
+        {
+            
+        }
         public UserRoleDTO(UserRoleModel? userRoleModel) : base(userRoleModel)
         {
             RoleId = userRoleModel?.RoleId;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.TrainingDateService;
 #nullable enable
 
@@ -11,12 +11,10 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class TrainingDateController : Controller
     {
-        private readonly TrainingDateService _trainingDateService;
-        private readonly ErrorLogService _errorLogsService;
-        public TrainingDateController(TrainingDateService trainingDateService, ErrorLogService errorLogsService)
+        private readonly ITrainingDateService _trainingDateService;
+        public TrainingDateController(ITrainingDateService trainingDateService)
         {
             _trainingDateService = trainingDateService;
-            _errorLogsService = errorLogsService;
         }
 
         [Authorize]
@@ -26,17 +24,16 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
-                if (userId == null)
+                if (!int.TryParse(HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "UserID")?.Value, out int userId))
                     return BadRequest("User not found.");
 
-                var result = await _trainingDateService.GetTrainingDate(int.Parse(userId.Value), currentDate);
+                var result = await _trainingDateService.GetTrainingDate(userId, currentDate);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest($"{e.Message} {e.StackTrace}");
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -52,8 +49,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -64,17 +61,16 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
-                if (userId == null)
+                if (!int.TryParse(HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "UserID")?.Value, out int userId))
                     return BadRequest("User not found.");
 
-                var result = await _trainingDateService.InsertTrainingDate(trainingDateDTO, int.Parse(userId.Value));
+                var result = await _trainingDateService.InsertTrainingDate(trainingDateDTO, userId);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest($"{e.Message}");
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -89,8 +85,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest($"{e.Message}");
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -106,8 +102,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest($"{e.Message}");
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
     }

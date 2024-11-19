@@ -9,10 +9,10 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
 {
     public class UserRegisterService : IUserRegisterService
     {
-        private readonly IUserService _iuserService;
+        private readonly IUserService _userService;
         public UserRegisterService(IUserService userService)
         {
-            _iuserService = userService;
+            _userService = userService;
         }
 
         public async Task<UserRegisterResponse> UserRegister(UserRegisterDTO? request, int adminID)
@@ -39,7 +39,7 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
                     Addres = request?.Addres
                 };
 
-                await _iuserService.InsertUser(userModel);
+                await _userService.InsertUser(userModel);
             }
 
             return response;
@@ -52,12 +52,12 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
 
             var response = new UserRegisterResponse();
             bool userExist = false;
-            var userEmail = await _iuserService.GetUserByEmail(request?.Email);
+            var userEmail = await _userService.GetUserByEmail(request?.Email);
 
             if (userEmail != null)
                 userExist = true;
 
-            var validator = new UserRegisterValidator(_iuserService);
+            var validator = new UserRegisterValidator(_userService);
 
             var validatorResult = await validator.ValidateAsync(request!);
 

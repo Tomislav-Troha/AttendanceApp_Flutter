@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class TrainingDateDTO : TrainingDateModel
     {
+        public TrainingDateDTO()
+        {
+            
+        }
         public TrainingDateDTO(TrainingDateModel model) : base(model)
         {
             ID_TrainingDate = model.ID_TrainingDate;

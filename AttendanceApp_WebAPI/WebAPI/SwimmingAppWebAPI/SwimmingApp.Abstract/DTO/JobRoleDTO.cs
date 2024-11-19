@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class JobRoleDTO : JobRoleModel
     {
+        public JobRoleDTO()
+        {
+            
+        }
         public JobRoleDTO(JobRoleModel model) : base(model)
         {
             JobRoleID = model.JobRoleID;

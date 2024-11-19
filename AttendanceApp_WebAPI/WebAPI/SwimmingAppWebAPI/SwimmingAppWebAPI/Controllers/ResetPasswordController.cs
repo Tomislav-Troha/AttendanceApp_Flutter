@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.PaswordResetService;
 
 namespace SwimmingAppWebAPI.Controllers
@@ -9,15 +9,12 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class ResetPasswordController : Controller
     {
-        private readonly PasswordResetService _changePasswordService;
-        private readonly ErrorLogService _errorLogsService;
+        private readonly IPasswordResetService _changePasswordService;
 
-        public ResetPasswordController(PasswordResetService changePasswordManager, ErrorLogService errorLogsManager)
+        public ResetPasswordController(IPasswordResetService changePasswordManager)
         {
             _changePasswordService = changePasswordManager;
-            _errorLogsService = errorLogsManager;
         }
-
 
         [HttpPut]
         [Route("resetPassword")]
@@ -30,8 +27,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 

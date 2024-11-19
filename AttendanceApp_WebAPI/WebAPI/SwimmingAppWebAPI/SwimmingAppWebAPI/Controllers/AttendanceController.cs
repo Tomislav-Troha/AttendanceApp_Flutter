@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.AttendanceService;
-using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -10,14 +10,11 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class AttendanceController : Controller
     {
-        private readonly AttendanceService _attendanceService;
-        private readonly ErrorLogService _errorLogsService;
-        public AttendanceController(AttendanceService attendanceService, ErrorLogService errorLogsService)
+        private readonly IAttendanceService _attendanceService;
+        public AttendanceController(IAttendanceService attendanceService)
         {
             _attendanceService = attendanceService;
-            _errorLogsService = errorLogsService;
         }
-
 
         [Authorize]
         [HttpPost]
@@ -26,17 +23,16 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
-                if (userId == null)
+                if (!int.TryParse(HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "UserID")?.Value, out int userId))
                     return BadRequest("User not found.");
 
-                var result = await _attendanceService.InsertAttendance(attendanceDTO, int.Parse(userId.Value));
+                var result = await _attendanceService.InsertAttendance(attendanceDTO, userId);
                 return Ok(result);
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -52,8 +48,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -64,16 +60,16 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var userId = HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "UserID");
-                if (userId == null)
+                if (!int.TryParse(HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "UserID")?.Value, out int userId))
                     return BadRequest("User not found.");
-                var response = await _attendanceService.GetAttendanceByUserID(int.Parse(userId.Value));
+
+                var response = await _attendanceService.GetAttendanceByUserID(userId);
                 return Ok(response);
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -89,8 +85,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -106,8 +102,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 

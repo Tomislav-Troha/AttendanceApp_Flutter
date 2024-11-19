@@ -56,7 +56,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
 
             using var connection = _contex.CreateConnection();
 
-            IEnumerable<UserModel> users = await connection.QueryAsync<UserModel, UserRoleModel, UserModel>(query,
+            var users = await connection.QueryAsync<UserModel, UserRoleModel, UserModel>(query,
                (user, userRole) =>
                {
                    user.UserRoleModel = userRole;

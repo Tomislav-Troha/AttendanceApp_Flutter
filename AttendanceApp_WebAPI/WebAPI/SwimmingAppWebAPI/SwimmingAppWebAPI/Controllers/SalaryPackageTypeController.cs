@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.SalaryPackageTypeService;
 
 namespace SwimmingAppWebAPI.Controllers
@@ -8,9 +9,9 @@ namespace SwimmingAppWebAPI.Controllers
     [Route("salaryPackageType")]
     public class SalaryPackageTypeController : Controller
     {
-        private readonly SalaryPackageTypeService _salaryPackageTypeService;
+        private readonly ISalaryPackageTypeService _salaryPackageTypeService;
 
-        public SalaryPackageTypeController(SalaryPackageTypeService salaryPackageTypeManager)
+        public SalaryPackageTypeController(ISalaryPackageTypeService salaryPackageTypeManager)
         {
             _salaryPackageTypeService = salaryPackageTypeManager;
         }
@@ -25,7 +26,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -39,7 +41,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
     }

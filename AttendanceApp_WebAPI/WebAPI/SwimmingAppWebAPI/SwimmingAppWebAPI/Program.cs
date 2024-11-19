@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SwimmingApp.DAL.Contex;
 using SwimmingApp.DAL.Core;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.AttendanceService;
 using SwimmingApp.DAL.Repositories.ContractTypeService;
 using SwimmingApp.DAL.Repositories.EmployeeContract;
@@ -20,16 +21,12 @@ using SwimmingApp.DAL.Utils;
 
 internal class Program
 {
-
-    public void ConfigureServices(IServiceCollection services) { }
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container
         var services = builder.Services;
-
-        services.AddControllers();
 
         services.AddEndpointsApiExplorer();
 
@@ -77,20 +74,17 @@ internal class Program
                  };
              });
 
-
         #region Controllers
-
-        services.AddControllers();
 
         services.AddSingleton<DapperContext>();
 
         services.AddScoped<IDbService, DbService>();
 
         services.AddScoped<IUserService, UserService>();
+        
+        services.AddScoped<IUserLoginService, UserLoginService>();
 
         services.AddScoped<IUserRegisterService, UserRegisterService>();
-
-        services.AddScoped<IUserLoginService, UserLoginService>();
 
         services.AddScoped<ITrainingService, TrainingService>();
 
@@ -110,6 +104,8 @@ internal class Program
 
         services.AddScoped<ISalaryPackageTypeService, SalaryPackageTypeService>();
 
+        services.AddControllers();
+
         #endregion
 
         services.AddCors(p => p.AddPolicy("corsapp", builder =>
@@ -119,6 +115,7 @@ internal class Program
 
         var app = builder.Build();
 
+        GlobalLogger.Initialize(app.Services);
 
         if (app.Environment.IsDevelopment())
         {

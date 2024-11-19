@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.ContractTypeService;
-using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -9,13 +9,10 @@ namespace SwimmingAppWebAPI.Controllers
     [Route("contractType")]
     public class ContractTypeController : Controller
     {
-        private readonly ContractTypeService _contractTypeService;
-        private readonly ErrorLogService _errorLogsService;
-
-        public ContractTypeController(ContractTypeService contractTypeManager, ErrorLogService errorLogsManager)
+        private readonly IContractTypeService _contractTypeService;
+        public ContractTypeController(IContractTypeService contractTypeManager)
         {
             _contractTypeService = contractTypeManager;
-            _errorLogsService = errorLogsManager;
         }
 
         [HttpGet, Route("getContractTypes")]
@@ -28,8 +25,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e.Message);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -43,8 +40,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e.Message);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
     }

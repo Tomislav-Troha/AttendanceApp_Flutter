@@ -4,7 +4,6 @@ namespace SwimmingApp.Abstract.DataModel
 {
     public class UserModel : User
     {
-
         public UserModel()
         {
             UserRoleModel = new UserRoleModel();

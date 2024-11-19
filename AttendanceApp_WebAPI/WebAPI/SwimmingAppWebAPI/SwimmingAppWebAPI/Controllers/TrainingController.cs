@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DTO;
-using SwimmingApp.DAL.Repositories.Log;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.TrainingService;
 
 namespace SwimmingAppWebAPI.Controllers
@@ -10,15 +10,12 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class TrainingController : Controller
     {
-        private readonly TrainingService _trainingService;
-        private readonly ErrorLogService _errorLogsService;
+        private readonly ITrainingService _trainingService;
 
-        public TrainingController(TrainingService trainingManager, ErrorLogService errorLogsManager)
+        public TrainingController(ITrainingService trainingManager)
         {
             _trainingService = trainingManager;
-            _errorLogsService = errorLogsManager;
         }
-
 
         [HttpGet]
         [Route("getTraining")]
@@ -31,8 +28,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -48,8 +45,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -65,8 +62,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
@@ -82,8 +79,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 

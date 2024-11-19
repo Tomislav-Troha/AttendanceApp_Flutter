@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class SalaryPackageTypeDTO : SalaryPackageTypeModel
     {
+        public SalaryPackageTypeDTO()
+        {
+            
+        }
         public SalaryPackageTypeDTO(SalaryPackageTypeModel model) : base(model)
         {
             SalaryPackageID = model.SalaryPackageID;

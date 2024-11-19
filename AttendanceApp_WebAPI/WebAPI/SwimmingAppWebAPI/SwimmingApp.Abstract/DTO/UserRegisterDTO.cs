@@ -4,6 +4,10 @@ namespace SwimmingApp.Abstract.DTO
 {
     public class UserRegisterDTO : UserRegisterModel
     {
+        public UserRegisterDTO()
+        {
+            
+        }
         public UserRegisterDTO(UserRegisterModel? userRegisterModel)
         {
             Name = userRegisterModel?.Name;

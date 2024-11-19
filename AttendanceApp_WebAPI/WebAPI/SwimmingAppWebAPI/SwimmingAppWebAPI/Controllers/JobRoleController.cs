@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwimmingApp.Abstract.DataModel;
+using SwimmingApp.DAL.Logger;
 using SwimmingApp.DAL.Repositories.JobRoleService;
-using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingAppWebAPI.Controllers
 {
@@ -9,13 +9,11 @@ namespace SwimmingAppWebAPI.Controllers
     [Route("jobRole")]
     public class JobRoleController : Controller
     {
-        private readonly JobRoleService _jobRoleService;
-        private readonly ErrorLogService _errorLogsService;
+        private readonly IJobRoleService _jobRoleService;
 
-        public JobRoleController(JobRoleService jobRoleManager, ErrorLogService errorLogsManager)
+        public JobRoleController(IJobRoleService jobRoleManager)
         {
             _jobRoleService = jobRoleManager;
-            _errorLogsService = errorLogsManager;
         }
 
         [HttpGet, Route("getJobRoles")]
@@ -28,13 +26,13 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e.Message);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
 
         [HttpPost, Route("insertJobRole")]
-        public async Task<IActionResult> InsertJobRole(JobRoleModel model)
+        public async Task<IActionResult> InsertJobRole([FromQuery]JobRoleModel model)
         {
             try
             {
@@ -43,8 +41,8 @@ namespace SwimmingAppWebAPI.Controllers
             }
             catch (Exception e)
             {
-                await _errorLogsService.LogError(e);
-                return BadRequest(e.Message);
+                await GlobalLogger.LogError(e);
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
         }
     }
