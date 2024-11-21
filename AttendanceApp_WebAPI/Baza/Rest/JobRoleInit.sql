@@ -1,6 +1,6 @@
 -- Initial script to populate the JobRole table
 
-INSERT INTO "JobRole"("roleName", "description")
+INSERT INTO "JobRole"("name", "description")
 VALUES
 ('Lifeguard', 'Responsible for supervising swimmers, ensuring safe swimming conditions, and providing emergency assistance if necessary.'),
 ('Trainer', 'Provides swimming lessons, assists members in improving techniques, and ensures safe training conditions.'),

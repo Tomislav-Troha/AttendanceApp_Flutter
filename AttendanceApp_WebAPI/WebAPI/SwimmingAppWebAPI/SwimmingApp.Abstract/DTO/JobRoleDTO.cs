@@ -10,9 +10,9 @@ namespace SwimmingApp.Abstract.DTO
         }
         public JobRoleDTO(JobRoleModel model) : base(model)
         {
-            JobRoleID = model.JobRoleID;
-            JobRoleName = model.JobRoleName;
-            JobRoleDescription = model.JobRoleDescription;
+            ID = model.ID;
+            Name = model.Name;
+            Description = model.Description;
         }
     }
 }

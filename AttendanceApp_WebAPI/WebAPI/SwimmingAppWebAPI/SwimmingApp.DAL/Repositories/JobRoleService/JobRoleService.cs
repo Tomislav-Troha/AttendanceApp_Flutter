@@ -20,8 +20,8 @@ namespace SwimmingApp.DAL.Repositories.JobRoleService
         public async Task<JobRoleModel> InsertJobRole(JobRoleModel model)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("jobRoleName", model.JobRoleName);
-            param.Add("jobRoleDescription", model.JobRoleDescription);
+            param.Add("jobRoleName", model.Name);
+            param.Add("jobRoleDescription", model.Description);
 
             await _db.InsertAsync("CALL JobRole_Insert(@jobRoleName, @jobRoleDescription)", param);
 

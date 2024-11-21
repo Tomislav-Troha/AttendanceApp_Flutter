@@ -10,13 +10,13 @@ namespace SwimmingApp.Abstract.DTO
         }
         public UserDTO(UserModel userModel)
         {
-            UserId = userModel?.UserId;
+            ID = userModel?.ID;
             Name = userModel?.Name;
             Surname = userModel?.Surname;
             Email = userModel?.Email;
             Username = userModel?.Username;
             Password = userModel?.Password;
-            Addres = userModel?.Addres;
+            Address = userModel?.Address;
             UserRoleModel = userModel?.UserRoleModel ?? new UserRoleDTO(userModel?.UserRoleModel);
             ProfileImage = userModel?.ProfileImage;
         }

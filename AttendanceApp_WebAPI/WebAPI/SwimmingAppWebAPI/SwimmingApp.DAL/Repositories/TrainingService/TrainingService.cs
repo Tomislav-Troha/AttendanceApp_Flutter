@@ -42,7 +42,7 @@ namespace SwimmingApp.DAL.Repositories.TrainingService
         public async Task<TrainingDTO> UpdateTraining(TrainingDTO trainingDTO)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("id", trainingDTO.ID_training);
+            param.Add("id", trainingDTO.ID);
             param.Add("code", trainingDTO.Code);
             param.Add("trainingType", trainingDTO.TrainingType);
 

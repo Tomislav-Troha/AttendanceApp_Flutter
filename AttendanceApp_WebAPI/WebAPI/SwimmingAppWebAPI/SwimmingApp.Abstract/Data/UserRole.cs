@@ -1,9 +1,16 @@
-﻿namespace SwimmingApp.Abstract.Data
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SwimmingApp.Abstract.Data
 {
     public class UserRole
     {
-        public int? RoleId { get; set; }
-        public string? RoleName { get; set; }
-        public string? RoleDesc { get; set; }
+        [Column("UserRoleID")]
+        public int? ID { get; set; }
+
+        [Column("UserRoleName")]
+        public string? Name { get; set; }
+
+        [Column("UserRoleDescription")]
+        public string? Description { get; set; }
     }
 }

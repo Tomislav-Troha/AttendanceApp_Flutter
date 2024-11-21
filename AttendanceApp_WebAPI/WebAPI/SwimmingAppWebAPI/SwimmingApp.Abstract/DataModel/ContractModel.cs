@@ -24,7 +24,5 @@ namespace SwimmingApp.Abstract.DataModel
         public SalaryPackageTypeModel? SalaryPackageTypeModel { get; set; }
         public JobRoleModel? JobRoleModel { get; set; }
 
-
-
     }
 }

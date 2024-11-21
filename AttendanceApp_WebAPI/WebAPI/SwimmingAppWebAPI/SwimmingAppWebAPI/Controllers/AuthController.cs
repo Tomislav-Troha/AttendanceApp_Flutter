@@ -22,12 +22,11 @@ namespace SwimmingAppWebAPI.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
+        public async Task<IActionResult> Register([FromQuery]UserRegisterDTO userRegisterDTO)
         {
             try
             {
-                //var adminId = HttpContext?.User.Claims.Where(x => x.Type == "UserId").Single();
-                var response = await _userRegisterService.UserRegister(userRegisterDTO, 1);
+                var response = await _userRegisterService.UserRegister(userRegisterDTO);
                 return Ok(response);
             }
             catch (Exception e)

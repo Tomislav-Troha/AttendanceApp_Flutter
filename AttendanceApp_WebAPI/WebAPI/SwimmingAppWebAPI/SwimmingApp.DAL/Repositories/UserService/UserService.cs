@@ -61,7 +61,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
                {
                    user.UserRoleModel = userRole;
                    return user;
-               }, param, splitOn: "roleid");
+               }, param, splitOn: "UserRoleID");
 
             return users?.FirstOrDefault();
         }
@@ -131,7 +131,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             return await _db.GetAsync<UserModel>("SELECT * FROM User_Select_RoleNull()");
         }
 
-        public async Task<UserModel?> InsertUser(UserModel? userModel)
+        public async Task<UserModel?> InsertUser(UserModel? userModel, int? userRole = null)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("name", userModel?.Name);
@@ -140,9 +140,10 @@ namespace SwimmingApp.DAL.Repositories.UserService
             param.Add("username", userModel?.Username);
             param.Add("password", userModel?.Password);
             param.Add("salt", userModel?.Salt);
-            param.Add("adress", userModel?.Addres);
+            param.Add("adrress", userModel?.Address);
+            param.Add("userRoleID", userRole);
 
-            await _db.InsertAsync("CALL User_Insert(@name, @surname, @email, @username, @password, @adress, @salt)", param);
+            await _db.InsertAsync("CALL User_Insert(@name, @surname, @email, @username, @password, @adrress, @salt, @userRoleID)", param);
 
             return userModel;
         }
@@ -151,7 +152,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("id", id);
-            param.Add("userRoleID", model.RoleId);
+            param.Add("userRoleID", model.ID);
 
             await _db.UpdateAsync("CALL User_SetRole(@id, @userRoleID)", param);
 
@@ -163,7 +164,7 @@ namespace SwimmingApp.DAL.Repositories.UserService
             DynamicParameters param = new DynamicParameters();
             param.Add("name", userModel.Name);
             param.Add("surname", userModel.Surname);
-            param.Add("adress", userModel.Addres);
+            param.Add("adrress", userModel.Address);
             param.Add("id", id);
 
             await _db.UpdateAsync("CALL User_Update(@id, @name, @surname, @adress)", param);
@@ -192,6 +193,11 @@ namespace SwimmingApp.DAL.Repositories.UserService
             await _db.UpdateAsync("CALL User_UpdatePassword(@email, @salt, @password)", param);
 
             return userModel;
+        }
+
+        public async Task<bool> CheckIfFirstEver()
+        {
+           return await _db.FindOneAsync<bool>("SELECT * FROM User_CheckIfFirstEver()");
         }
     }
 }

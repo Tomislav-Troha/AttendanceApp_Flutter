@@ -12,13 +12,13 @@ namespace SwimmingApp.Abstract.DataModel
         {
             UserModel = new UserModel(model?.UserModel);
             TrainingModel = new TrainingModel(model?.TrainingModel);
-            TrainingDateModel = new TrainingDateModel(model?.TrainingDateModel);
+            TrainingSessionModel = new TrainingSessionModel(model?.TrainingSessionModel);
             UserRoleModel = new UserRoleModel(model?.UserRoleModel);
         }
 
         public UserModel? UserModel { get; set; }
         public TrainingModel? TrainingModel { get; set; }
-        public TrainingDateModel? TrainingDateModel { get; set; }
+        public TrainingSessionModel? TrainingSessionModel { get; set; }
 
         public UserRoleModel? UserRoleModel { get; set; }
     }

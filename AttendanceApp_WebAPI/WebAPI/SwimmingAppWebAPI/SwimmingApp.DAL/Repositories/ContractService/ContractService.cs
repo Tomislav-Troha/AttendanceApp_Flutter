@@ -49,10 +49,10 @@ namespace SwimmingApp.DAL.Repositories.EmployeeContract
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("userID", userID);
-            param.Add("userRoleID", memberContractDTO?.UserRoleModel?.RoleId);
-            param.Add("contractTypeID", memberContractDTO?.ContractTypeModel?.ContractTypeID != 0 ? memberContractDTO?.ContractTypeModel?.ContractTypeID : null);
-            param.Add("salaryPackageID", memberContractDTO?.SalaryPackageTypeModel?.SalaryPackageID != 0 ? memberContractDTO?.SalaryPackageTypeModel?.SalaryPackageID : null);
-            param.Add("jobRoleID", memberContractDTO?.JobRoleModel?.JobRoleID != 0 ? memberContractDTO?.JobRoleModel?.JobRoleID : null);
+            param.Add("userRoleID", memberContractDTO?.UserRoleModel?.ID);
+            param.Add("contractTypeID", memberContractDTO?.ContractTypeModel?.ID!= 0 ? memberContractDTO?.ContractTypeModel?.ID : null);
+            param.Add("salaryPackageID", memberContractDTO?.SalaryPackageTypeModel?.ID != 0 ? memberContractDTO?.SalaryPackageTypeModel?.ID : null);
+            param.Add("jobRoleID", memberContractDTO?.JobRoleModel?.ID != 0 ? memberContractDTO?.JobRoleModel?.ID : null);
             param.Add("startDate", memberContractDTO?.StartDate);
             param.Add("expiryDate", memberContractDTO?.ExpiryDate);
 
@@ -64,10 +64,10 @@ namespace SwimmingApp.DAL.Repositories.EmployeeContract
         public async Task<ContractDTO?> UpdateContract(ContractDTO? memberContractDTO)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("id", memberContractDTO?.ContractID);
-            param.Add("contractTypeID", memberContractDTO?.ContractTypeModel?.ContractTypeID);
-            param.Add("salaryPackageID", memberContractDTO?.SalaryPackageTypeModel?.SalaryPackageID);
-            param.Add("jobRoleID", memberContractDTO?.JobRoleModel?.JobRoleID);
+            param.Add("id", memberContractDTO?.ID);
+            param.Add("contractTypeID", memberContractDTO?.ContractTypeModel?.ID);
+            param.Add("salaryPackageID", memberContractDTO?.SalaryPackageTypeModel?.ID);
+            param.Add("jobRoleID", memberContractDTO?.JobRoleModel?.ID);
             param.Add("startDate", memberContractDTO?.StartDate);
             param.Add("expiryDate", memberContractDTO?.ExpiryDate);
 

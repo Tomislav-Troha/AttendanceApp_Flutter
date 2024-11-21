@@ -14,8 +14,8 @@ namespace SwimmingApp.BL.Utils
             List<Claim> claims = new List<Claim>
             {
                 new Claim("FirstLastName", $"{user.Name} {user.Surname}"),
-                new Claim("UserRoleId", user?.UserRoleModel?.RoleId?.ToString()!),
-                new Claim("UserID", user?.UserId?.ToString()!)
+                new Claim("UserRoleId", user?.UserRoleModel?.ID?.ToString()!),
+                new Claim("UserID", user?.ID?.ToString()!)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token")?.Value!));

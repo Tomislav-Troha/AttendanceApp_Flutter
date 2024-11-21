@@ -11,8 +11,8 @@ namespace SwimmingAppWebAPI.Controllers
     [ApiController]
     public class TrainingDateController : Controller
     {
-        private readonly ITrainingDateService _trainingDateService;
-        public TrainingDateController(ITrainingDateService trainingDateService)
+        private readonly ITrainingSessionService _trainingDateService;
+        public TrainingDateController(ITrainingSessionService trainingDateService)
         {
             _trainingDateService = trainingDateService;
         }
@@ -27,7 +27,7 @@ namespace SwimmingAppWebAPI.Controllers
                 if (!int.TryParse(HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "UserID")?.Value, out int userId))
                     return BadRequest("User not found.");
 
-                var result = await _trainingDateService.GetTrainingDate(userId, currentDate);
+                var result = await _trainingDateService.GetTrainingSession(userId, currentDate);
                 return Ok(result);
             }
             catch (Exception e)
@@ -44,7 +44,7 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _trainingDateService.GetTrainingDateForEmployee(currentDate);
+                var result = await _trainingDateService.GetTrainingSessionsForEmployee(currentDate);
                 return Ok(result);
             }
             catch (Exception e)
@@ -57,14 +57,14 @@ namespace SwimmingAppWebAPI.Controllers
         [Authorize]
         [HttpPost]
         [Route("addTrainingDate")]
-        public async Task<IActionResult> InsertTrainingDate(TrainingDateDTO trainingDateDTO)
+        public async Task<IActionResult> InsertTrainingDate(TrainingSessionDTO trainingDateDTO)
         {
             try
             {
                 if (!int.TryParse(HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "UserID")?.Value, out int userId))
                     return BadRequest("User not found.");
 
-                var result = await _trainingDateService.InsertTrainingDate(trainingDateDTO, userId);
+                var result = await _trainingDateService.InsertTrainingSession(trainingDateDTO, userId);
                 return Ok(result);
             }
             catch (Exception e)
@@ -76,11 +76,11 @@ namespace SwimmingAppWebAPI.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdateTrainingResult(TrainingDateDTO trainingDateDTO)
+        public async Task<IActionResult> UpdateTrainingResult(TrainingSessionDTO trainingDateDTO)
         {
             try
             {
-                var result = await _trainingDateService.UpdateTrainingDate(trainingDateDTO);
+                var result = await _trainingDateService.UpdateTrainingSession(trainingDateDTO);
                 return Ok(result);
             }
             catch (Exception e)
@@ -97,7 +97,7 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                await _trainingDateService.DeleteTrainingDate(id);
+                await _trainingDateService.DeleteTrainingSession(id);
                 return Ok("Training date deleted");
             }
             catch (Exception e)

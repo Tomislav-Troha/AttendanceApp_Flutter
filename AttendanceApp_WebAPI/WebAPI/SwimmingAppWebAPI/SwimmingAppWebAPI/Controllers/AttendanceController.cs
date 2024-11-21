@@ -43,7 +43,7 @@ namespace SwimmingAppWebAPI.Controllers
         {
             try
             {
-                var result = await _attendanceService.InsertAttendanceNotSubmitted(attendanceDTO, attendanceDTO?.UserModel?.UserId);
+                var result = await _attendanceService.InsertAttendanceNotSubmitted(attendanceDTO, attendanceDTO?.UserModel?.ID);
                 return Ok(result);
             }
             catch (Exception e)

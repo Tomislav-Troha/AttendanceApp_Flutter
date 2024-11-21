@@ -32,12 +32,12 @@ namespace SwimmingApp.DAL.Repositories.AttendanceService
             var query = "SELECT * FROM Attendance_Select_ByUser(@userId)";
             using var connection = _contex.CreateConnection();
 
-            IEnumerable<AttendanceModel> attendances = await connection.QueryAsync<AttendanceModel, TrainingModel, UserModel, TrainingDateModel, UserRoleModel, AttendanceModel>(query,
+            IEnumerable<AttendanceModel> attendances = await connection.QueryAsync<AttendanceModel, TrainingModel, UserModel, TrainingSessionModel, UserRoleModel, AttendanceModel>(query,
                 (attendance, training, user, trainingDate, userRole) =>
                 {
                     attendance.TrainingModel = training;
                     attendance.UserModel = user;
-                    attendance.TrainingDateModel = trainingDate;
+                    attendance.TrainingSessionModel = trainingDate;
                     attendance.UserRoleModel = userRole;
                     return attendance;
                 }, param, splitOn: "ID_training, userId, ID_trainingDate, roleID");
@@ -53,12 +53,12 @@ namespace SwimmingApp.DAL.Repositories.AttendanceService
             var query = "SELECT * FROM Attendance_SelectAll(@userID)";
             using var connection = _contex.CreateConnection();
 
-            IEnumerable<AttendanceModel> attendances = await connection.QueryAsync<AttendanceModel, TrainingModel, UserModel, TrainingDateModel, UserRoleModel, AttendanceModel>(query,
+            IEnumerable<AttendanceModel> attendances = await connection.QueryAsync<AttendanceModel, TrainingModel, UserModel, TrainingSessionModel, UserRoleModel, AttendanceModel>(query,
                 (attendance, training, user, trainingDate, userRole) =>
                 {
                     attendance.TrainingModel = training;
                     attendance.UserModel = user;
-                    attendance.TrainingDateModel = trainingDate;
+                    attendance.TrainingSessionModel = trainingDate;
                     attendance.UserRoleModel = userRole;
                     return attendance;
                 }, param, splitOn: "ID_training, userId, ID_trainingDate, roleID");
@@ -69,11 +69,9 @@ namespace SwimmingApp.DAL.Repositories.AttendanceService
         public async Task<AttendanceDTO> InsertAttendance(AttendanceDTO attendanceDTO, int? userID)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("attDesc", attendanceDTO.AttDesc);
-            param.Add("type", attendanceDTO.Type);
-            param.Add("trainingID", attendanceDTO.TrainingModel?.ID_training);
+            param.Add("trainingID", attendanceDTO.TrainingModel?.ID);
             param.Add("userID", userID);
-            param.Add("trainingDateID", attendanceDTO.TrainingDateModel?.ID_TrainingDate);
+            param.Add("trainingDateID", attendanceDTO.TrainingSessionModel?.ID);
 
             await _db.InsertAsync("CALL Attendance_Insert(@attDesc, @type, @trainingID, @userID, @trainingDateID)", param);
 
@@ -83,11 +81,9 @@ namespace SwimmingApp.DAL.Repositories.AttendanceService
         public async Task<AttendanceDTO> InsertAttendanceNotSubmitted(AttendanceDTO attendanceDTO, int? userID)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("attDesc", attendanceDTO.AttDesc);
-            param.Add("type", attendanceDTO.Type);
-            param.Add("trainingID", attendanceDTO.TrainingModel?.ID_training);
+            param.Add("trainingID", attendanceDTO.TrainingModel?.ID);
             param.Add("userID", userID);
-            param.Add("trainingDateID", attendanceDTO.TrainingDateModel?.ID_TrainingDate);
+            param.Add("trainingDateID", attendanceDTO.TrainingSessionModel?.ID);
 
             await _db.InsertAsync("CALL Attendance_Insert(@attDesc, @type, @trainingID, @userID, @trainingDateID)", param);
 

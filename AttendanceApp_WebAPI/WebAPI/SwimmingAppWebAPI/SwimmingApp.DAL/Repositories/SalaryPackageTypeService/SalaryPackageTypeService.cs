@@ -21,8 +21,8 @@ namespace SwimmingApp.DAL.Repositories.SalaryPackageTypeService
         public async Task<SalaryPackageTypeModel> InsertSalaryPackageType(SalaryPackageTypeModel model)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("salaryPackageTypeName", model.SalaryPackageName);
-            param.Add("salaryPackageTypeDescription", model.SalaryPackageDescription);
+            param.Add("salaryPackageTypeName", model.Name);
+            param.Add("salaryPackageTypeDescription", model.Description);
 
             await _db.InsertAsync("CALL SalaryPackageType_Insert(@salaryPackageTypeName, @salaryPackageTypeDescription)", param);
 

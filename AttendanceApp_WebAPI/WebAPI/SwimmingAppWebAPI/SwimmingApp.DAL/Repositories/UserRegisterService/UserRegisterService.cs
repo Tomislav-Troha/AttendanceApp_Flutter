@@ -15,7 +15,7 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
             _userService = userService;
         }
 
-        public async Task<UserRegisterResponse> UserRegister(UserRegisterDTO? request, int adminID)
+        public async Task<UserRegisterResponse> UserRegister(UserRegisterDTO? request)
         {
             var response = await Validate(request);
 
@@ -36,10 +36,15 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
                     Password = hashPassword,
                     Salt = salt,
                     Username = request?.Username,
-                    Addres = request?.Addres
+                    Address = request?.Address
                 };
 
-                await _userService.InsertUser(userModel);
+                //admin role
+                int? userRoleID = null;
+                if (await _userService.CheckIfFirstEver())
+                    userRoleID = 1;
+
+                await _userService.InsertUser(userModel, userRoleID);
             }
 
             return response;
@@ -47,17 +52,21 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
 
         public async Task<UserRegisterResponse> Validate(UserRegisterDTO? request)
         {
-            if (request == null)
-                throw new ArgumentNullException(nameof(request));
+            ArgumentNullException.ThrowIfNull(request);
 
             var response = new UserRegisterResponse();
-            bool userExist = false;
-            var userEmail = await _userService.GetUserByEmail(request?.Email);
 
-            if (userEmail != null)
-                userExist = true;
+            var user = await _userService.GetUserByEmail(request?.Email);
 
-            var validator = new UserRegisterValidator(_userService);
+            if (!string.IsNullOrEmpty(user?.Email))
+            {
+                response.Success = false;
+                response.Errors.Add("E-mail already exists.");
+
+                return response;
+            };
+
+            var validator = new UserRegisterValidator();
 
             var validatorResult = await validator.ValidateAsync(request!);
 
@@ -68,11 +77,6 @@ namespace SwimmingApp.DAL.Repositories.UserRegisterService
                 {
                     response.Errors.Add(error.ErrorMessage);
                 }
-            }
-            else if (userExist == true)
-            {
-                response.Success = false;
-                response.Errors.Add("E-mail već postoji");
             }
 
             return response;

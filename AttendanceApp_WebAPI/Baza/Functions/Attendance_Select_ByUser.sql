@@ -24,11 +24,11 @@ $$
 	SELECT "at"."id", "at"."attDesc", "at"."type",
 		   "t"."id", "t"."code", "t"."TrainingType", "u"."id", 
 		   u."name", u."surname", u."email", u."username", u."addres",
-		   td."id", td."dates", td."timeFrom", td."timeTo", ur."id", ur."roleName", ur."roleDesc"
+		   td."id", td."timeFrom", td."timeTo", ur."id", ur."roleName", ur."roleDesc"
 	FROM "Attendance" as "at"
 	INNER JOIN "Training" as "t" ON "t"."id" = "at"."trainingID"
 	INNER JOIN "User" as "u" ON "u"."id" = "at"."userID"
-	INNER JOIN "TrainingDate" as "td" ON "td"."id" = "at"."trainingDateID"
+	INNER JOIN "TrainingSession" as "td" ON "td"."id" = "at"."trainingDateID"
 	INNER JOIN "UserRole" as "ur" ON ur."id" = u."userRoleID"
 	WHERE "u"."id" = _userID;
 $$

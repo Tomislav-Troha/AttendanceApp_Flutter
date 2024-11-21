@@ -10,9 +10,11 @@ namespace SwimmingApp.Abstract.DTO
         }
         public TrainingDTO(TrainingModel model) : base(model)
         {
-            ID_training = model.ID_training;
+            ID = model.ID;
             Code = model.Code;
             TrainingType = model.TrainingType;
+            Title = model.Title;
+            Description = model.Description;
         }
     }
 }

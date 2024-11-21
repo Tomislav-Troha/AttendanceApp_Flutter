@@ -10,9 +10,9 @@ namespace SwimmingApp.Abstract.DTO
         }
         public SalaryPackageTypeDTO(SalaryPackageTypeModel model) : base(model)
         {
-            SalaryPackageID = model.SalaryPackageID;
-            SalaryPackageName = model.SalaryPackageName;
-            SalaryPackageDescription = model.SalaryPackageDescription;
+            ID = model.ID;
+            Name = model.Name;
+            Description = model.Description;
         }
     }
 }

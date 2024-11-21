@@ -10,7 +10,7 @@ namespace SwimmingApp.Abstract.DTO
         }
         public ContractDTO(ContractModel model) : base(model)
         {
-            ContractID = model.ContractID;
+            ID = model.ID;
             UserModel = model.UserModel != null ? new UserDTO(model.UserModel) : null;
             UserRoleModel = model.UserRoleModel != null ? new UserRoleDTO(model.UserRoleModel) : null;
             ContractTypeModel = model.ContractTypeModel != null ? new ContractTypeDTO(model.ContractTypeModel) : null;

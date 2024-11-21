@@ -3,7 +3,7 @@
     public class ResponseBase
     {
         public bool Success { get; set; }
-        public IList<string> Errors { get; set; }
+        public List<string> Errors { get; set; }
 
         public ResponseBase()
         {

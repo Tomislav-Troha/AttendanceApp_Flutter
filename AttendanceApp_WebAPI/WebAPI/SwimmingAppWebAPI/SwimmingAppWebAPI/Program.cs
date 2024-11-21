@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SwimmingApp.Abstract.Data.Log;
 using SwimmingApp.DAL.Contex;
 using SwimmingApp.DAL.Core;
 using SwimmingApp.DAL.Logger;
@@ -81,7 +82,7 @@ internal class Program
         services.AddScoped<IDbService, DbService>();
 
         services.AddScoped<IUserService, UserService>();
-        
+
         services.AddScoped<IUserLoginService, UserLoginService>();
 
         services.AddScoped<IUserRegisterService, UserRegisterService>();
@@ -90,11 +91,9 @@ internal class Program
 
         services.AddScoped<IAttendanceService, AttendanceService>();
 
-        services.AddScoped<ITrainingDateService, TrainingDateService>();
+        services.AddScoped<ITrainingSessionService, TrainingSessionService>();
 
         services.AddScoped<IPasswordResetService, PasswordResetService>();
-
-        services.AddScoped<IErrorLogService, ErrorLogService>();
 
         services.AddScoped<IContractService, ContractService>();
 
@@ -103,6 +102,8 @@ internal class Program
         services.AddScoped<IContractTypeService, ContractTypeService>();
 
         services.AddScoped<ISalaryPackageTypeService, SalaryPackageTypeService>();
+
+        services.AddScoped<IErrorLogService, ErrorLogService>();
 
         services.AddControllers();
 
@@ -115,7 +116,11 @@ internal class Program
 
         var app = builder.Build();
 
-        GlobalLogger.Initialize(app.Services);
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            var errorLogService = scope.ServiceProvider.GetRequiredService<IErrorLogService>();
+            GlobalLogger.Initialize(errorLogService);
+        }
 
         if (app.Environment.IsDevelopment())
         {

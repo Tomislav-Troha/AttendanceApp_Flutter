@@ -1,9 +1,12 @@
-﻿namespace SwimmingApp.Abstract.Data
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SwimmingApp.Abstract.Data
 {
     public class ContractType
     {
-        public int? ContractTypeID { get; set; }
-        public string? ContractTypeName { get; set; }
-        public string? ContractTypeDescription { get; set; }
+        [Column("ContractTypeID")]
+        public int? ID { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
     }
 }

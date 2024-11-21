@@ -15,7 +15,7 @@ namespace SwimmingApp.Abstract.DTO
             Email = userRegisterModel?.Email;
             Password = userRegisterModel?.Password;
             Username = userRegisterModel?.Username;
-            Addres = userRegisterModel?.Addres;
+            Address = userRegisterModel?.Address;
             UserRole = userRegisterModel?.UserRole ?? new UserRoleDTO(userRegisterModel?.UserRole);
         }
     }

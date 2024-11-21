@@ -10,9 +10,9 @@ namespace SwimmingApp.Abstract.DTO
         }
         public ContractTypeDTO(ContractTypeModel model) : base(model)
         {
-            ContractTypeID = model.ContractTypeID;
-            ContractTypeName = model.ContractTypeName;
-            ContractTypeDescription = model.ContractTypeDescription;
+            ID = model.ID;
+            Name = model.Name;
+            Description = model.Description;
         }
     }
 }

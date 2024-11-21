@@ -1,25 +1,22 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SwimmingApp.DAL.Repositories.Log;
+﻿using SwimmingApp.DAL.Repositories.Log;
 
 namespace SwimmingApp.DAL.Logger
 {
     public static class GlobalLogger
     {
-        private static IServiceProvider? _serviceProvider;
+        private static IErrorLogService? _errorLogService;
 
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static void Initialize(IErrorLogService errorLogService)
         {
-            _serviceProvider = serviceProvider;
+            _errorLogService = errorLogService;
         }
 
         public static async Task LogError(Exception e)
         {
-            if (_serviceProvider == null)
+            if (_errorLogService == null)
                 throw new InvalidOperationException("GlobalErrorLogger is not initialized. Ensure Initialize() is called during application startup.");
-            
-            using var scope = _serviceProvider.CreateScope();
-            var errorLogService = scope.ServiceProvider.GetRequiredService<IErrorLogService>();
-            await errorLogService.LogError(e);
+
+            await _errorLogService.LogError(e);
         }
     }
 }
